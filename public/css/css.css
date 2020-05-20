@@ -1,0 +1,288 @@
+* {
+    font-family: 'Quattrocento Sans', sans-serif;
+}
+
+body {
+    font-size: 16px;
+}
+.font-primary {
+    font-family: 'Quattrocento Sans', sans-serif;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+dl, ol, ul {
+    margin-bottom: 0;
+}
+#wrapper-menu {
+    display: none;
+}
+/***************************
+ *      SLIDER
+ *************************** */
+.carousel-control-prev,
+.carousel-control-next {
+    z-index: 111;
+}
+.carousel-caption {
+    text-align: initial !important;
+}
+.carousel-caption .texto a {
+    color: inherit;
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1);
+}
+.carousel-caption .texto {
+    font-family: 'Quattrocento Sans', sans-serif;
+    padding: .7em .5em;
+    background-color: rgba(238,238,238,.95);
+    padding: 25px 20px;
+    color: #333333;
+    font-size: 16px;
+    width: 50%;
+    margin-top: 0 !important;
+}
+.carousel-caption .texto *:not(li):first-child {
+    color: #1E3874;
+    font-size: 31px;
+    line-height: 31px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-family: 'Merriweather', serif;
+}
+.carousel-caption .texto *:not(:first-child) {
+    letter-spacing: .5px;
+}
+.carousel-caption .texto > * + * {
+    margin-top: 10px;
+}
+.carousel-indicators li {
+    background-color: #ffffff;
+}
+.carousel-item .img {
+    height: 485px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.image--upload {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    height: calc(1.5em + 1rem + 2px);
+    padding: 0.5rem 1rem;
+    font-size: 1.171875rem;
+    line-height: 1.4em;
+    margin-bottom: 0;
+    border-radius: .5em;
+    border-width: 1px;
+    border-style: dashed;
+    border-color: #707070;
+}
+.image--upload__not-empty {
+    border-style: solid;
+}
+.image--upload input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+.image--upload input + span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.image--upload input + span::after {
+    content: attr(data-name);
+    margin-left: .7em;
+}
+.image--upload__attr {
+    margin-bottom: .7em;
+    background-color: #f8f8f8;
+    border-left: 3px solid #707070;
+    border-top: 3px solid #707070;
+    padding: .7em .6em;
+}
+.image--upload__img {
+    max-width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: .7em;
+    border-radius: .5em;
+    border-width: 1px;
+    border-style: dashed;
+    border-color: #707070;
+}
+.image--upload__validate {
+    border-style: solid;
+}
+.image--wh {
+    list-style: none;
+    display: flex;
+}
+.image--wh__details {
+    flex-direction: column;
+}
+.image--wh li + li {
+    margin-left: 1em;
+}
+.image--wh li {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.image--wh__details li + li {
+    margin-left: 0;
+    margin-top: .3em;
+}
+.image--wh li + li::before {
+    padding-right: 1em;
+    content: "x";
+}
+.image--wh__details li + li::before {
+    padding-right: 0;
+    content: "";
+}
+.check {
+    cursor: pointer;
+    display: inline-block;
+}
+.check div {
+    border-radius: .5em;
+    padding: .7em;
+    background-color: #F04124;
+    color: #ffffff;
+}
+.check div::after {
+    content: "NO";
+    font-weight: 600;
+    margin-left: .7em;
+}
+.check input {
+    display: none;
+}
+.check input:checked + * + div {
+    color: #111111;
+    background-color: #43ac6a;
+}
+.check input:checked + * + div::after {
+    content: "SI";
+}
+/***************************
+ *      EMPRESA
+ *************************** */
+.social-networks {
+    color: #6E6F71;
+    font-size: 20px;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50em;
+    border: 2px solid #6E6F71;
+    height: 40px;
+    width: 40px;
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+.social-networks:hover {
+    text-decoration: none;
+    color: #4f9232;
+    border-color: #4f9232;
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+
+.hover .plus > div.img {
+    position: relative;
+}
+.hover .plus > div.img::before {
+    content: "";
+    opacity: 0;
+    position: absolute;
+    background-color: #1f3856;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    -webkit-transition: all 600ms ease;
+    -moz-transition: all 600ms ease;
+    -ms-transition: all 600ms ease;
+    -o-transition: all 600ms ease;
+    transition: all 600ms ease;
+}
+.hover .plus > div.img::after {
+    opacity: 0;
+    font-size: 33px;
+    content: "";
+    position: absolute;
+    color: var( --white );
+    z-index: 2;
+    width: 33px;
+    height: 33px;
+    left: calc(50% - 33px / 2);
+    top: calc(50% - 41px / 2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-transition: all 600ms ease;
+    -moz-transition: all 600ms ease;
+    -ms-transition: all 600ms ease;
+    -o-transition: all 600ms ease;
+    transition: all 600ms ease;
+}
+
+.hover:hover .plus > div.img::before {
+    opacity: .5;
+    -webkit-transition: all 600ms ease;
+    -moz-transition: all 600ms ease;
+    -ms-transition: all 600ms ease;
+    -o-transition: all 600ms ease;
+    transition: all 600ms ease;
+}
+.hover:hover .plus > div.img::after,
+.hover:hover .plus::before {
+    -webkit-transition: all 600ms ease;
+    -moz-transition: all 600ms ease;
+    -ms-transition: all 600ms ease;
+    -o-transition: all 600ms ease;
+    transition: all 600ms ease;
+    opacity: 1;
+}
+.hover:hover .plus > .producto--elemento.img::before {
+    border-radius: .3em;
+}
+.img--not-found {
+    max-width: 100%;
+    width: 120px;
+    height: auto;
+}
+@media (min-width: 768px) {
+    .collapse.dont-collapse-sm {
+        display: block;
+        height: auto !important;
+        visibility: visible;
+    }
+}
+@media (max-width: 768px) {
+    .carousel-caption .texto {
+        width: 100%;
+    }
+}

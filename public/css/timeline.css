@@ -1,0 +1,59 @@
+.timeline-cd ol,
+.timeline-cd ul {
+  list-style: none;
+  padding-left: 0;
+}
+.timeline-cd ol li.timeline-container {
+  padding: 0 1.5em;
+  position: relative;
+}
+.timeline-cd ol li.timeline-container a {
+  position: relative;
+  line-height: 26px;
+}
+.timeline-cd ol li.timeline-container a::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50em;
+  background-color: #000000a1;
+  position: absolute;
+  left: calc( 50% - 5px );
+  bottom: -14px;
+}
+.timeline-cd ol li.timeline-container.selected a {
+  font-size: 26px;
+  color: #000000;
+}
+.timeline-cd ol li.timeline-container.selected a::before {
+  background-color: #ffffff;
+  width: 15px;
+  height: 15px;
+  bottom: -11px;
+}
+.timeline-cd ol li.timeline-container::before,
+.timeline-cd ol li.timeline-container::after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  width: calc( 50% - 10px );
+  background-color: #ffffff;
+  bottom: -3px;
+}
+.timeline-cd ol li.timeline-container::before {
+  right: calc( 50% + 5px );
+}
+.timeline-cd ol li.timeline-container::after {
+  left: calc( 50% + 5px );
+}
+.timeline-cd ol li.timeline-container + .timeline-container {
+  margin-left: -11px;
+}
+.timeline-cd ul li.timeline-container {
+  width: 400px;
+  display: none;
+  color: #383838;
+}
+.timeline-cd ul li.timeline-container.selected {
+  display: block;
+}
