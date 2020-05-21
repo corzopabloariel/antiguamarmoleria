@@ -49,7 +49,7 @@ class UserController extends Controller
      */
     public function store(Request $request, $data = null)
     {
-        return (new AdmController)->store($request, $data, $this->model, ["login"]);
+        return (new AdmController)->store($request, $data, $this->model);
     }
 
     /**

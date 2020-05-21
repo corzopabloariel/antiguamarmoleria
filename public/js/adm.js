@@ -481,7 +481,7 @@ searchTable = ( t ) => {
 /** -------------------------------------
  *      ABRIR FORMULARIO
  ** ------------------------------------- */
-add = ( t , id = 0 , data = null, disabled = 0) => {
+add = (t, id = 0, data = null, disabled = 0) => {
     let label = document.querySelector("#formModalLabel");
     let form = document.querySelector("#form");
     if (disabled) {
@@ -518,7 +518,7 @@ add = ( t , id = 0 , data = null, disabled = 0) => {
         form.action = action;
         form.method = method;
     }
-    window.pyrus.show( CKEDITOR , url_simple , data );
+    window.pyrus.show(url_simple, data);
     $( "#formModal" ).modal( "show" );
     addfinish( data );
 };
@@ -526,33 +526,71 @@ addfinish = ( data = null ) => {};
 /** -------------------------------------
  *      ELIMINAR ARCHIVO
  ** ------------------------------------- */
-deleteFile = ( t , url , txt ) => {
-    alertify.confirm( "ATENCIÓN" ,`${txt}`,
-        () => {
-            axios.get( url, {
-                responseType: 'json'
+removeFile = (t) => {
+    deleteFile(t, `${url_simple}/adm/file`, "¿Eliminar archivo de imagen?", {file: t.dataset.url, entidad: t.dataset.entidad, attr: t.dataset.attr, id: t.dataset.id}, data => {
+        if (data.error === 0) {
+            t.parentElement.previousElementSibling.src = "";
+            let details = t.parentElement.previousElementSibling.previousElementSibling.querySelectorAll(".image--wh__details");
+            Array.prototype.forEach.call(details, d => d.remove());
+            Toast.fire({
+                icon: 'success',
+                title: data.msg
             })
-            .then(( res ) => {
-                if( res.data ) {
-                    alertify.success( "Archivo eliminado" );
-                    $( t ).prop( "disabled" , true );
-                    location.reload();
-                } else {
-                    alertify.error( "Ocurrió un error. Reintente" );
-                    $( t ).prop( "disabled" , false );
+        } else {
+            Toast.fire({
+                icon: 'error',
+                title: data.msg
+            })
+        }
+    });
+};
+deleteFile = (t, url, txt, data, callbackOK = null) => {
+    t.disabled = true;
+    Swal.fire({
+        title: "Atención!",
+        text: txt,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+
+        confirmButtonText: '<i class="fas fa-check"></i> Confirmar',
+        confirmButtonAriaLabel: 'Confirmar',
+        cancelButtonText: '<i class="fas fa-times"></i> Cancelar',
+        cancelButtonAriaLabel: 'Cancelar'
+    }).then( ( result ) => {
+        if ( result.value ) {
+            axios.delete( url, {
+                data: data
+            })
+            .then(res => {
+                if (callbackOK)
+                    callbackOK.call(this, res.data);
+                else {
+                    t.disabled = false;
+                    if(res.data.error === 0) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: res.data.msg
+                        })
+                    } else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: res.data.msg
+                        })
+                    }
                 }
             })
             .catch(( err ) => {
                 alertify.error( "Ocurrió un error" );
-                $( t ).prop( "disabled" , false );
+                t.disabled = false;
+                console.error(err);
                 console.error( `ERROR en ${url}` );
             })
             .then(() => {});
-        },
-        () => {
-            $( t ).prop( "disabled" , false );
-        }
-    ).set( 'labels' , { ok : 'Confirmar' , cancel : 'Cancelar' } );
+        } else
+            t.disabled = false;
+    });
 };
 /** -------------------------------------
  *      COMBINACIÓN DE TECLAS

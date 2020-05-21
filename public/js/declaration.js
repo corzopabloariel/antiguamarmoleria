@@ -845,6 +845,7 @@ const ENTIDADES = {
             DATOS DE LA EMPRESA
      ********************************** */
     usuarios: {
+        TABLE: "users",
         ATRIBUTOS: {
             username: {TIPO:"TP_STRING",RULE: "required|max:30",MAXLENGTH:30,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"usuario"},
             name: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre"},

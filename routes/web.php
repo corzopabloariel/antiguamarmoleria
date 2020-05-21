@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
     Route::get('logout', ['uses' => 'Auth\LoginController@logout' , 'as' => 'adm.logout']);
     Route::get('empresa/imagen', ['uses' => 'Auth\AdmController@imagen', 'as' => 'imagen']);
     Route::delete('imagen/delete', ['uses' => 'Auth\AdmController@imagenDestroy', 'as' => 'imagen.delete']);
+    Route::delete('file', ['uses' => 'Auth\AdmController@deleteFile', 'as' => 'deleteFile']);
     Route::post('imagen', ['uses' => 'Auth\AdmController@imagenStore', 'as' => 'imagen.create']);
     Route::post('edit', ['uses' => 'Auth\AdmController@edit', 'as' => 'adm.edit']);
     Route::match(['get', 'post'], 'url',['as' => '.url','uses' => 'Auth\EmpresaController@url' ]);

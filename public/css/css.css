@@ -89,10 +89,11 @@ dl, ol, ul {
     border-radius: .5em;
     border-color: #707070;
     order: 2;
+    position: relative;
+    z-index: 1;
 }
 .form--input:focus {
-    background-color: #e7f9ff;
-    border-color: inherit;
+    border-color: #3bceff;
 }
 .form--label + .form--input {
     border-top-left-radius: 0;
@@ -111,6 +112,8 @@ dl, ol, ul {
     background-color: #f4f4f4;
     color: #707070;
     order: 1;
+    z-index: 0;
+    position: relative;
     -webkit-transition: all 500ms ease;
     -moz-transition: all 500ms ease;
     -ms-transition: all 500ms ease;
@@ -152,6 +155,19 @@ dl, ol, ul {
 /***************************
  *
  *************************** */
+.image--button {
+    color: #ffffff;
+    background-color: #f04324;
+    border: 1px solid #f04324;
+    display: inline-block;
+    border-radius: .5em;
+    padding: .3em .7em;
+}
+.image--button:disabled {
+    color: #707070;
+    background-color: #ddd;
+    border-color: #ddd;
+}
 .image--upload {
     position: relative;
     display: flex;
@@ -236,6 +252,7 @@ dl, ol, ul {
 .check {
     cursor: pointer;
     display: inline-block;
+    margin-bottom: 0;
 }
 .check div {
     border-radius: .5em;

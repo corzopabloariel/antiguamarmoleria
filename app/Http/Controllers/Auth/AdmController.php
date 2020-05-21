@@ -75,6 +75,21 @@ class AdmController extends Controller
             return 0;
         }
     }
+    public function deleteFile(Request $request) {
+        try {
+            $data = [];
+            $data[$request->attr] = NULL;
+            DB::table($request->entidad)
+                ->where('id', $request->id)
+                ->update($data);
+            $filename = public_path() . "/{$request->file}";
+            if (file_exists($filename))
+                unlink($filename);
+        } catch (\Throwable $th) {
+            return json_encode(["error" => 1, "msg" => "Ocurrió un error en el borrado del archivo"]);
+        }
+        return json_encode(['success' => true, "error" => 0, "msg" => "Archivo eliminado correctamente"]);
+    }
 
     public function delete( $data , $fillable ) {
         try {
@@ -120,8 +135,56 @@ class AdmController extends Controller
      * @param @type array $merge
      * @date 19/02/2020
      */
-    public function object( $request , $data = null , $merge = null )
-    {
+    public function TP_STRING($attr, $value, $valueNew, $specification) {
+        return $valueNew;
+    }
+    public function TP_EMAIL($attr, $value, $valueNew, $specification) {
+        return $valueNew;
+    }
+    public function TP_PASSWORD($attr, $value, $valueNew, $specification) {
+        return empty($valueNew) ? $value : Hash::make($valueNew);
+    }
+    public function TP_ENUM($attr, $value, $valueNew, $specification) {
+        return $valueNew;
+    }
+    public function TP_FECHA($attr, $value, $valueNew, $specification) {
+        return $valueNew;
+    }
+    public function TP_IMAGE($attr, $value, $valueNew, $specification) {
+        $file = isset($valueNew[$attr]) ? $valueNew[$attr] : null;
+        $path = "images/";
+        $old = empty($value) ? null : $value["i"];//ruta vieja;
+        $fileName = empty($value) ? null : $value["n"];//mantiene el nombre, reemplaza archivo
+        if (isset($specification["FOLDER"]))
+            $path .= "{$specification["FOLDER"]}/";
+        if (!file_exists($path))
+            mkdir($path, 0777, true);
+
+        if (!empty($file)) {
+            $fileNameNew = $file->getClientOriginalName();
+            list($aux, $ext) = explode(".", $fileNameNew);
+            $fileNameNew = $aux;
+            if (empty($valueNew["check"])) {
+                if (empty($fileName))
+                    $fileNameNew = time() . "_{$attr}";
+                else
+                    $fileNameNew = $fileName;
+            }
+            if (!empty($old)) {
+                if (file_exists($old))
+                    unlink($old);
+            }
+            $file->move($path, "{$fileNameNew}.{$ext}");
+            return [
+                "i" => "{$path}{$fileNameNew}.{$ext}",
+                "e" => $ext,
+                "n" => $fileNameNew,
+                "d" => getimagesize("{$path}{$fileNameNew}.{$ext}")
+            ];
+        }
+        return $value;
+    }
+    public function object($request, $data = null, $merge = null) {
         $datosRequest = $request->all();
         if( isset( $datosRequest["REMOVE"] ) ) {
             $datosRequest["REMOVE"] = json_decode( $datosRequest["REMOVE"] , true );
@@ -133,7 +196,7 @@ class AdmController extends Controller
         }
         $datosRequest["ATRIBUTOS"] = json_decode( $datosRequest["ATRIBUTOS"] , true );
         $OBJ = [];
-        if( empty( $merge ) ) {
+        /*if( empty( $merge ) ) {
             $merge = [];
             for ($x = 0; $x < count($datosRequest["ATRIBUTOS"]); $x++) {
                 $aux = $datosRequest[ "ATRIBUTOS" ][ $x ];
@@ -201,17 +264,30 @@ class AdmController extends Controller
             if( !empty( $aux_datos ) ) {
                 $datosRequest = array_merge($datosRequest, $aux_datos);
             }
-        }
+        }*/
         for( $x = 0 ; $x < count( $datosRequest[ "ATRIBUTOS" ] ) ; $x++ ) {
             $aux = $datosRequest[ "ATRIBUTOS" ][ $x ];
             switch( $aux[ "TIPO" ] ) {
                 case "U":
-                    foreach( $aux[ "DATA" ][ "especificacion" ] AS $nombre => $tipo) {
+                    $attrs = array_keys($aux["DATA"]["especificacion"]);
+                    $specifications = $aux["DATA"]["especificacion"];
+                    $details = $aux["DATA"]["detalles"];
+                    $values = $datosRequest[$aux["DATA"]["name"]];
+                    if (empty($data))
+                        $data = $data->toArray();
+                    for($i = 0; $i < count($attrs); $i++) {
+                        $attr = $attrs[$i];
+                        $specification = $specifications[$attr];
+                        $detail = isset($details[$attr]) ? $details[$attr] : null;
+                        $valueNew = $values[$attr];
+                        $value = isset($data[$attr]) ? $data[$attr] : null;
+                        $OBJ[$attr] = call_user_func_array("self::{$specification}", [$attr, $value, $valueNew, $detail]);
+                    }
+                    /*foreach( $aux[ "DATA" ][ "especificacion" ] AS $nombre => $tipo) {
                         $E_aux = null;
                         $var = "{$aux[ "DATA" ][ "name" ]}_{$nombre}";
                         if( isset( $aux[ "NAME" ] ) )
                             $var .= "_{$aux[ "NAME" ]}";
-
                         if( isset( $aux[ "DATA" ][ "idiomas" ] ) ) {
                             if( isset( $aux[ "DATA" ][ "idiomas" ][ $nombre ] ) ) {
                                 $E_aux = [];
@@ -461,7 +537,7 @@ class AdmController extends Controller
                             } else
                                 $OBJ[ $nombre ] = $E_aux;
                         }
-                    }
+                    }*/
                     break;
                 case "M":
                     if( !isset( $datosRequest[ "{$aux[ "DATA" ][ "name" ]}_{$aux[ "COLUMN" ]}" ] ) )
@@ -771,7 +847,7 @@ class AdmController extends Controller
         if ($flag) {
             return json_encode(["error" => 1, "msg" => "Validación incorrecta"]);
         } else {
-            try {
+            //try {
                 $OBJ = self::object($request, $data);
                 if ($rule) {
                     $flag = true;
@@ -802,9 +878,9 @@ class AdmController extends Controller
                     $data->fill($OBJ);
                     $data->save();
                 }
-            } catch (\Throwable $th) {
+            /*} catch (\Throwable $th) {
                 return json_encode(["error" => 1]);
-            }
+            }*/
             return json_encode(['success' => true, "error" => 0]);
         }
     }
