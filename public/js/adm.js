@@ -588,6 +588,12 @@ shortcut.add( "Alt+Ctrl+Q" , function () {
  *      INICIO
  ** ------------------------------------- */
 
+function elementFocus(evt) {
+    this.previousElementSibling.classList.add("form--label__active");
+}
+function elementBlur(evt) {
+    this.previousElementSibling.classList.remove("form--label__active");
+}
 function editable(evt) {
     this.contentEditable = true;
 }
@@ -625,22 +631,39 @@ function editableSave(evt) {
     .then(() => {});
 }
 
-init = ( callbackOK , table = true , type = "table" , without = false ) => {
-    /** */
-    $( "#form .modal-body" ).html( window.pyrus.formulario() );
-    if( !without )
-        $( "#wrapper-tabla > div.card-body" ).html( window.pyrus.table( [ { NAME:"ACCIONES" , COLUMN: "acciones" , CLASS: "text-center" , WIDTH: "150px" } ] ) );
-    else
-        $( "#wrapper-tabla > div.card-body" ).html( window.pyrus.table() );
-    window.pyrus.editor( CKEDITOR );
-    if( table ) {
-        if( type == "table" )
-            if( !without )
-                window.pyrus.elements("#tabla" , url_simple , window.data.elementos , [ "e" , "d" ] );
-            else
-                window.pyrus.elements("#tabla" , url_simple , window.data.elementos , [] );
-        else
-            $( "#wrapper-tabla > div.card-columns" ).html( window.pyrus.card( url_simple , window.data.elementos , [ "d" ] ) );
+init = (callbackOK, normal = true, widthElements = true, type = "table", withAction = true) => {
+    let targetForm = document.querySelector(".pyrus--form");
+    let targetElements = document.querySelector("#wrapper-tabla");
+    let btn = [];
+    targetForm.innerHTML = window.pyrus.formulario();
+    const forms = document.querySelectorAll(".form--input");
+    if (forms.length > 0) {
+        Array.prototype.forEach.call(forms, form => {
+            form.addEventListener("focusin", elementFocus);
+            form.addEventListener("focusout", elementBlur);
+        })
     }
-    callbackOK.call( this , null );
+    if (normal) {
+        if (withAction) {
+            targetElements.innerHTML = window.pyrus.table( [ { NAME:"ACCIONES" , COLUMN: "acciones" , CLASS: "text-center" , WIDTH: "150px" } ] );
+            btn = ["e" , "d"];
+        } else
+            targetElements.innerHTML = window.pyrus.table();
+        window.pyrus.editor( CKEDITOR );
+        if (widthElements) {
+            if (type == "table") {
+                window.pyrus.elements("#tabla" , url_simple, window.data.elementos, btn);
+                //---------------------
+                const spans = document.querySelectorAll(".edit");
+                if (spans.length > 0) {
+                    Array.prototype.forEach.call(spans, span => {
+                        span.addEventListener("dblclick", editable);
+                        span.addEventListener("blur", editableSave);
+                    })
+                }
+            } else
+                targetElements.innerHTML = window.pyrus.card(url_simple, window.data.elementos, ["d"]);
+        }
+    }
+    callbackOK.call(this, [targetForm, targetElements]);
 };

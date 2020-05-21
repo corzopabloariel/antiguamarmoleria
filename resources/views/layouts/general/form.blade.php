@@ -29,7 +29,7 @@
             <form id="form" onsubmit="event.preventDefault(); formSubmit(this);" novalidate class="pt-2" action="@isset( $url ) {{ $url }} @endisset" @if( $buttonADD ) method="post" @else method="put" @endif enctype="multipart/form-data">
                 @csrf
                 <button class="btn btn-success px-5 text-uppercase btn-lg"><i class="fas fa-save"></i></button>
-                <div class="container-form py-3 my-3"></div>
+                <div class="container-form pyrus--form py-3 my-3"></div>
                 <div class="d-flex justify-content-end">
                     <button class="btn btn-success px-5 text-uppercase btn-lg"><i class="fas fa-save"></i></button>
                 </div>
@@ -49,7 +49,7 @@
             </div>
             <form id="form" onsubmit="event.preventDefault(); formSubmit(this);" novalidate class="pt-2" action="@isset( $url ) {{ $url }} @endisset" @if( $buttonADD ) method="post" @else method="put" @endif enctype="multipart/form-data">
                 @csrf
-                <div class="modal-body"></div>
+                <div class="modal-body pyrus--form"></div>
                 <div class="modal-footer bg-light">
                     <button type="button" onclick="remove( this );" class="btn btn-danger px-5 text-uppercase">cerrar</button>
                     <button type="submit" class="btn btn-success px-5 text-uppercase"></button>

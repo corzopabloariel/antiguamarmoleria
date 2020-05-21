@@ -850,7 +850,7 @@ const ENTIDADES = {
             name: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre"},
             email: {TIPO:"TP_EMAIL",RULE: "required|email|max:150",MAXLENGTH:150,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"email"},
             password: {TIPO:"TP_PASSWORD",VISIBILIDAD:"TP_VISIBLE_FORM",LABEL:1,NOMBRE:"contraseña",HELP:"SOLO PARA EDICIÓN - para no cambiar la contraseña, deje el campo vacío"},
-            type: {TIPO:"TP_ENUM",VISIBILIDAD:"TP_VISIBLE",ENUM:{0:"Usuario",1:"Administrador",2:"Asistente"},NOMBRE:"Tipo",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",COMUN:1, NECESARIO: 1},
+            type: {TIPO:"TP_ENUM",VISIBILIDAD:"TP_VISIBLE",ENUM:[{id: 0, text: "Usuario"}, {id: 1, text: "Administrador"}, {id: 2, text: "Asistente"}],NOMBRE:"Tipo",CLASS:"form--input", NECESARIO: 1},
             image: {TIPO:"TP_IMAGE", EXT: "jpeg, png, jpg, gif",FOLDER:"usuarios",RULE: "required|image|mimes:jpeg,png,jpg,gif|max:2048",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Seleccione archivo - 300px x 300px",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE_FORM",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"300px",HEIGHT:"300px",SIMPLE: 1},
             login: {TIPO:"TP_FECHA",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"último ingreso",FORMAT:[ "dd" , "/" , "mm" , "/" , "aaaa" , " " , "h" , ":" , "m" , ":" , "s" ]},
         },
