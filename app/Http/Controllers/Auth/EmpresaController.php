@@ -176,9 +176,9 @@ class EmpresaController extends Controller
         return self::redesStore($request,$id);
     }
     public function terminos(Request $request) {
-        $contenido = Contenido::where("seccion", "terminos")->first();
+        $contenido = Contenido::where("section", "terminos")->first();
         if (empty($contenido))
-            $contenido = Contenido::create(["seccion" => "terminos", "data" => ["titulo" => null, "texto" => null]]);
+            $contenido = Contenido::create(["section" => "terminos", "data" => ["titulo" => null, "texto" => null]]);
         $data = [
             "title"     => "Contenido: TÉRMINOS Y CONDICIONES",
             "view"      => "auth.parts.contenidoTerminos",

@@ -8,6 +8,6 @@
 <script>
     window.pyrus = new Pyrus( "redes" );
     /** ------------------------------------- */
-    init( function() {});
+    init(data => {});
 </script>
 @endpush

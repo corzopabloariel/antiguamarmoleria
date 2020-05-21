@@ -176,37 +176,6 @@ table td p:last-child {
     margin-top: 1em;
 }
 
-/* ---------------------------------------------------
-    FIELDSET
------------------------------------------------------ */
-fieldset {
-    border: none;
-    padding: 0;
-}
-fieldset + * {
-    margin-top: 1em;
-}
-fieldset legend {
-    width: auto;
-    padding: .375rem .75rem;
-    margin: 0;
-    border: 1px solid #ddd;
-    border-bottom: none;
-    color: #484848;
-    line-height: initial;
-    text-transform: uppercase;
-    background-color: #f8f8f8;
-    font-size: 17px;
-}
-fieldset legend.legend-btn {
-    padding: 0;
-    border: none;
-    background-color: transparent;
-}
-fieldset > p:last-child {
-    margin-bottom: 0;
-}
-
 #wrapper-form.isDisabled {
     position: relative;
 }

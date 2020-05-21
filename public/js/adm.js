@@ -634,35 +634,45 @@ function editableSave(evt) {
 init = (callbackOK, normal = true, widthElements = true, type = "table", withAction = true) => {
     let targetForm = document.querySelector(".pyrus--form");
     let targetElements = document.querySelector("#wrapper-tabla");
-    let btn = [];
-    targetForm.innerHTML = window.pyrus.formulario();
-    const forms = document.querySelectorAll(".form--input");
-    if (forms.length > 0) {
-        Array.prototype.forEach.call(forms, form => {
-            form.addEventListener("focusin", elementFocus);
-            form.addEventListener("focusout", elementBlur);
-        })
-    }
-    if (normal) {
-        if (withAction) {
-            targetElements.innerHTML = window.pyrus.table( [ { NAME:"ACCIONES" , COLUMN: "acciones" , CLASS: "text-center" , WIDTH: "150px" } ] );
-            btn = ["e" , "d"];
-        } else
-            targetElements.innerHTML = window.pyrus.table();
-        window.pyrus.editor( CKEDITOR );
-        if (widthElements) {
-            if (type == "table") {
-                window.pyrus.elements("#tabla" , url_simple, window.data.elementos, btn);
-                //---------------------
-                const spans = document.querySelectorAll(".edit");
-                if (spans.length > 0) {
-                    Array.prototype.forEach.call(spans, span => {
-                        span.addEventListener("dblclick", editable);
-                        span.addEventListener("blur", editableSave);
-                    })
-                }
+    if (Array.isArray(window.pyrus)) {
+        window.pyrus.forEach(p => {
+            targetForm.innerHTML += p.formulario();
+            const target = document.querySelector(`#form_${p.entidad}`)
+            const ck = target.querySelector(".ckeditor");
+            if (ck) {
+                setTimeout(() => {
+                    console.log(CKEDITOR.instances)
+                    p.editor();
+                }, 500);
+            }
+        });
+    } else {
+        let btn = [];
+        targetForm.innerHTML = window.pyrus.formulario();
+        const ck = document.querySelector(".ckeditor");
+        if (ck)
+            window.pyrus.editor();
+        if (normal) {
+            if (withAction) {
+                targetElements.innerHTML = window.pyrus.table( [ { NAME:"ACCIONES" , COLUMN: "acciones" , CLASS: "text-center" , WIDTH: "150px" } ] );
+                btn = ["e" , "d"];
             } else
-                targetElements.innerHTML = window.pyrus.card(url_simple, window.data.elementos, ["d"]);
+                targetElements.innerHTML = window.pyrus.table();
+            window.pyrus.editor( CKEDITOR );
+            if (widthElements) {
+                if (type == "table") {
+                    window.pyrus.elements("#tabla" , url_simple, window.data.elementos, btn);
+                    //---------------------
+                    const spans = document.querySelectorAll(".edit");
+                    if (spans.length > 0) {
+                        Array.prototype.forEach.call(spans, span => {
+                            span.addEventListener("dblclick", editable);
+                            span.addEventListener("blur", editableSave);
+                        })
+                    }
+                } else
+                    targetElements.innerHTML = window.pyrus.card(url_simple, window.data.elementos, ["d"]);
+            }
         }
     }
     callbackOK.call(this, [targetForm, targetElements]);

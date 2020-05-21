@@ -6,17 +6,9 @@
 @push('scripts')
 <script>
     window.pyrus = new Pyrus("terminos", null, src);
-
-    /** ------------------------------------- */
-    init = ( callbackOK ) => {
-        /** */
-        $("#form .container-form").html( window.pyrus.formulario() );
-        window.pyrus.editor( CKEDITOR );
-        callbackOK.call( this );
-    };
     /** */
-    init( () => {
-        window.pyrus.show( CKEDITOR , null , window.data.elementos.data );
-    });
+    init((data) => {
+        window.pyrus.show(null, window.data.elementos.data);
+    }, false);
 </script>
 @endpush

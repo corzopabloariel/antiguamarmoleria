@@ -878,8 +878,8 @@ const ENTIDADES = {
     },
     terminos: {
         ATRIBUTOS: {
-            titulo: {TIPO:"TP_STRING",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0"},
-            texto: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"texto",HELP:'Términos y condiciones de ejemplo sacado de <a href="https://terminosycondicionesdeusoejemplo.com/" target="_blank" rel="noopener noreferrer" class="text-primary">https://terminosycondicionesdeusoejemplo.com/ <i class="fas fa-external-link-alt ml-1"></i></a>'}
+            titulo: {TIPO:"TP_STRING",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título"},
+            texto: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",LABEL:1,NOMBRE:"texto",HELP:'Términos y condiciones de ejemplo sacado de <a href="https://terminosycondicionesdeusoejemplo.com/" target="_blank" rel="noopener noreferrer" class="text-primary">https://terminosycondicionesdeusoejemplo.com/ <i class="fas fa-external-link-alt ml-1"></i></a>'}
         },
         FORM: [
             {
@@ -912,17 +912,6 @@ const ENTIDADES = {
             },
         },
     },
-    empresa_captcha: {
-        ATRIBUTOS: {
-            public: {TIPO:"TP_STRING",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"clave pública",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0"},
-            private: {TIPO:"TP_STRING",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"clave secreta",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0"},
-        },
-        FORM: [
-            {
-                '<div class="col-12 col-md">/public/</div><div class="col-12 col-md">/private/</div>' : ['public','private']
-            }
-        ]
-    },
     metadatos: {
         ATRIBUTOS: {
             seccion: {TIPO:"TP_STRING",VISIBILIDAD:"TP_VISIBLE_TABLE",CLASS:"",NOMBRE:"sección"},
@@ -948,9 +937,9 @@ const ENTIDADES = {
     },
     redes: {
         ATRIBUTOS: {
-            redes: {TIPO:"TP_ENUM",LABEL:1,ENUM:{facebook:'Facebook',instagram:'Instagram',twitter:'Twitter',youtube:'YouTube',linkedin:'LinkedIn',pinterest:'Pinterest'},NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",CLASS:" border-left-0 border-right-0 border-top-0",NOMBRE:"red social",COMUN:1},
-            titulo: {TIPO:"TP_STRING",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0"},
-            url: {TIPO:"TP_LINK",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"link del sitio",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0"},
+            redes: {TIPO:"TP_ENUM",LABEL:1,ENUM:[{id: "facebook", text: "Facebook"},{id: "instagram", text: "Instagram"},{id: "youtube", text: "Youtube"},{id: "linkedin", text: "LinkedIn"},{id: "pinteres", text: "Pinteres"}],NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"red social"},
+            titulo: {TIPO:"TP_STRING",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título"},
+            url: {TIPO:"TP_LINK",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"link del sitio"},
         },
         FORM: [
             {
@@ -962,13 +951,14 @@ const ENTIDADES = {
             {
                 '<div class="col-12 col-md-10 col-lg-9">/url/</div>': ['url']
             }
-        ],
-        PADRE: "empresa"
+        ]
     },
     empresa: {
+        ONE: 1,
+        NOMBRE: "General",
         ATRIBUTOS: {
-            dias: {TIPO:"TP_ENTERO",SIMPLE:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0",NOMBRE: "Días", HELP: "Días antes del vencimiento"},
-            anio_inicio: {TIPO:"TP_ENTERO",SIMPLE:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0",NOMBRE: "Año de inicio", HELP: "Automóvil"}
+            dias: {TIPO:"TP_ENTERO",SIMPLE:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE: "Días", HELP: "Días antes del vencimiento"},
+            anio_inicio: {TIPO:"TP_ENTERO",SIMPLE:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE: "Año de inicio", HELP: "Automóvil"}
         },
         FORM: [
             {
@@ -977,8 +967,11 @@ const ENTIDADES = {
         ]
     },
     empresa_email: {
+        ONE: 1,
+        MULTIPLE: 1,
+        NOMBRE: "Emails",
         ATRIBUTOS: {
-            email: {TIPO:"TP_EMAIL",LABEL:1,MAXLENGTH:150,VISIBILIDAD:"TP_VISIBLE",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0"}
+            email: {TIPO:"TP_EMAIL",LABEL:1,MAXLENGTH:150,VISIBILIDAD:"TP_VISIBLE"}
         },
         FORM: [
             {
@@ -986,11 +979,27 @@ const ENTIDADES = {
             }
         ]
     },
-    empresa_telefono: {
+    empresa_captcha: {
+        ONE: 1,
+        NOMBRE: "Google",
         ATRIBUTOS: {
-            telefono: {TIPO:"TP_PHONE",LABEL:1,MAXLENGTH:50,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"número",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0",HELP:"Contenido oculto en el HREF. Solo números"},
+            public: {TIPO:"TP_STRING",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"clave pública"},
+            private: {TIPO:"TP_STRING",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"clave secreta"},
+        },
+        FORM: [
+            {
+                '<div class="col-12 col-md">/public/</div><div class="col-12 col-md">/private/</div>' : ['public','private']
+            }
+        ]
+    },
+    empresa_telefono: {
+        ONE: 1,
+        MULTIPLE: 1,
+        NOMBRE: "Teléfonos",
+        ATRIBUTOS: {
+            telefono: {TIPO:"TP_PHONE",LABEL:1,MAXLENGTH:50,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"número",HELP:"Contenido oculto en el HREF. Solo números"},
             tipo: {TIPO:"TP_ENUM",ENUM:{tel:"Teléfono/Celular",wha:"Whatsapp"},NECESARIO:1,VISIBILIDAD:"TP_VISIBLE_FORM",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0 ",NOMBRE:"Tipo",COMUN: 1},
-            visible: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:50,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"elemento visible",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0",HELP:"Contenido visible. En caso de permanecer vacío, se utilizará el primer campo"},
+            visible: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:50,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"elemento visible",HELP:"Contenido visible. En caso de permanecer vacío, se utilizará el primer campo"},
             is_link: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Es clickeable?"},
             in_header: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Esta en la cabecera?"}
         },
@@ -1007,16 +1016,18 @@ const ENTIDADES = {
         ]
     },
     empresa_domicilio: {
+        ONE: 1,
+        NOMBRE: "Domicilio completo",
         ATRIBUTOS: {
-            calle: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0"},
-            altura: {TIPO:"TP_ENTERO",LABEL:1,VISIBILIDAD:"TP_VISIBLE",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0"},
-            localidad: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"localidad",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0"},
-            provincia: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",DEFAULT:"Buenos Aires",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0"},
-            pais: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",DEFAULT:"Argentina",NOMBRE:"país",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0"},
-            cp: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"código postal",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0"},
-            detalle: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"detalles",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0"},
-            mapa: {TIPO:"TP_TEXT",LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"ubicación de Google Maps",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0"},
-            link: {TIPO:"TP_TEXT",LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"enlace de Google Maps",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0"}
+            calle: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE"},
+            altura: {TIPO:"TP_ENTERO",LABEL:1,VISIBILIDAD:"TP_VISIBLE"},
+            localidad: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"localidad"},
+            provincia: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",DEFAULT:"Buenos Aires"},
+            pais: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",DEFAULT:"Argentina",NOMBRE:"país"},
+            cp: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"código postal"},
+            detalle: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"detalles"},
+            mapa: {TIPO:"TP_TEXT",LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"ubicación de Google Maps", NORMAL: 1},
+            link: {TIPO:"TP_TEXT",LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"enlace de Google Maps", NORMAL: 1}
         },
         FORM: [
             {
@@ -1040,6 +1051,8 @@ const ENTIDADES = {
         ]
     },
     empresa_images: {
+        ONE: 1,
+        NOMBRE: "Imágenes",
         ATRIBUTOS: {
             logo: {TIPO:"TP_IMAGE", FOLDER: "empresa/logos",NECESARIO:1,VALID:"",INVALID:"Logotipo - 234x54",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"Logotipo",WIDTH:"234px"},
             logoFooter: {TIPO:"TP_IMAGE", FOLDER: "empresa/logos",NECESARIO:1,VALID:"",INVALID:"Logotipo Footer - 234x54",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"logotipo footer",WIDTH:"234px"},
@@ -1057,6 +1070,7 @@ const ENTIDADES = {
         }
     },
     empresa_file: {
+        ONE: 1,
         ATRIBUTOS: {
             image: {TIPO:"TP_IMAGE",RULE: "required|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER:"empresa",NECESARIO:1,VALID:"",INVALID:"150px X 70px",BROWSER:"",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"logotipo Header",WIDTH:"150px", HEIGHT: "70px"},
             archivo: {TIPO:"TP_FILE",RULE: "required|mimes:jpeg,png,jpg,gif,pdf|max:2048",FOLDER:"empresa",NECESARIO:1,VALID:"seleccionado",INVALID:"Ext: JPG, PDF, EXE, DBF, XLS y TXT",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/jpeg,application/pdf,.exe,.dbf,.DBF,.txt,.xls,.xlsx",NOMBRE:"Archivo",SIMPLE:1}
@@ -1071,6 +1085,8 @@ const ENTIDADES = {
         }
     },
     empresa_mensaje: {
+        ONE: 1,
+        NOMBRE: "Mensajes",
         ATRIBUTOS: {
             end: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"Poliza por vencer"},
             add: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"Poliza activa"},
@@ -1122,6 +1138,9 @@ const ENTIDADES = {
         }
     },
     empresa_footer: {
+        ONE: 1,
+        MULTIPLE: 1,
+        NOMBRE: "Pie de página",
         ATRIBUTOS: {
             text: {TIPO:"TP_TEXT",FIELDSET:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"Texto"}
         },
