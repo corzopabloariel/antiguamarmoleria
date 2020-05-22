@@ -859,23 +859,18 @@ const ENTIDADES = {
             {
                 '<div class="col-12 col-md-6">/login//image/</div><div class="col-12 col-md-6"><div class="row"><div class="col-12 mb-3">/type/</div><div class="col-12 mb-3">/name/</div><div class="col-12 mb-3">/email/</div><div class="col-12 mb-3">/username/</div><div class="col-12">/password/</div></div></div>' : ['login', 'image', 'type', 'name', 'email', 'username','password']
             }
-        ],
-        FUNCIONES: {
-            image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
-        }
+        ]
     },
     imagen: {
+        TABLE: "imagenes",
         ATRIBUTOS: {
-            image: {TIPO:"TP_IMAGE",FOLDER:"miscellaneous",RULE: "required|image|mimes:jpeg,png,jpg,gif|max:2048",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Seleccione archivo - (?)px x (?)px",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"150px"},
+            image: {TIPO:"TP_IMAGE",FOLDER:"miscellaneous", EXT: "jpeg, png, jpg, gif",RULE: "required|image|mimes:jpeg,png,jpg,gif|max:2048",NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen"},
         },
         FORM: [
             {
                 '<div class="col-12 col-md-8">/image/</div>' : ['image']
             }
-        ],
-        FUNCIONES: {
-            image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
-        },
+        ]
     },
     terminos: {
         ATRIBUTOS: {
@@ -915,13 +910,13 @@ const ENTIDADES = {
     },
     metadatos: {
         ATRIBUTOS: {
-            seccion: {TIPO:"TP_STRING",VISIBILIDAD:"TP_VISIBLE_TABLE",CLASS:"",NOMBRE:"sección"},
-            keywords: {TIPO:"TP_TEXT",VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"Palabras", CLASS:"rounded-0",HELP:"Separa elementos con coma (,)", WIDTH: "150px;"},
-            description: {TIPO:"TP_TEXT",VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"descripción", CLASS:"rounded-0", WIDTH: "250px;"}
+            section: {TIPO:"TP_STRING",VISIBILIDAD:"TP_VISIBLE_TABLE",CLASS:"",NOMBRE:"sección"},
+            keywords: {TIPO:"TP_TEXT", NORMAL: 1,VISIBILIDAD:"TP_VISIBLE",LABEL:1,NOMBRE:"Palabras claves",HELP:"Separa elementos con coma (,)", WIDTH: "150px;"},
+            description: {TIPO:"TP_TEXT", NORMAL: 1,VISIBILIDAD:"TP_VISIBLE",LABEL:1,NOMBRE:"descripción de la sección", WIDTH: "250px;"}
         },
         FORM: [
             {
-                '/seccion/<div class="col-12">/description/</div><div class="col-12 mt-2">/keywords/</div>' : ['description', 'keywords', 'seccion']
+                '/section/<div class="col-12">/description/</div><div class="col-12 mt-2">/keywords/</div>' : ['description', 'keywords', 'section']
             }
         ],
     },
@@ -968,7 +963,7 @@ const ENTIDADES = {
     },
     empresa_email: {
         ONE: 1,
-        MULTIPLE: 1,
+        MULTIPLE: "email",
         NOMBRE: "Emails",
         ATRIBUTOS: {
             email: {TIPO:"TP_EMAIL",LABEL:1,MAXLENGTH:150,VISIBILIDAD:"TP_VISIBLE"}
@@ -994,24 +989,30 @@ const ENTIDADES = {
     },
     empresa_telefono: {
         ONE: 1,
-        MULTIPLE: 1,
+        MULTIPLE: "telefono",
         NOMBRE: "Teléfonos",
         ATRIBUTOS: {
             telefono: {TIPO:"TP_PHONE",LABEL:1,MAXLENGTH:50,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"número",HELP:"Contenido oculto en el HREF. Solo números"},
-            tipo: {TIPO:"TP_ENUM",ENUM:{tel:"Teléfono/Celular",wha:"Whatsapp"},NECESARIO:1,VISIBILIDAD:"TP_VISIBLE_FORM",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0 ",NOMBRE:"Tipo",COMUN: 1},
+            tipo: {TIPO:"TP_ENUM",ENUM:[{id: "tel", text: "Teléfono/Celular"}, {id: "wha", text: "Whatsapp"}],NECESARIO:1,VISIBILIDAD:"TP_VISIBLE_FORM", CLASS: "form-control form--input",NOMBRE:"Tipo",NORMAL: 1, LABEL: 1},
             visible: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:50,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"elemento visible",HELP:"Contenido visible. En caso de permanecer vacío, se utilizará el primer campo"},
-            is_link: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Es clickeable?"},
-            in_header: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Esta en la cabecera?"}
+            is_link: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Es clickeable?", HELP: "Convierte al elemento en link tipo telefónico"},
+            in_header: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Esta en la cabecera?", HELP: "Muestra en el elemento en la cabecera, en el lugar indicado en diseño"}
         },
         FORM: [
             {
-                '<div class="col-12 col-md-6">/tipo/</div><div class="col-12 mt-3">/telefono/</div>' : ['tipo','telefono']
+                '<div class="col-12">/tipo/</div>' : ['tipo']
+            },
+            {
+                '<div class="col-12">/telefono/</div>' : ['telefono']
             },
             {
                 '<div class="col-12">/visible/</div>':['visible']
             },
             {
-                '<div class="col-12 d-flex justify-content-between">/is_link//in_header/</div>':['is_link','in_header']
+                '<div class="col-12">/is_link/</div>':['is_link']
+            },
+            {
+                '<div class="col-12">/in_header/</div>':['in_header']
             }
         ]
     },
@@ -1054,20 +1055,15 @@ const ENTIDADES = {
         ONE: 1,
         NOMBRE: "Imágenes",
         ATRIBUTOS: {
-            logo: {TIPO:"TP_IMAGE", FOLDER: "empresa/logos",NECESARIO:1,VALID:"",INVALID:"Logotipo - 234x54",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"Logotipo",WIDTH:"234px"},
-            logoFooter: {TIPO:"TP_IMAGE", FOLDER: "empresa/logos",NECESARIO:1,VALID:"",INVALID:"Logotipo Footer - 234x54",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"logotipo footer",WIDTH:"234px"},
-            favicon: {TIPO:"TP_IMAGE", FOLDER: "empresa/logos",NECESARIO:1,VALID:"",INVALID:"Favicon",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/x-icon,image/png",NOMBRE:"favicon",WIDTH:"50px"},
+            logo: {TIPO:"TP_IMAGE", EXT: "jpeg, png, jpg, gif", FOLDER: "empresa/logos",NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"Logotipo",WIDTH:"235px", HEIGHT:"109px"},
+            logoFooter: {TIPO:"TP_IMAGE", EXT: "jpeg, png, jpg, gif", FOLDER: "empresa/logos",NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"logotipo footer",WIDTH:"86px", HEIGHT:"77px"},
+            favicon: {TIPO:"TP_IMAGE", EXT: "jpeg, png, jpg, gif, ico", FOLDER: "empresa/logos",NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/x-icon,image/png",NOMBRE:"favicon",WIDTH:"50px",HEIGHT:"50px"},
         },
         FORM: [
             {
                 '<div class="col-12 col-md-4">/logo/</div><div class="col-12 col-md-4">/logoFooter/</div><div class="col-12 col-md-4">/favicon/</div>' : ['logo','logoFooter','favicon']
             }
-        ],
-        FUNCIONES: {
-            logo: {onchange:{F:"readURL(this,'/id/')",C:"id"}},
-            logoFooter: {onchange:{F:"readURL(this,'/id/')",C:"id"}},
-            favicon: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
-        }
+        ]
     },
     empresa_file: {
         ONE: 1,
@@ -1139,7 +1135,7 @@ const ENTIDADES = {
     },
     empresa_footer: {
         ONE: 1,
-        MULTIPLE: 1,
+        MULTIPLE: "pie",
         NOMBRE: "Pie de página",
         ATRIBUTOS: {
             text: {TIPO:"TP_TEXT",FIELDSET:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"Texto"}

@@ -25,14 +25,14 @@ class ContenidoController extends Controller
 
     public function update( Request $request , $section ) {
         $datosRequest = $request->all();
-        try {
-            $contenido = Contenido::where('seccion', $section)->first();
-            $OBJ = (new AdmController)->object($request, $contenido["data"]);
+        //try {
+            $contenido = Contenido::where('section', $section)->first();
+            $OBJ = (new AdmController)->object($request, $contenido->data);
             $contenido->fill(["data" => $OBJ]);
             $contenido->save();
-        } catch (\Throwable $th) {
+        /*} catch (\Throwable $th) {
             return json_encode(["error" => 1]);
-        }
+        }*/
         return json_encode(['success' => true, "error" => 0]);
     }
 }

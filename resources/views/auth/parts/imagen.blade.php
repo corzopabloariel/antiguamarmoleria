@@ -8,6 +8,7 @@
 <script>
     window.pyrus = new Pyrus("imagen" , null , src);
     /** */
-    init( () => {} , true , "cards" );
+    init(data => {
+    }, true, true , "cards");
 </script>
 @endpush

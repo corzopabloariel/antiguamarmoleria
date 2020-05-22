@@ -11,7 +11,6 @@ window.axios.defaults.headers.common = {
 };
 const dates = {
     string: ( d = new Date() , formato = [ "dd" , "/" , "mm" , "/" , "aaaa" ] ) => {
-        console.log(d)
         if (!d || d === "" || d === "-")
             return "-";
         //regexData = /([0-9]{4})-([0-9]{2})-([0-9]{2})/;
@@ -93,7 +92,10 @@ menu = ( t ) => {
         $( t ).find( "i" ).addClass( "fa-times" ).removeClass( "fa-bars" );
     }
 };
-changeCkeditor = ( x , evt ) => {};
+changeCkeditor = ( x , evt ) => {
+    const target = document.querySelector(`#${evt.editor.name}`);
+    target.value = CKEDITOR.instances[evt.editor.name].getData();
+};
 menuBody = ( t ) => {
     if( window.typeMENU === undefined ) {
         window.typeMENU = 1;
@@ -306,12 +308,14 @@ check = input => {
 formSave = ( t , formData , message = { wait : "Espere. Guardando contenido" , err: "Ocurrió un error en el guardado. Reintente" , catch: "Ocurrió un error en el guardado." , success : "Contenido guardado" } , callback = null ) => {
     let url = t.action;
     let method = t.method;
-    if( !verificarForm() )
+    if (!verificarForm())
         return null;
-    method = (method == "GET" || method == "get") ? "post" : method;
+    //method = (method == "GET" || method == "get") ? "post" : method;
+    if (window.formAction === "UPDATE")
+        method = "POST";
     $( "body > .wrapper" ).addClass( "isDisabled" );
     window.Arr_aux = [];
-    if (CKEDITOR) {
+    /*if (CKEDITOR) {
         for(let x in CKEDITOR.instances) {
             let aux = x.split("_");
             let last = aux.pop();
@@ -325,7 +329,7 @@ formSave = ( t , formData , message = { wait : "Espere. Guardando contenido" , e
                     formData.append(`${aux.join("_")}[]`, CKEDITOR.instances[`${x}`].getData());
             }
         }
-    }
+    }*/
     Toast.fire({
         icon: 'warning',
         title: message.wait
@@ -373,9 +377,7 @@ formSave = ( t , formData , message = { wait : "Espere. Guardando contenido" , e
 };
 
 verificarForm = () => {
-    if( window.ARR_pyrus === undefined ) {
-        if( window.pyrus === undefined )
-            return true;
+    if (!Array.isArray(window.pyrus)) {
         if( window.pyrus.objeto.NECESARIO !== undefined ) {
             flag = 0;
             alert = "";
@@ -403,16 +405,15 @@ verificarForm = () => {
         }
     } else {
         flag = 0;
-        for( i = 0 ; i < window.ARR_pyrus.length ; i++ ) {
-            alert = "";
-            p = window.ARR_pyrus[ i ];
-            if( window[ p ].objeto.NECESARIO !== undefined ) {
-                for( let x in window[ p ].objeto.NECESARIO ) {
-                    if( window[ p ].objeto.NECESARIO[ x ][ window.formAction ] !== undefined ) {
-                        if( $(`#${window[ p ].name}_${x}`).is( ":invalid" ) || $(`#${window[ p ].name}_${x}`).val() == "" ) {
+        let alert = "";
+        window.pyrus.forEach(p => {
+            if( p.entidad.objeto.NECESARIO !== undefined ) {
+                for( let x in p.entidad.objeto.NECESARIO ) {
+                    if( p.entidad.objeto.NECESARIO[ x ][ window.formAction ] !== undefined ) {
+                        if( $(`#${p.entidad.name}_${x}`).is( ":invalid" ) || $(`#${p.entidad.name}_${x}`).val() == "" ) {
                             if( alert != "" )
                                 alert += ", ";
-                            alert += window[ p ].especificacion[ x ].NOMBRE;
+                            alert += p.entidad.especificacion[ x ].NOMBRE;
                             flag = 1;
                         }
                     }
@@ -424,7 +425,7 @@ verificarForm = () => {
                         'error'
                     )
             }
-        }
+        });
         if( flag )
             return false;
     }
@@ -433,18 +434,31 @@ verificarForm = () => {
 /** -------------------------------------
  *      OBJETO A GUARDAR
  ** ------------------------------------- */
-formSubmit = ( t ) => {
+formSubmit = t => {
     let idForm = t.id;
     let formElement = document.getElementById( idForm );
     let formData = new FormData( formElement );
-    formData.append("ATRIBUTOS",JSON.stringify(
-        [
-            { DATA: window.pyrus.objetoSimple , TIPO: "U" }
-        ]
-    ));
+    let Arr = [];
+    if (Array.isArray(window.pyrus)) {
+        window.pyrus.forEach(p => {
+            let target = document.querySelector(`.form_${p.entidad.entidad}`);
+            if (target) {
+                let aux = {};
+                aux["DATA"] = p.entidad.objetoSimple;
+                aux["TIPO"] = p.tipo;
+                if (p.column)
+                    aux["COLUMN"] = p.column;
+                if (p.tag)
+                    aux["TAG"] = p.tag;
+                if (p.key)
+                    aux["KEY"] = p.key;
+                Arr.push(aux);
+            }
+        });
+    } else
+        Arr.push({ DATA: window.pyrus.objetoSimple , TIPO: "U" });
+    formData.append("ATRIBUTOS",JSON.stringify(Arr));
 
-    for( let x in CKEDITOR.instances )
-        formData.set( x , CKEDITOR.instances[ `${x}` ].getData() );
     formSave( t , formData );
 };
 
@@ -512,7 +526,7 @@ add = (t, id = 0, data = null, disabled = 0) => {
                 label.textContent = "Editar elemento";
             action = `${url_simple}/adm/${window.pyrus.name}/update/${id}`
             method = "PUT";
-            $( "#form" ).data( "id" , id );
+            form.dataset.id = id;
             window.formAction = "UPDATE";
         }
         form.action = action;
@@ -596,8 +610,8 @@ deleteFile = (t, url, txt, data, callbackOK = null) => {
  *      COMBINACIÓN DE TECLAS
  ** ------------------------------------- */
 shortcut.add( "Alt+Ctrl+S" , function () {
-    if( $( "#form" ).is( ":visible" ) )
-        $( "#form" ).submit();
+    if ($("#form").is(":visible"))
+        $("#form").submit();
 }, {
     type: "keydown",
     propagate: true,
@@ -674,14 +688,13 @@ init = (callbackOK, normal = true, widthElements = true, type = "table", withAct
     let targetElements = document.querySelector("#wrapper-tabla");
     if (Array.isArray(window.pyrus)) {
         window.pyrus.forEach(p => {
-            targetForm.innerHTML += p.formulario();
-            const target = document.querySelector(`#form_${p.entidad}`);
+            targetForm.innerHTML += p.entidad.formulario();
+            const target = document.querySelector(`#form_${p.entidad.entidad}`);
             if (target) {
                 const ck = target.querySelector(".ckeditor");
                 if (ck) {
                     setTimeout(() => {
-                        console.log(CKEDITOR.instances)
-                        p.editor();
+                        p.entidad.editor();
                     }, 500);
                 }
             }
@@ -711,7 +724,7 @@ init = (callbackOK, normal = true, widthElements = true, type = "table", withAct
                         })
                     }
                 } else
-                    targetElements.innerHTML = window.pyrus.card(url_simple, window.data.elementos, ["d"]);
+                    targetElements.innerHTML = window.pyrus.card(url_simple, window.data.elementos, ["e", "d"]);
             }
         }
     }

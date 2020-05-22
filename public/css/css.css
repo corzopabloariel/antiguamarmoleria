@@ -71,6 +71,15 @@ dl, ol, ul {
     background-position: center center;
 }
 
+.table--image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: auto;
+}
+.button--form {
+    border-radius: .5em;
+}
 /***************************
  *
  *************************** */
@@ -149,6 +158,28 @@ dl, ol, ul {
     -o-transition: all 500ms ease;
     transition: all 500ms ease;
 }
+
+.pyrus--element__target {
+    padding: 1em;
+    border: 1px solid #dddddd;
+    background-color: #f8f8f8;
+    border-radius: .5em;
+    position: relative;
+    -webkit-box-shadow: 0 0 10px 1px rgba(0,0,0,.1);
+    box-shadow: 0 0 10px 1px rgba(0,0,0,.1);
+}
+.pyrus--element__close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #F04124;
+    color: #ffffff;
+    z-index: 1;
+    font-size: 14px;
+    line-height: 14px;
+    padding: .5em;
+    border-radius: 0 .5em;
+}
 /***************************
  *
  *************************** */
@@ -199,6 +230,9 @@ dl, ol, ul {
     content: attr(data-name);
     margin-left: .7em;
 }
+.image--upload input:required + span::after {
+    content: attr(data-name)" (necesario)";
+}
 .image--upload__attr {
     margin-bottom: .7em;
     background-color: #f8f8f8;
@@ -222,6 +256,7 @@ dl, ol, ul {
 .image--wh {
     list-style: none;
     display: flex;
+    padding-left: 0;
 }
 .image--wh__details {
     flex-direction: column;

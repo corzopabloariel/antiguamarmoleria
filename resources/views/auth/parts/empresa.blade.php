@@ -11,133 +11,58 @@
 </div>
 @push('scripts')
 <script>
+    window.formAction = "UPDATE";
     window.pyrus = [];
-    window.pyrus.push(new Pyrus("empresa"));
-    window.pyrus.push(new Pyrus("empresa_images", null, src));
-    window.pyrus.push(new Pyrus("empresa_domicilio"));
-    window.pyrus.push(new Pyrus("empresa_captcha"));
-    window.pyrus.push(new Pyrus("empresa_mensaje"));
-    window.pyrus.push(new Pyrus("empresa_telefono"));
-    window.pyrus.push(new Pyrus("empresa_footer"));
-    window.pyrus.push(new Pyrus("empresa_email"));
+    window.pyrus.push({entidad: new Pyrus("empresa"), tipo: "U"});
+    window.pyrus.push({entidad: new Pyrus("empresa_images", null, src), tipo: "U", column: "images"});
+    window.pyrus.push({entidad: new Pyrus("empresa_domicilio"), tipo: "U", column: "address"});
+    window.pyrus.push({entidad: new Pyrus("empresa_captcha"), tipo: "U", column: "captcha"});
+    window.pyrus.push({entidad: new Pyrus("empresa_mensaje"), tipo: "U", column: "mensaje"});
+    window.pyrus.push({entidad: new Pyrus("empresa_telefono"), tipo: "M", column: "phones", tag: "phones", key: "phones"});
+    window.pyrus.push({entidad: new Pyrus("empresa_email"), tipo: "A", column: "email"});
 
-    formSubmit = ( t ) => {
-        let idForm = t.id;
-        let formElement = document.getElementById( idForm );
-        let formData = new FormData( formElement );
-        formData.append( "ATRIBUTOS", JSON.stringify(
-            [
-                { DATA: window.pyrus[0].objetoSimple, TIPO: "U"},
-                { DATA: window.pyrus[1].objetoSimple, TIPO: "U", COLUMN: "images" },
-                { DATA: window.pyrus[2].objetoSimple, TIPO: "U", COLUMN: "captcha" },
-                { DATA: window.pyrus[3].objetoSimple, TIPO: "U", COLUMN: "mensaje" },
-                { DATA: window.pyrus[5].objetoSimple, TIPO: "U", COLUMN: "domicilio" },
-                { DATA: window.pyrus[6].objetoSimple, TIPO: "M", COLUMN: "telefono" , TAG : "telefono" , KEY : "telefono" },
-                { DATA: window.pyrus[7].objetoSimple, TIPO: "A", COLUMN: "footer" },
-                { DATA: window.pyrus[8].objetoSimple, TIPO: "A", COLUMN: "email" }
-            ]
-        ));
-        formSave( t , formData );
-    };
     /** ------------------------------------- */
-    addTelefono = ( t, value = null ) => {
-        let target = $( `#wrapper-phone` );
+    telefonoFunction = (value = null) => {
+        const element = window.pyrus.find(x => {
+            if (x.entidad.entidad === "empresa_telefono")
+                return x;
+        });
+        let target = document.querySelector(`#wrapper-telefono`);
         let html = "";
-        if (window[`telefono`] === undefined)
-            window[`telefono`] = 0;
-        window[ `telefono` ] ++;
-        html += '<div class="col-12 col-md-4 mt-3 element">';
-            html += '<div class="bg-light p-2 border overflow-hidden position-relative">';
-                html += window.pyrus[6].formulario( window[ `telefono` ] , `telefono` );
-                html += `<i style="line-height:14px; cursor: pointer; right: 0; top: 0; padding: 5px;border-radius: 0 0 0 .4em;" onclick="remove_( this , 'element' )" class="fas fa-times position-absolute text-white bg-danger"></i>`;
+        if (window[element.column] === undefined)
+            window[element.column] = 0;
+        window.telefono ++;
+        html += '<div class="col-12 col-md-4 mt-3 pyrus--element">';
+            html += '<div class="pyrus--element__target">';
+                html += `<i onclick="remove_( this , 'pyrus--element' )" class="fas fa-times pyrus--element__close"></i>`;
+                html += element.entidad.formulario(window[element.column], element.column);
             html += '</div>';
         html += '</div>';
-        target.append(html);
-        window.pyrus[6].show( null , url_simple , value , window[ `telefono` ] , `telefono`, 1 );
+        target.insertAdjacentHTML('beforeend', html);
+        element.entidad.show(url_simple, value, window[element.column], element.column, 1);
     };
 
-    addEmail = ( t , value = null ) => {
-        let target = $(`#wrapper-email`);
+    emailFunction = (value = null) => {
+        const element = window.pyrus.find(x => {
+            if (x.entidad.entidad === "empresa_email")
+                return x;
+        });
+        let target = document.querySelector(`#wrapper-email`);
         let html = "";
-        if( window[ `email` ] === undefined )
-            window[ `email` ] = 0;
+        if (window[element.column] === undefined)
+            window[element.column] = 0;
         window[ `email` ] ++;
-        html += '<div class="col-12 col-md-6 mt-3 element">';
-            html += '<div class="bg-light p-2 border position-relative overflow-hidden">';
-                html += window.pyrus[8].formulario( window[ `email` ] , `email` );
-                html += `<i style="line-height:14px; cursor: pointer; right: 0; top: 0; padding: 5px;border-radius: 0 0 0 .4em;" onclick="remove_( this , 'element' )" class="fas fa-times position-absolute text-white bg-danger"></i>`;
+        html += '<div class="col-12 col-md-6 mt-3 pyrus--element">';
+            html += '<div class="pyrus--element__target">';
+                html += `<i onclick="remove_( this , 'pyrus--element' )" class="fas fa-times pyrus--element__close"></i>`;
+                html += element.entidad.formulario(window[element.column], element.column);
             html += '</div>';
         html += '</div>';
-        target.append( html );
-        window.pyrus[8].show( null , url_simple , { email : value } , window[ `email` ] , `email`, 1 );
+        target.insertAdjacentHTML('beforeend', html);
+        element.entidad.show(url_simple, {email: value}, window[element.column], element.column, 1);
     };
-
-    addText = ( t , value = null ) => {
-        let target = $(`#wrapper-text`);
-        let html = "";
-        if( window[ `footer` ] === undefined )
-            window[ `footer` ] = 0;
-        window[ `footer` ] ++;
-        html += '<div class="col-12 col-md-4 mt-3 element">';
-            html += '<div class="bg-light p-2 border position-relative overflow-hidden">';
-                html += window.pyrus[7].formulario( window[ `footer` ] , `footer` );
-                html += `<i style="line-height:14px; cursor: pointer; right: 0; top: 0; padding: 5px;border-radius: 0 0 0 .4em;" onclick="remove_( this , 'element' )" class="fas fa-times position-absolute text-white bg-danger"></i>`;
-            html += '</div>';
-        html += '</div>';
-        target.append(html);
-        window.pyrus[7].editor(CKEDITOR, window[`footer`], "footer");
-        window.pyrus[7].show(CKEDITOR ,url_simple, {text:value}, window[`footer`], `footer`, 1);
-    };
-    /** ------------------------------------- */
-    /*init = ( callbackOK ) => {
-        form = "";
-        form += `<fieldset class="border p-3">`;
-            form += `<legend class="border-bottom">Generales</legend>`;
-            form += window.pyrus.formulario();
-        form += `</fieldset>`;
-        form += `<fieldset class="border p-3">`;
-            form += `<legend class="border-bottom">Mensajes</legend>`;
-            form += window.pyrusMensaje.formulario();
-        form += `</fieldset>`;
-        form += `<fieldset class="border p-3">`;
-            form += `<legend class="border-bottom">Logotipos & Favicon</legend>`;
-            form += window.pyrusImage.formulario();
-        form += `</fieldset>`;
-        form += `<fieldset class="border p-3">`;
-            form += `<legend class="border-bottom">Domicilio</legend>`;
-            form += window.pyrusDomicilio.formulario();
-        form += `</fieldset>`;
-
-        form += `<fieldset class="border p-3">`;
-            form += `<legend class="border-bottom">Captcha (Google)</legend>`;
-            form += window.pyrusCaptcha.formulario();
-        form += `</fieldset>`;
-        form += `<div class="row justify-content-center pt-3">`;
-            form += `<div class="col-md-3 col-12">`;
-                form += `<button id="btnTelefono" type="button" class="btn btn-block btn-dark text-center text-uppercase" onclick="addTelefono( this )">Teléfono<i class="fas fa-plus ml-2"></i></button>`;
-            form += `</div>`;
-        form += `</div>`;
-        form += `<div class="row mt-0" id="wrapper-phone"></div>`;
-        form += `<div class="row justify-content-center pt-3 border-top">`;
-            form += `<div class="col-md-3 col-12">`;
-                form += `<button id="btnEmail" type="button" class="btn btn-block btn-info text-center text-uppercase" onclick="addEmail( this )">Email<i class="fas fa-plus ml-2"></i></button>`;
-            form += `</div>`;
-        form += `</div>`;
-        form += `<div class="row mt-0" id="wrapper-email"></div>`;
-
-        form += `<div class="row justify-content-center pt-3 border-top">`;
-            form += `<div class="col-md-3 col-12">`;
-                form += `<button id="btnText" type="button" class="btn btn-block btn-info text-center text-uppercase" onclick="addText( this )">Texto<i class="fas fa-plus ml-2"></i></button>`;
-            form += `</div>`;
-        form += `</div>`;
-        form += `<div class="row mt-0" id="wrapper-text"></div>`;
-
-        $("#form .container-form").html( form );
-        window.pyrusMensaje.editor( CKEDITOR );
-        callbackOK.call( this );
-    };*/
     /** */
-    init( () => {
+    init(data => {
         /*window.pyrus.show(null, url_simple, window.data.elementos);
         window.pyrusImage.show(null, url_simple, window.data.elementos.images);
         window.pyrusDomicilio.show(null, url_simple , window.data.elementos.domicilio);

@@ -4,13 +4,13 @@
 @if( isset( $data[ "buttons" ] ) )
 <div class="my-2">
     @foreach( $data[ "buttons" ] AS $d )
-    <button disabled class="btn {{ $d[ 'b' ] }} text-center rounded-0">
+    <button disabled class="btn {{ $d[ 'b' ] }} text-center button--form">
         <i class="{{ $d[ 'i' ] }}" aria-hidden="true"></i> {{ $d[ 't' ] }}
     </button>
     @endforeach
     @isset( $buttons )
         @foreach( $buttons AS $d )
-        <button @if(!isset($d['f'])) disabled @endif @isset($d['f']) onclick="{{ $d[ 'f' ] }}Function( this );" @endisset class="btn {{ $d[ 'b' ] }} text-center rounded-0">
+        <button @if(!isset($d['f'])) disabled @endif @isset($d['f']) onclick="{{ $d[ 'f' ] }}Function( this );" @endisset class="btn {{ $d[ 'b' ] }} text-center button--form">
             <i class="{{ $d[ 'i' ] }}" aria-hidden="true"></i> {{ $d[ 't' ] }}
         </button>
         @endforeach
@@ -28,10 +28,10 @@
             @endif
             <form id="form" onsubmit="event.preventDefault(); formSubmit(this);" class="pt-2" action="@isset( $url ) {{ $url }} @endisset" @if( $buttonADD ) method="post" @else method="put" @endif enctype="multipart/form-data">
                 @csrf
-                <button class="btn btn-success px-5 text-uppercase btn-lg"><i class="fas fa-save"></i></button>
+                <button class="btn btn-success button--form px-5 text-uppercase btn-lg"><i class="fas fa-save"></i></button>
                 <div class="container-form pyrus--form py-3 my-3"></div>
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-success px-5 text-uppercase btn-lg"><i class="fas fa-save"></i></button>
+                    <button class="btn btn-success button--form px-5 text-uppercase btn-lg"><i class="fas fa-save"></i></button>
                 </div>
             </form>
         </div>
@@ -51,8 +51,8 @@
                 @csrf
                 <div class="modal-body pyrus--form"></div>
                 <div class="modal-footer bg-light">
-                    <button type="button" onclick="remove( this );" class="btn btn-danger px-5 text-uppercase">cerrar</button>
-                    <button type="submit" class="btn btn-success px-5 text-uppercase"></button>
+                    <button type="button" onclick="remove( this );" class="btn button--form btn-danger px-5 text-uppercase">cerrar</button>
+                    <button type="button" onclick="$('#form').submit();" class="btn button--form btn-success px-5 text-uppercase"></button>
                 </div>
             </form>
         </div>

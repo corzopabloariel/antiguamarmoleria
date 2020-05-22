@@ -54,26 +54,16 @@ class AdmController extends Controller
         }
     }
     public function imagenStore(Request $request, $data = null) {
-        try {
-            $OBJ = self::object( $request , $data );
-            if(is_null($data)) {
-                $this->model::create($OBJ);
-            } else {
-                $this->model->fill($OBJ);
-                $this->model->save();
-            }
-        } catch (\Throwable $th) {
-            return json_encode(["error" => 1]);
-        }
-        return json_encode(['success' => true, "error" => 0]);
+        return self::store($request, $data, $this->model);
+    }
+    public function imagenUpdate(Request $request, \App\Imagen $element) {
+        return self::imagenStore($request, $element);
+    }
+    public function imagenShow(Request $request) {
+        return $this->model->find($request->id);
     }
     public function imagenDestroy(Request $request) {
-        try {
-            self::delete($this->model->find($request->all()["id"]), $this->model->getFillable());
-            return 1;
-        } catch (\Throwable $th) {
-            return 0;
-        }
+        return self::delete($this->model->find($request->id), $this->model->getFillable());
     }
     public function deleteFile(Request $request) {
         try {
@@ -153,6 +143,9 @@ class AdmController extends Controller
     public function TP_LINK($attr, $value, $valueNew, $specification) {
         return $valueNew;
     }
+    public function TP_TEXT($attr, $value, $valueNew, $specification) {
+        return $valueNew;
+    }
     public function TP_IMAGE($attr, $value, $valueNew, $specification) {
         $file = isset($valueNew[$attr]) ? $valueNew[$attr] : null;
         $path = "images/";
@@ -187,8 +180,12 @@ class AdmController extends Controller
         }
         return $value;
     }
+    public function TP_IMAGE_value($value) {
+        return isset($value["image"]) ? $value["image"] : null;
+    }
     public function object($request, $data = null, $merge = null) {
         $datosRequest = $request->all();
+        dd($datosRequest);
         if( isset( $datosRequest["REMOVE"] ) ) {
             $datosRequest["REMOVE"] = json_decode( $datosRequest["REMOVE"] , true );
             for( $i = 0 ; $i < count( $datosRequest["REMOVE"] ) ; $i ++ ) {
@@ -815,22 +812,30 @@ class AdmController extends Controller
         $flag = false;
         for($i = 0; $i < count($attr); $i++) {
             $elements = [];
+            $values = [];
             $table = $attr[$i]["DATA"]["name"];
-            $name = "{$table}_";
-            $name .= isset($attr[$i]["TAG"]) ? "{$attr[$i]["TAG"]}_" : "";
+            for($x = 0; $x < count($attr); $x++) {
+                $element = $attr[ $x ];
+                switch ($element["TIPO"]) {
+                    case "U":
+                        foreach($element["DATA"]["especificacion"] AS $specification => $type) {
+                            $value = $aux[$table][$specification];
+                            $values[$specification] = call_user_func_array("self::{$type}_value", [$value]);
+                        }
+                    break;
+                }
+            }
             $rules = isset($attr[$i]["DATA"]["rules"]) ? $attr[$i]["DATA"]["rules"] : [];
-            foreach($aux AS $k => $v) {
-                if ($k != "ATRIBUTOS" && $k != "_token")
-                    $elements[str_replace($name, "", $k)] = $v;
+            if (!empty($rules)) {
+                foreach($values AS $k => $v) {
+                    if (isset($rules[$k]))
+                        $elements[$k] = $v;
+                }
             }
             $normal = true;
             foreach($rules AS $k => $v) {
-                if(!isset($elements[$k]))
-                    unset($rules[$k]);
-                else {
-                    if (is_array($elements[$k]))
-                        $normal = false;
-                }
+                if (is_array($elements[$k]))
+                    $normal = false;
             }
             if ($normal) {
                 $validator = Validator::make($elements, $rules);
@@ -850,9 +855,9 @@ class AdmController extends Controller
                 }
             }
         }
-        if ($flag) {
-            return json_encode(["error" => 1, "msg" => "Validación incorrecta"]);
-        } else {
+        if ($flag)
+            return json_encode(["error" => 1, "msg" => "Error en los datos de ingreso."]);
+        else {
             //try {
                 $OBJ = self::object($request, $data);
                 if ($rule) {

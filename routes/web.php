@@ -47,13 +47,16 @@ Route::group(['prefix' => 'update'], function() {
 Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
     Route::get('/', 'Auth\AdmController@index')->name('adm');
     Route::get('logout', ['uses' => 'Auth\LoginController@logout' , 'as' => 'adm.logout']);
-    Route::get('empresa/imagen', ['uses' => 'Auth\AdmController@imagen', 'as' => 'imagen']);
-    Route::delete('imagen/delete', ['uses' => 'Auth\AdmController@imagenDestroy', 'as' => 'imagen.delete']);
     Route::delete('file', ['uses' => 'Auth\AdmController@deleteFile', 'as' => 'deleteFile']);
-    Route::post('imagen', ['uses' => 'Auth\AdmController@imagenStore', 'as' => 'imagen.create']);
     Route::post('edit', ['uses' => 'Auth\AdmController@edit', 'as' => 'adm.edit']);
     Route::match(['get', 'post'], 'url',['as' => '.url','uses' => 'Auth\EmpresaController@url' ]);
     Route::get('update', ['uses' => 'Auth\AdmController@update', 'as' => 'update.index']);
+
+    Route::get('empresa/imagen', ['uses' => 'Auth\AdmController@imagen', 'as' => 'imagen']);
+    Route::get('imagen/{id}/edit', ['uses' => 'Auth\AdmController@imagenShow', 'as' => 'imagen.show']);
+    Route::post('imagen/update/{element}', ['uses' => 'Auth\AdmController@imagenUpdate', 'as' => 'imagen.update']);
+    Route::delete('imagen/delete', ['uses' => 'Auth\AdmController@imagenDestroy', 'as' => 'imagen.delete']);
+    Route::post('imagen', ['uses' => 'Auth\AdmController@imagenStore', 'as' => 'imagen.create']);
 
     Route::match(['get', 'post'], 'newsletter',['as' => 'newsletter.index','uses' => 'Auth\EmpresaController@newsletter' ]);
     Route::delete('newsletter/delete', ['uses' => 'Auth\EmpresaController@newsletterDestroy', 'as' => 'newsletter.delete']);

@@ -28,29 +28,6 @@ class EmpresaController extends Controller
         return view('auth.distribuidor',compact('data'));
     }
 
-    public function newsletter(Request $request) {
-        $elements = new \App\Newsletter;
-        if (isset($request->search))
-            $elements = $elements->where( "UPPER(CONCAT_WS( ' ' ,`mail`)) LIKE UPPER('%{$request->search}%')" );
-        $elements = $elements->orderBy('mail')->paginate(15);
-        $data = [
-            "view"      => "auth.parts.newsletter",
-            "title"     => "Newsletter",
-            "elementos"   => $elements,
-            "buttons" => [
-                [ "i" => "fas fa-trash-alt" , "b" => "btn-danger" , "t" => "Eliminar" ]
-            ],
-        ];
-        if (isset($request->search))
-            $data["search"] = $request->search;
-        return view('auth.distribuidor',compact('data'));
-    }
-    public function newsletterDestroy( Request $request )
-    {
-        $elements = new \App\Newsletter;
-        return (new AdmController)->delete($elements->find($request->all()["id"]), $elements->getFillable());
-    }
-
     public function form(Request $request)
     {
         $dataRequest = $request->all();
@@ -76,7 +53,8 @@ class EmpresaController extends Controller
     {
         $data = Empresa::first();
         try {
-            $OBJ = (new AdmController)->object( $request , $data );
+            $OBJ = (new AdmController)->object($request, $data);
+            dd($OBJ);
             $data->fill($OBJ);
             $data->save();
         } catch (\Throwable $th) {
@@ -98,6 +76,7 @@ class EmpresaController extends Controller
         } else {
             $data = $request->all();
             $datos = Empresa::first();
+            $metadata = empty($datos->metadata) ? [] : $datos->metadata;
             $Arr = [];
             for ($i = 0; $i < count($data["LINK"]); $i++) {
                 $aux = ["LINK" => null, "NAME" => null, "SHOW" => null, "REQUEST" => null, "FUNCTION" => null];
@@ -106,9 +85,11 @@ class EmpresaController extends Controller
                 $aux["REQUEST"] = $data["REQUEST"][$i];
                 $aux["SHOW"] = $data["SHOW"][$i];
                 $aux["FUNCTION"] = $data["FUNCTION"][$i];
+                if (!isset($metadata[$data["FUNCTION"][$i]]))
+                    $metadata[$data["FUNCTION"][$i]] = ["description" => null, "keywords" => null, "section" => $data["FUNCTION"][$i]];
                 $Arr[] = $aux;
             }
-            $datos->fill(["sections" => $Arr]);
+            $datos->fill(["sections" => $Arr, "metadata" => $metadata]);
             $datos->save();
             return back();
         }
@@ -132,7 +113,7 @@ class EmpresaController extends Controller
     }
     public function redesStore(Request $request, $id = null) {
         $datos = Empresa::first();
-        //try {
+        try {
             $redes = $datos->social_networks;
             if( is_null( $id ) )
                 $id = time();
@@ -146,9 +127,9 @@ class EmpresaController extends Controller
             $redes[ $id ] = $OBJ;
             $datos->fill([ "social_networks" => $redes ] );
             $datos->save();
-        /*} catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             return json_encode(["error" => 1]);
-        }*/
+        }
         return json_encode(['success' => true, "error" => 0]);
     }
     public function redesDestroy( Request $request )
