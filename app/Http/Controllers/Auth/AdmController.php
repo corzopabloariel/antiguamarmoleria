@@ -121,9 +121,9 @@ class AdmController extends Controller
                 $data->delete();
             }
         } catch (\Throwable $th) {
-            return 0;
+            return json_encode(["error" => 1]);
         }
-        return 1;
+        return json_encode(['success' => true, "error" => 0]);
     }
     /**
      * Función encargada de construir los objetos a guardar
@@ -148,6 +148,9 @@ class AdmController extends Controller
         return $valueNew;
     }
     public function TP_FECHA($attr, $value, $valueNew, $specification) {
+        return $valueNew;
+    }
+    public function TP_LINK($attr, $value, $valueNew, $specification) {
         return $valueNew;
     }
     public function TP_IMAGE($attr, $value, $valueNew, $specification) {
@@ -273,8 +276,11 @@ class AdmController extends Controller
                     $specifications = $aux["DATA"]["especificacion"];
                     $details = $aux["DATA"]["detalles"];
                     $values = $datosRequest[$aux["DATA"]["name"]];
-                    if (empty($data))
-                        $data = $data->toArray();
+                    if (empty($data)) {
+                        try {
+                            $data = $data->toArray();
+                        } catch (\Throwable $th) {}
+                    }
                     for($i = 0; $i < count($attrs); $i++) {
                         $attr = $attrs[$i];
                         $specification = $specifications[$attr];

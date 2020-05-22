@@ -59,14 +59,13 @@ class EmpresaController extends Controller
             $data = [
                 "title"     => "Empresa :: Email de formularios",
                 "view"      => "auth.parts.empresaForm",
-                "seccion"   => "form",
                 "elementos" => $datos
             ];
             return view('auth.distribuidor',compact('data'));
         }
         try {
             unset($dataRequest["_token"]);
-            $datos->fill(["form" => $dataRequest]);
+            $datos->fill(["forms" => $dataRequest]);
             $datos->save();
         } catch (\Throwable $th) {
             return json_encode(["error" => 1]);
@@ -100,16 +99,14 @@ class EmpresaController extends Controller
             $data = $request->all();
             $datos = Empresa::first();
             $Arr = [];
-            foreach([0=>"Pu",1=>"Pr"] AS $login => $v) {
-                for ($i = 0; $i < count($data["LINK"][$login]); $i++) {
-                    $aux = ["LINK" => null, "NAME" => null, "SHOW" => null, "REQUEST" => null, "FUNCTION" => null];
-                    $aux["LINK"] = $data["LINK"][$login][$i];
-                    $aux["NAME"] = $data["NAME"][$login][$i];
-                    $aux["REQUEST"] = $data["REQUEST"][$login][$i];
-                    $aux["SHOW"] = $data["SHOW"][$login][$i];
-                    $aux["FUNCTION"] = $data["FUNCTION"][$login][$i];
-                    $Arr[$login][] = $aux;
-                }
+            for ($i = 0; $i < count($data["LINK"]); $i++) {
+                $aux = ["LINK" => null, "NAME" => null, "SHOW" => null, "REQUEST" => null, "FUNCTION" => null];
+                $aux["LINK"] = $data["LINK"][$i];
+                $aux["NAME"] = $data["NAME"][$i];
+                $aux["REQUEST"] = $data["REQUEST"][$i];
+                $aux["SHOW"] = $data["SHOW"][$i];
+                $aux["FUNCTION"] = $data["FUNCTION"][$i];
+                $Arr[] = $aux;
             }
             $datos->fill(["sections" => $Arr]);
             $datos->save();
@@ -120,7 +117,7 @@ class EmpresaController extends Controller
      * Redes sociales
      */
     public function redes() {
-        $datos = Empresa::first()["redes"];
+        $datos = Empresa::first()->social_networks;
 
         $data = [
             "title"     => "Empresa :: Redes sociales",
@@ -135,8 +132,8 @@ class EmpresaController extends Controller
     }
     public function redesStore(Request $request, $id = null) {
         $datos = Empresa::first();
-        try {
-            $redes = $datos[ "redes" ];
+        //try {
+            $redes = $datos->social_networks;
             if( is_null( $id ) )
                 $id = time();
             if( empty( $redes ) )
@@ -147,21 +144,21 @@ class EmpresaController extends Controller
             }
             $OBJ = (new AdmController)->object( $request );
             $redes[ $id ] = $OBJ;
-            $datos->fill([ "redes" => $redes ] );
+            $datos->fill([ "social_networks" => $redes ] );
             $datos->save();
-        } catch (\Throwable $th) {
+        /*} catch (\Throwable $th) {
             return json_encode(["error" => 1]);
-        }
+        }*/
         return json_encode(['success' => true, "error" => 0]);
     }
     public function redesDestroy( Request $request )
     {
         try {
             $data = Empresa::first();
-            $redes = $data->redes;
+            $redes = $data->social_networks;
             unset( $redes[ $request->all()[ "id" ] ] );
 
-            $data->fill( [ "redes" => $redes ] );
+            $data->fill( [ "social_networks" => $redes ] );
             $data->save();
         } catch (\Throwable $th) {
             return json_encode(["error" => 1]);
@@ -170,7 +167,7 @@ class EmpresaController extends Controller
     }
     public function redesEdit($id)
     {
-        return Empresa::first()->redes[ $id ];
+        return Empresa::first()->social_networks[ $id ];
     }
     public function redesUpdate(Request $request, $id) {
         return self::redesStore($request,$id);

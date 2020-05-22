@@ -17,7 +17,7 @@
                                     </label>
                                 </div>
                                 <div class="col-12 col-md-7">
-                                    <input type="email" required name="contacto" placeholder="Ingrese mail" @if(isset($data['elementos']['form']['contacto'])) value="{{ $data['elementos']['form']['contacto'] }}" @endif class="form-control border-top-0 border-left-0 border-right-0 rounded-0">
+                                    <input type="email" required name="contacto" placeholder="Ingrese mail" @if(isset($data['elementos']['forms']['contacto'])) value="{{ $data['elementos']['forms']['contacto'] }}" @endif class="form-control border-top-0 border-left-0 border-right-0 rounded-0">
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -27,17 +27,7 @@
                                     </label>
                                 </div>
                                 <div class="col-12 col-md-7">
-                                    <input type="email" required name="presupuesto" placeholder="Ingrese mail" @if(isset($data['elementos']['form']['presupuesto'])) value="{{ $data['elementos']['form']['presupuesto'] }}" @endif class="form-control border-top-0 border-left-0 border-right-0 rounded-0">
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-12 col-md-5 d-flex align-items-center">
-                                    <label for="" class="m-0">
-                                        Cobertura
-                                    </label>
-                                </div>
-                                <div class="col-12 col-md-7">
-                                    <input type="email" required name="cobertura" placeholder="Ingrese mail" @if(isset($data['elementos']['form']['cobertura'])) value="{{ $data['elementos']['form']['cobertura'] }}" @endif class="form-control border-top-0 border-left-0 border-right-0 rounded-0">
+                                    <input type="email" required name="presupuesto" placeholder="Ingrese mail" @if(isset($data['elementos']['forms']['presupuesto'])) value="{{ $data['elementos']['forms']['presupuesto'] }}" @endif class="form-control border-top-0 border-left-0 border-right-0 rounded-0">
                                 </div>
                             </div>
                         </div>

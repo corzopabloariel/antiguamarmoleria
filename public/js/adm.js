@@ -675,13 +675,15 @@ init = (callbackOK, normal = true, widthElements = true, type = "table", withAct
     if (Array.isArray(window.pyrus)) {
         window.pyrus.forEach(p => {
             targetForm.innerHTML += p.formulario();
-            const target = document.querySelector(`#form_${p.entidad}`)
-            const ck = target.querySelector(".ckeditor");
-            if (ck) {
-                setTimeout(() => {
-                    console.log(CKEDITOR.instances)
-                    p.editor();
-                }, 500);
+            const target = document.querySelector(`#form_${p.entidad}`);
+            if (target) {
+                const ck = target.querySelector(".ckeditor");
+                if (ck) {
+                    setTimeout(() => {
+                        console.log(CKEDITOR.instances)
+                        p.editor();
+                    }, 500);
+                }
             }
         });
     } else {

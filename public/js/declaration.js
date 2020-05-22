@@ -852,12 +852,12 @@ const ENTIDADES = {
             email: {TIPO:"TP_EMAIL",RULE: "required|email|max:150",MAXLENGTH:150,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"email"},
             password: {TIPO:"TP_PASSWORD",VISIBILIDAD:"TP_VISIBLE_FORM",LABEL:1,NOMBRE:"contraseña",HELP:"SOLO PARA EDICIÓN - para no cambiar la contraseña, deje el campo vacío"},
             type: {TIPO:"TP_ENUM",VISIBILIDAD:"TP_VISIBLE",ENUM:[{id: 0, text: "Usuario"}, {id: 1, text: "Administrador"}, {id: 2, text: "Asistente"}],NOMBRE:"Tipo",CLASS:"form--input", NECESARIO: 1},
-            image: {TIPO:"TP_IMAGE", EXT: "jpeg, png, jpg, gif",FOLDER:"usuarios",RULE: "required|image|mimes:jpeg,png,jpg,gif|max:2048",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Seleccione archivo - 300px x 300px",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE_FORM",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"300px",HEIGHT:"300px",SIMPLE: 1},
+            image: {TIPO:"TP_IMAGE", EXT: "jpeg, png, jpg, gif",FOLDER:"usuarios",RULE: "required|image|mimes:jpeg,png,jpg,gif|max:2048",VISIBILIDAD:"TP_VISIBLE_FORM",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"300px",HEIGHT:"300px",SIMPLE: 1},
             login: {TIPO:"TP_FECHA",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"último ingreso",FORMAT:[ "dd" , "/" , "mm" , "/" , "aaaa" , " " , "h" , ":" , "m" , ":" , "s" ]},
         },
         FORM: [
             {
-                '<div class="col-12 col-md-6">/login//image/</div><div class="col-12 col-md-6"><div class="row"><div class="col-12 col-md-6 mb-3">/type/</div><div class="col-12 mb-3">/name/</div><div class="col-12 mb-3">/email/</div><div class="col-12 col-md-6">/username/</div><div class="col-12 col-md-6">/password/</div></div></div>' : ['login', 'image', 'type', 'name', 'email', 'username','password']
+                '<div class="col-12 col-md-6">/login//image/</div><div class="col-12 col-md-6"><div class="row"><div class="col-12 mb-3">/type/</div><div class="col-12 mb-3">/name/</div><div class="col-12 mb-3">/email/</div><div class="col-12 mb-3">/username/</div><div class="col-12">/password/</div></div></div>' : ['login', 'image', 'type', 'name', 'email', 'username','password']
             }
         ],
         FUNCIONES: {
@@ -940,7 +940,7 @@ const ENTIDADES = {
         ATRIBUTOS: {
             redes: {TIPO:"TP_ENUM",LABEL:1,ENUM:[{id: "facebook", text: "Facebook"},{id: "instagram", text: "Instagram"},{id: "youtube", text: "Youtube"},{id: "linkedin", text: "LinkedIn"},{id: "pinteres", text: "Pinteres"}],NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"red social"},
             titulo: {TIPO:"TP_STRING",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título"},
-            url: {TIPO:"TP_LINK",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"link del sitio"},
+            url: {TIPO:"TP_LINK",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"link del sitio", NECESARIO: 1, HELP: "Incluir http:// o https://."},
         },
         FORM: [
             {
@@ -958,12 +958,11 @@ const ENTIDADES = {
         ONE: 1,
         NOMBRE: "General",
         ATRIBUTOS: {
-            dias: {TIPO:"TP_ENTERO",SIMPLE:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE: "Días", HELP: "Días antes del vencimiento"},
-            anio_inicio: {TIPO:"TP_ENTERO",SIMPLE:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE: "Año de inicio", HELP: "Automóvil"}
+            attention_schedule: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE: "Horario de atención"}
         },
         FORM: [
             {
-                '<div class="col-12 col-md-4">/dias/</div><div class="col-12 col-md-4">/anio_inicio/</div>' : ['dias', 'anio_inicio']
+                '<div class="col-12 col-md">/attention_schedule/</div>' : ['attention_schedule']
             }
         ]
     },
@@ -1023,7 +1022,7 @@ const ENTIDADES = {
             calle: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE"},
             altura: {TIPO:"TP_ENTERO",LABEL:1,VISIBILIDAD:"TP_VISIBLE"},
             localidad: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"localidad"},
-            provincia: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",DEFAULT:"Buenos Aires"},
+            provincia: {TIPO:"TP_LIST",LABEL:1,VISIBILIDAD:"TP_VISIBLE",DATA: ["Ciudad Autónoma de Buenos Aires (CABA)", "Buenos Aires", "Catamarca", "Córdoba", "Corrientes", "Entre Ríos", "Jujuy", "Mendoza", "La Rioja", "Salta", "San Juan", "San Luis", "Santa Fe", "Santiago del Estero", "Tucumán", "Chaco", "Chubut", "Formosa", "Misiones", "Neuquén", "La Pampa", "Río Negro", "Santa Cruz", "Tierra del Fuego"]},
             pais: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",DEFAULT:"Argentina",NOMBRE:"país"},
             cp: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"código postal"},
             detalle: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"detalles"},

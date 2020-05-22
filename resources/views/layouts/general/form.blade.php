@@ -26,7 +26,7 @@
                 <span aria-hidden="true"><i class="fas fa-times"></i></span>
             </button>
             @endif
-            <form id="form" onsubmit="event.preventDefault(); formSubmit(this);" novalidate class="pt-2" action="@isset( $url ) {{ $url }} @endisset" @if( $buttonADD ) method="post" @else method="put" @endif enctype="multipart/form-data">
+            <form id="form" onsubmit="event.preventDefault(); formSubmit(this);" class="pt-2" action="@isset( $url ) {{ $url }} @endisset" @if( $buttonADD ) method="post" @else method="put" @endif enctype="multipart/form-data">
                 @csrf
                 <button class="btn btn-success px-5 text-uppercase btn-lg"><i class="fas fa-save"></i></button>
                 <div class="container-form pyrus--form py-3 my-3"></div>
@@ -47,7 +47,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form" onsubmit="event.preventDefault(); formSubmit(this);" novalidate class="pt-2" action="@isset( $url ) {{ $url }} @endisset" @if( $buttonADD ) method="post" @else method="put" @endif enctype="multipart/form-data">
+            <form id="form" onsubmit="event.preventDefault(); formSubmit(this);" class="pt-2" action="@isset( $url ) {{ $url }} @endisset" @if( $buttonADD ) method="post" @else method="put" @endif enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body pyrus--form"></div>
                 <div class="modal-footer bg-light">
