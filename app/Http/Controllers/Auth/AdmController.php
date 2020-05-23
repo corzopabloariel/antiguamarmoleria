@@ -354,10 +354,8 @@ class AdmController extends Controller
             }
             if ($normal) {
                 $validator = Validator::make($elements, $rules);
-                if ($validator->fails()) {
-                    $AS .= $table . "-";
+                if ($validator->fails())
                     $flag = true;
-                }
             } else {
                 foreach($rules AS $k => $v) {
                     $aux_r = [];

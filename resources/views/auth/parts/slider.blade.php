@@ -12,11 +12,11 @@
         Agrega o ejecuta algún evento después de la carga inicial
      ** ------------------------------------- */
     addfinish = () => {
-        $(`#${window.pyrus.name}_seccion`).val(window.data.section);
+        document.querySelector(`#${window.pyrus.name}_section`).value = window.data.section;
     };
     /** -------------------------------------
      *      INICIO
      ** ------------------------------------- */
-    init( () => {} );
+    init(data => {} );
 </script>
 @endpush

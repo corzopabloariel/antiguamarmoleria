@@ -5,6 +5,7 @@
  **/
 
 const colorPick = "4f9232,808080,111111,191919,fbfb34,a6a6a6,343a40,86008f";
+const max_size_file = 2;
 window.axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest',
     'X-CSRF-TOKEN' : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -190,7 +191,7 @@ erase = ( t , id ) => {
 remove = t => {
     $('[data-toggle="tooltip"]').tooltip('hide');
     if($( "#formModal .no--send" ).length) {
-        window.pyrus.clean( CKEDITOR );
+        window.pyrus.clean();
         $( "#formModal" ).modal( "hide" );
     } else {
         Swal.fire({
@@ -203,23 +204,13 @@ remove = t => {
             confirmButtonText: 'Confirmar'
         }).then( ( result ) => {
             if ( result.value ) {
-                window.pyrus.clean( CKEDITOR );
+                window.pyrus.clean();
                 if( $( "#formModal" ).length )
                     $( "#formModal" ).modal( "hide" );
                 add( $( "#btnADD" ) );
             }
         })
     }
-};
-removeImage = ( t ) => {
-    let button = $( t );
-    let id = button.prop( "id" );
-    id = id.replace( "_button" , "" );
-    $( `#${id}` ).val( "" );
-    id = `src-${id}`;
-    $( `#${id}` ).prop( `src` , $( `#${id}` ).data( "src" ) );
-    $( `#${id}-2` ).prop( `src` , $( `#${id}-2` ).data( "src" ) );
-    button.prop( `disabled` , true );
 };
 removeFile = ( t ) => {
     let button = $( t );
@@ -275,24 +266,34 @@ see = (t, id) => {
 /** -------------------------------------
  *      PREVIEW DE IMAGEN
  ** ------------------------------------- */
-readURL = (t, id) => {
+function readURL(t, id) {
     const img = document.querySelector(`#${id}`);
     if (t.files && t.files[0]) {
         let reader = new FileReader();
         reader.onload = ( e ) => {
+            const size = Math.round(t.files[0].size / 1024 /1024);
+            if (max_size_file < size) {
+                img.src = "";
+                img.classList.remove("image--upload__validate");
+                t.parentElement.classList.remove("image--upload__not-empty");
+                t.parentElement.classList.add("image--upload__no-validate");
+                t.nextSibling.dataset.name = `El archivo supera el máximo permitido ${max_size_file}MB`;
+                return null;
+            }
             img.src = e.target.result;
             img.classList.add("image--upload__validate");
-            t.parentElement.classList.add("image--upload__not-empty")
-            t.nextSibling.dataset.name = t.files[0].name;
+            t.parentElement.classList.add("image--upload__not-empty");
+            t.nextSibling.dataset.name = `${t.files[0].name} ~ ${size}MB`;
         };
         reader.readAsDataURL(t.files[0]);
     } else {
         img.src = "";
         img.classList.remove("image--upload__validate");
-        t.parentElement.classList.remove("image--upload__not-empty")
+        t.parentElement.classList.remove("image--upload__not-empty");
         t.nextSibling.dataset.name = "No se selccionó ningún archivo";
     }
-};
+    t.parentElement.classList.remove("image--upload__no-validate");
+}
 /** -------------------------------------
  *      CHECKBOX
  ** ------------------------------------- */
@@ -305,7 +306,7 @@ check = input => {
 /** -------------------------------------
  *      GUARDAR ELEMENTO
  ** ------------------------------------- */
-formSave = ( t , formData , message = { wait : "Espere. Guardando contenido" , err: "Ocurrió un error en el guardado. Reintente" , catch: "Ocurrió un error en el guardado." , success : "Contenido guardado" } , callback = null ) => {
+formSave = (t, formData, message = { wait : "Espere. Guardando contenido" , err: "Ocurrió un error en el guardado. Reintente" , catch: "Ocurrió un error en el guardado." , success : "Contenido guardado" }, callback = null ) => {
     let url = t.action;
     let method = t.method;
     if (!verificarForm())
@@ -458,9 +459,8 @@ formSubmit = t => {
     } else
         Arr.push({ DATA: window.pyrus.objetoSimple , TIPO: "U" });
     formData.append("ATRIBUTOS",JSON.stringify(Arr));
-
-    formSave( t , formData );
-};
+    formSave(t, formData);
+}
 
 searchTable = ( t ) => {
     let idForm = t.id;
@@ -612,7 +612,7 @@ deleteFile = (t, url, txt, data, callbackOK = null) => {
 shortcut.add( "Alt+Ctrl+S" , function () {
     const form = document.querySelector("#form");
     if (form)
-        form.requestSubmit();
+        formSubmit(form)
 }, {
     type: "keydown",
     propagate: true,

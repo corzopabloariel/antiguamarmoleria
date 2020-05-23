@@ -1,21 +1,4 @@
 <?php
-define( "MENU2" , [
-    [
-        "id"        => "clientes",
-        "nombre"    => "Clientes",
-        "icono"     => '<i class="fas fa-users"></i>',
-        "url"       => @route('clientes.index')
-    ],
-    [
-        "id"        => "polizas",
-        "nombre"    => "Polizas",
-        "icono"     => '<i class="fas fa-file-signature"></i>',
-        "url"       => @route('polizas.index')
-    ],
-] );
-/**
- *
- */
 define( "MENU" ,
 [
     [
@@ -67,65 +50,19 @@ define( "MENU" ,
         ]
     ],
     [
-        "id"        => "clientes",
-        "nombre"    => "Clientes",
+        "id"        => "faq",
+        "nombre"    => "FAQ",
         "icono"     => '<i class="fas fa-users"></i>',
-        "url"       => @route('clientes.index')
-    ],
-    [
-        "id"        => "novedades",
-        "nombre"    => "Novedades",
-        "icono"     => '<i class="far fa-newspaper"></i>',
-        "url"       => @route('novedades.index')
-    ],
-    [
-        "id"        => "sectores",
-        "nombre"    => "Staff",
-        "icono"     => '<i class="fas fa-mail-bulk"></i>',
-        "url"       => @route('staff.index')
+        "url"       => null
     ],
     [
         "separar"   => 1
     ],
     [
-        "id"        => "polizas",
-        "nombre"    => "Polizas",
-        "icono"     => '<i class="fas fa-file-signature"></i>',
-        "url"       => @route('polizas.index')
-    ],
-    [
-        "id"        => "riesgos",
-        "nombre"    => "Riesgos",
-        "icono"     => '<i class="fab fa-wpforms"></i>',
-        "url"       => @route('riesgos.index')
-    ],
-    [
-        "id"        => "localidades",
-        "nombre"    => "Localidades",
-        "icono"     => '<i class="fas fa-file-alt"></i>',
-        "url"       => @route('localidades.index')
-    ],
-    [
-        "id"        => "marcas",
-        "nombre"    => "Automóviles",
-        "icono"     => '<i class="fas fa-car-side"></i>',
-        "submenu"   => [
-            [
-                "nombre"    => "Marcas y Modelos",
-                "icono"     => "<i class='nav-icon fas fa-file-contract'></i>",
-                "url"       => @route('marcas.index'),
-            ],[
-                "nombre"    => "Datos",
-                "icono"     => '<i class="fas fa-file-upload"></i>',
-                "url"       => @route('automoviles.index')
-            ]
-        ]
-    ],
-    [
-        'id'        => 'update',
-        'nombre'    => 'Actualizar DB',
-        'icono'     => '<i class="fas fa-database"></i>',
-        'url'       => @route( 'update.index' )
+        "id"        => "popup",
+        "nombre"    => "Pop' up",
+        "icono"     => '<i class="fas fa-chalkboard"></i>',
+        "url"       => null
     ]
 ]
 );

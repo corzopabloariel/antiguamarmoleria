@@ -12,24 +12,24 @@ const ENTIDADES = {
     slider: {
         //TABLE: "sliders",
         ATRIBUTOS: {
-            orden: {TIPO:"TP_STRING",RULE: "max:3",LABEL:1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE",CLASS:"text-center border-left-0 border-right-0 border-top-0 rounded-0",WIDTH:"70px",NOMBRE:"orden"},
-            image: {TIPO:"TP_IMAGE",RULE: "required|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER:"slider",SIMPLE:1,NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Archivo - 1350px X 468px",BROWSER:"",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"1350px"},
-            seccion: {TIPO:"TP_STRING",RULE: "required|max:20",VISIBILIDAD:"TP_INVISIBLE",NOMBRE:"sección"},
-            texto: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"texto"}
+            order: {TIPO:"TP_STRING",RULE: "nullable|max:3",LABEL:1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE",WIDTH:"70px",NOMBRE:"orden", HELP: "Orden alfanumérico. Máximo 3 caracteres."},
+            image: {TIPO:"TP_IMAGE", EXT: 'jpeg, png, jpg, gif', SIZE: '2MB',RULE: "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER:"sliders",SIMPLE:1,NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"1400px", HEIGHTop:"650px", HELP: "Respete las medidas detalladas o idénticas para que el slider no se vea afectado"},
+            section: {TIPO:"TP_STRING",RULE: "required|max:20",VISIBILIDAD:"TP_INVISIBLE",NOMBRE:"sección", NECESARIO: 1},
+            text: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"texto", LABEL: 1}
         },
         FORM: [
             {
-                '/seccion/<div class="col-12 col-md-8"><div class="row d-flex justify-content-center"><div class="col-md-6 mb-3">/orden/</div><div class="col-12">/image/</div></div></div>':['seccion','orden','image'],
+                '/section/<div class="col-md-6">/order/</div>':['section','order'],
             },
             {
-                '<div class="col-12">/texto/</div>': ['texto']
+                '<div class="col-12">/image/</div>': ['image']
+            },
+            {
+                '<div class="col-12">/text/</div>': ['text']
             }
         ],
-        FUNCIONES: {
-            image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
-        },
         EDITOR: {
-            texto: {
+            text: {
                 toolbarGroups: [
                     { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
                     { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },

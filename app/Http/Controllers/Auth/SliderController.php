@@ -18,7 +18,7 @@ class SliderController extends Controller
      */
     public function index($seccion)
     {
-        $sliders = $this->model->where('seccion', $seccion )->orderBy('orden')->get();
+        $sliders = $this->model->where('section', $seccion )->where("elim", 0)->orderBy('order')->get();
         $data = [
             "view"      => "auth.parts.slider",
             "title"     => "Slider: " . strtoupper($seccion),

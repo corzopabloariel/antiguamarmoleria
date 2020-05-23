@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Slider extends Model
 {
     protected $fillable = [
-        'orden',
-        'texto',
+        'order',
+        'text',
         'image',
-        'seccion',
+        'section',
         'elim'
     ];
 
     protected $casts = [
-        'orden' => 'string',
-        'texto' => 'string',
+        'order' => 'string',
+        'text' => 'string',
         'image' => 'array',
         'elim' => 'boolean'
     ];
