@@ -31,6 +31,6 @@ class Empresa extends Model
         'metadata' => 'array',
         'forms' => 'array',
         'captcha' => 'array',
-        'attention_schedule' => 'integer'
+        'attention_schedule' => 'string'
     ];
 }

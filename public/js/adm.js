@@ -610,8 +610,9 @@ deleteFile = (t, url, txt, data, callbackOK = null) => {
  *      COMBINACIÓN DE TECLAS
  ** ------------------------------------- */
 shortcut.add( "Alt+Ctrl+S" , function () {
-    if ($("#form").is(":visible"))
-        $("#form").submit();
+    const form = document.querySelector("#form");
+    if (form)
+        form.requestSubmit();
 }, {
     type: "keydown",
     propagate: true,
@@ -689,7 +690,7 @@ init = (callbackOK, normal = true, widthElements = true, type = "table", withAct
     if (Array.isArray(window.pyrus)) {
         window.pyrus.forEach(p => {
             targetForm.innerHTML += p.entidad.formulario();
-            const target = document.querySelector(`#form_${p.entidad.entidad}`);
+            const target = document.querySelector(`.form_${p.entidad.entidad}`);
             if (target) {
                 const ck = target.querySelector(".ckeditor");
                 if (ck) {

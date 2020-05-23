@@ -52,14 +52,15 @@ class EmpresaController extends Controller
     public function update(Request $request)
     {
         $data = Empresa::first();
-        try {
-            $OBJ = (new AdmController)->object($request, $data);
-            dd($OBJ);
+        //try {
+            $OBJ = (new AdmController)->store($request, $data, new \App\Empresa, null, true);
+            if (is_string($OBJ))
+                return $OBJ;
             $data->fill($OBJ);
             $data->save();
-        } catch (\Throwable $th) {
+        /*} catch (\Throwable $th) {
             return json_encode(["error" => 1]);
-        }
+        }*/
         return json_encode(['success' => true, "error" => 0]);
     }
 

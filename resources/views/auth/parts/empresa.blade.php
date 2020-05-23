@@ -15,14 +15,18 @@
     window.pyrus = [];
     window.pyrus.push({entidad: new Pyrus("empresa"), tipo: "U"});
     window.pyrus.push({entidad: new Pyrus("empresa_images", null, src), tipo: "U", column: "images"});
-    window.pyrus.push({entidad: new Pyrus("empresa_domicilio"), tipo: "U", column: "address"});
+    window.pyrus.push({entidad: new Pyrus("empresa_domicilio"), tipo: "U", column: "addresses"});
     window.pyrus.push({entidad: new Pyrus("empresa_captcha"), tipo: "U", column: "captcha"});
     window.pyrus.push({entidad: new Pyrus("empresa_mensaje"), tipo: "U", column: "mensaje"});
-    window.pyrus.push({entidad: new Pyrus("empresa_telefono"), tipo: "M", column: "phones", tag: "phones", key: "phones"});
-    window.pyrus.push({entidad: new Pyrus("empresa_email"), tipo: "A", column: "email"});
+    window.pyrus.push({entidad: new Pyrus("empresa_telefono"), tipo: "M", column: "phones", function: "telefono"});
+    window.pyrus.push({entidad: new Pyrus("empresa_email"), tipo: "A", column: "emails", function: "email"});
 
     /** ------------------------------------- */
     telefonoFunction = (value = null) => {
+        if (value) {
+            if (typeof value === "string")
+                value = JSON.parse(value);
+        }
         const element = window.pyrus.find(x => {
             if (x.entidad.entidad === "empresa_telefono")
                 return x;
@@ -31,7 +35,7 @@
         let html = "";
         if (window[element.column] === undefined)
             window[element.column] = 0;
-        window.telefono ++;
+        window[element.column] ++;
         html += '<div class="col-12 col-md-4 mt-3 pyrus--element">';
             html += '<div class="pyrus--element__target">';
                 html += `<i onclick="remove_( this , 'pyrus--element' )" class="fas fa-times pyrus--element__close"></i>`;
@@ -39,10 +43,14 @@
             html += '</div>';
         html += '</div>';
         target.insertAdjacentHTML('beforeend', html);
-        element.entidad.show(url_simple, value, window[element.column], element.column, 1);
+        element.entidad.show(url_simple, value, window[element.column], element.column);
     };
 
     emailFunction = (value = null) => {
+        if (value) {
+            if (typeof value === "string")
+                value = JSON.parse(value);
+        }
         const element = window.pyrus.find(x => {
             if (x.entidad.entidad === "empresa_email")
                 return x;
@@ -51,7 +59,7 @@
         let html = "";
         if (window[element.column] === undefined)
             window[element.column] = 0;
-        window[ `email` ] ++;
+        window[element.column] ++;
         html += '<div class="col-12 col-md-6 mt-3 pyrus--element">';
             html += '<div class="pyrus--element__target">';
                 html += `<i onclick="remove_( this , 'pyrus--element' )" class="fas fa-times pyrus--element__close"></i>`;
@@ -63,6 +71,22 @@
     };
     /** */
     init(data => {
+        window.pyrus.forEach(p => {
+            switch (p.tipo) {
+                case "U":
+                    if (p.column) {
+                        if (window.data.elementos[p.column])
+                            p.entidad.show(url_simple, window.data.elementos[p.column]);
+                    } else
+                        p.entidad.show(url_simple, window.data.elementos);
+                break;
+                case "A":
+                case "M":
+                    if (window.data.elementos[p.column])
+                        window.data.elementos[p.column].forEach(a => eval(`${p.function}Function('${JSON.stringify(a)}')`));
+                break;
+            }
+        })
         /*window.pyrus.show(null, url_simple, window.data.elementos);
         window.pyrusImage.show(null, url_simple, window.data.elementos.images);
         window.pyrusDomicilio.show(null, url_simple , window.data.elementos.domicilio);

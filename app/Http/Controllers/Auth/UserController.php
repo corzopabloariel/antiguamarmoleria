@@ -83,7 +83,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $this->model->destroy($id);
-        return 1;
+        return (new AdmController)->delete(self::edit($request->id), $this->model->getFillable());
     }
 }
