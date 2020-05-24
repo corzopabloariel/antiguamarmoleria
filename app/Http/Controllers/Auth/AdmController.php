@@ -67,11 +67,25 @@ class AdmController extends Controller
     }
     public function deleteFile(Request $request) {
         try {
-            $data = [];
-            $data[$request->attr] = NULL;
-            DB::table($request->entidad)
-                ->where('id', $request->id)
-                ->update($data);
+            if (empty($request->id)) {
+                $aux = [];
+                $data = DB::table($request->entidad)
+                    ->where('id', $request->idPadre)->first();
+                $data = collect($data)->map(function($x){ return (array) $x; })->toArray()[$request->column][0];
+                $data = json_decode($data, true);
+                $filename = $data[$request->attr];
+                unset($data[$request->attr]);
+                $aux[$request->column] = json_encode($data);
+                DB::table($request->entidad)
+                    ->where('id', $request->idPadre)
+                    ->update($aux);
+            } else {
+                $data = [];
+                $data[$request->attr] = NULL;
+                DB::table($request->entidad)
+                    ->where('id', $request->id)
+                    ->update($data);
+            }
             $filename = public_path() . "/{$request->file}";
             if (file_exists($filename))
                 unlink($filename);

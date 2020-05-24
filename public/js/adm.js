@@ -541,7 +541,16 @@ addfinish = ( data = null ) => {};
  *      ELIMINAR ARCHIVO
  ** ------------------------------------- */
 removeFile = (t) => {
-    deleteFile(t, `${url_simple}/adm/file`, "¿Eliminar archivo de imagen?", {file: t.dataset.url, entidad: t.dataset.entidad, attr: t.dataset.attr, id: t.dataset.id}, data => {
+    const attr = {
+        file: t.dataset.url,
+        entidad: t.dataset.entidad,
+        attr: t.dataset.attr,
+        column: t.dataset.column ? t.dataset.column : null,
+        id: t.dataset.id ? t.dataset.id : null,
+        tabla: t.dataset.table,
+        idPadre: window.data.elementos.id
+    };
+    deleteFile(t, `${url_simple}/adm/file`, "¿Eliminar archivo de imagen?", attr, data => {
         if (data.error === 0) {
             t.parentElement.previousElementSibling.src = "";
             let details = t.parentElement.previousElementSibling.previousElementSibling.querySelectorAll(".image--wh__details");
@@ -556,9 +565,11 @@ removeFile = (t) => {
                 title: data.msg
             })
         }
+    }, err => {
+        console.log(err)
     });
 };
-deleteFile = (t, url, txt, data, callbackOK = null) => {
+deleteFile = (t, url, txt, data, callbackOK = null, callbackFail = null) => {
     t.disabled = true;
     Swal.fire({
         title: "Atención!",
@@ -595,7 +606,11 @@ deleteFile = (t, url, txt, data, callbackOK = null) => {
                     }
                 }
             })
-            .catch(( err ) => {
+            .catch(err => {
+                if (callbackFail) {
+                    callbackFail.call(this, res);
+                    return null;
+                }
                 alertify.error( "Ocurrió un error" );
                 t.disabled = false;
                 console.error(err);

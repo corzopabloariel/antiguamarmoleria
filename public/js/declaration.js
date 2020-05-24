@@ -966,11 +966,15 @@ const ENTIDADES = {
         MULTIPLE: "email",
         NOMBRE: "Emails",
         ATRIBUTOS: {
-            email: {TIPO:"TP_EMAIL", RULE: "required",LABEL:1, NECESARIO: 1,MAXLENGTH:150,VISIBILIDAD:"TP_VISIBLE"}
+            email: {TIPO:"TP_EMAIL", RULE: "required",LABEL:1, NECESARIO: 1,MAXLENGTH:150,VISIBILIDAD:"TP_VISIBLE"},
+            in_header: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Esta en la cabecera?", HELP: "Muestra el elemento en la cabecera, en el lugar indicado en diseño"}
         },
         FORM: [
             {
                 '<div class="col-12">/email/</div>' : ['email']
+            },
+            {
+                '<div class="col-12">/in_header/</div>' : ['in_header']
             }
         ]
     },
@@ -996,7 +1000,7 @@ const ENTIDADES = {
             tipo: {TIPO:"TP_ENUM",ENUM:[{id: "tel", text: "Teléfono/Celular"}, {id: "wha", text: "Whatsapp"}],NECESARIO:1,VISIBILIDAD:"TP_VISIBLE_FORM", CLASS: "form-control form--input",NOMBRE:"Tipo",NORMAL: 1, LABEL: 1},
             visible: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:50,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"elemento visible",HELP:"Contenido visible. En caso de permanecer vacío, se utilizará el primer campo"},
             is_link: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Es clickeable?", HELP: "Convierte al elemento en link tipo telefónico"},
-            in_header: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Esta en la cabecera?", HELP: "Muestra en el elemento en la cabecera, en el lugar indicado en diseño"}
+            in_header: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Esta en la cabecera?", HELP: "Muestra el elemento en la cabecera, en el lugar indicado en diseño"}
         },
         FORM: [
             {
@@ -1052,6 +1056,8 @@ const ENTIDADES = {
         ]
     },
     empresa_images: {
+        TABLE: "empresa",
+        COLUMN: "images",
         ONE: 1,
         NOMBRE: "Imágenes",
         ATRIBUTOS: {
@@ -1166,6 +1172,38 @@ const ENTIDADES = {
                 colorButton_colors : colorPick,
                 height : '140px'
             }
+        }
+    },
+    empresa_header: {
+        ONE: 1,
+        MULTIPLE: "header",
+        NOMBRE: "Información en cabecera",
+        ATRIBUTOS: {
+            order: {TIPO:"TP_ENTERO",MAXLENGTH:2,NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"orden",SIMPLE:1},
+            title: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE", NECESARIO: 1,NOMBRE: "Título"},
+            type: {TIPO:"TP_ENUM",ENUM:[{id: "emails", text: "Email"}, {id: "phones", text: "Teléfono"}, {id: "attention_schedule", text: "Horario"}],NECESARIO:1,VISIBILIDAD:"TP_VISIBLE_FORM", CLASS: "form-control form--input",NOMBRE:"Tipo",NORMAL: 1, LABEL: 1},
+            element: {TIPO:"TP_ENUM",DISABLED: 1,NECESARIO:1,VISIBILIDAD:"TP_VISIBLE_FORM", CLASS: "form-control form--element__data",NOMBRE:"Elemento", LABEL: 1},
+            icon: {TIPO:"TP_STRING", RULE: "required|max:10", MAXLENGTH: 10,LABEL:1,VISIBILIDAD:"TP_VISIBLE", NECESARIO: 1,NOMBRE: "Ícono", HELP: "Íconos sacados de <a href='https://fontawesome.com/icons?d=gallery&m=free' target='blank'>https://fontawesome.com/icons?d=gallery&m=free</a>"}
+        },
+        FORM: [
+            {
+                '<div class="col-12 col-md-6">/order/</div>': ['order']
+            },
+            {
+                '<div class="col-12">/type/</div>': ['type']
+            },
+            {
+                '<div class="col-12">/element/</div>': ['element']
+            },
+            {
+                '<div class="col-12">/title/</div>': ['title']
+            },
+            {
+                '<div class="col-12">/icon/</div>': ['icon']
+            }
+        ],
+        FUNCIONES: {
+            type: { onchange: "searchTypeElements( this );" }
         }
     },
 };
