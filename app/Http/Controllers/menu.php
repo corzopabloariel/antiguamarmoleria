@@ -39,9 +39,9 @@ define( "MENU" ,
         "icono"     => "<i class='nav-icon fas fa-industry'></i>",
         "submenu"   => [
             [
-                "nombre"    => "Coberturas",
+                "nombre"    => "Marcas",
                 "icono"     => "<i class='nav-icon fas fa-file-contract'></i>",
-                "url"       => @route('coberturas.index'),
+                "url"       => @route('marcas.index'),
             ],[
                 "nombre"    => "Compañias",
                 "icono"     => '<i class="fas fa-boxes"></i>',

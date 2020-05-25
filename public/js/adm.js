@@ -138,10 +138,32 @@ navMenu = ( t ) => {
 /** -------------------------------------
  *      CAMBIAR COLORES
  ** ------------------------------------- */
-changeColor = (t, target) => {
-    let element = document.querySelector(`#${target}`);
-    element.value = t.value;
+changeColor = (t, type) => {
+    const target = t.closest(".pyrus--color");
+    const value = t.value;
+    target.querySelector(`[type="${type}"]`).value = value;
+
+    let rgb = hexToRgb($(t).val());
+    let color = new Color(rgb[0], rgb[1], rgb[2]);
+    let solver = new Solver(color);
+    let result = solver.solve();
+    target.nextElementSibling.value = result.filter;
 };
+hexToRgb = ( hex ) => {
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, (m, r, g, b) => {
+        return r + r + g + g + b + b;
+    });
+
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+        ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16),
+        ]
+        : null;
+}
 /** -------------------------------------
  *      MOSTRAR TÉRMINOS
  ** ------------------------------------- */
@@ -183,15 +205,17 @@ copy = ( t , url ) => {
 
  ** ------------------------------------- */
 erase = ( t , id ) => {
-    window.pyrus.delete( t , { title : "ATENCIÓN" , body : "¿Eliminar registro?" } , `${url_simple}/adm/${window.pyrus.name}/delete` , id );
+    const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
+    entidad.delete( t , { title : "ATENCIÓN" , body : "¿Eliminar registro?" } , `${url_simple}/adm/${entidad.name}/delete` , id );
 };
 /** -------------------------------------
  *      LIMPIAR FORMULARIO
  ** ------------------------------------- */
 remove = t => {
+    const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
     $('[data-toggle="tooltip"]').tooltip('hide');
     if($( "#formModal .no--send" ).length) {
-        window.pyrus.clean();
+        entidad.clean();
         $( "#formModal" ).modal( "hide" );
     } else {
         Swal.fire({
@@ -204,7 +228,7 @@ remove = t => {
             confirmButtonText: 'Confirmar'
         }).then( ( result ) => {
             if ( result.value ) {
-                window.pyrus.clean();
+                entidad.clean();
                 if( $( "#formModal" ).length )
                     $( "#formModal" ).modal( "hide" );
                 add( $( "#btnADD" ) );
@@ -253,10 +277,11 @@ remove_ = ( t , class_ ) => {
  *      EDITAR REGISTRO
  ** ------------------------------------- */
 edit = (t, id, disabled = 0) => {
-    $(t).prop("disabled", true);
-    window.pyrus.one( `${url_simple}/adm/${window.pyrus.name}/${id}/edit`, function( res ) {
+    const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
+    t.disabled = true
+    entidad.one( `${url_simple}/adm/${entidad.name}/${id}/edit`, res => {
         $('[data-toggle="tooltip"]').tooltip('hide');
-        $(t).prop("disabled", false);
+        t.disabled = false;
         add($("#btnADD"), parseInt(id), res.data, disabled);
     });
 };
@@ -316,21 +341,6 @@ formSave = (t, formData, message = { wait : "Espere. Guardando contenido" , err:
         method = "POST";
     $( "body > .wrapper" ).addClass( "isDisabled" );
     window.Arr_aux = [];
-    /*if (CKEDITOR) {
-        for(let x in CKEDITOR.instances) {
-            let aux = x.split("_");
-            let last = aux.pop();
-            if(isNaN(last))
-                formData.set( x , CKEDITOR.instances[ `${x}` ].getData() );
-            else {
-                if(window.Arr_aux.indexOf(aux.join("_")) < 0) {
-                    window.Arr_aux.push(aux.join("_"));
-                    formData.set(`${aux.join("_")}[]`, CKEDITOR.instances[`${x}`].getData());
-                } else
-                    formData.append(`${aux.join("_")}[]`, CKEDITOR.instances[`${x}`].getData());
-            }
-        }
-    }*/
     Toast.fire({
         icon: 'warning',
         title: message.wait
@@ -496,8 +506,10 @@ searchTable = ( t ) => {
  *      ABRIR FORMULARIO
  ** ------------------------------------- */
 add = (t, id = 0, data = null, disabled = 0) => {
+    const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
     let label = document.querySelector("#formModalLabel");
     let form = document.querySelector("#form");
+    let action = `${url_simple}/adm/${entidad.name}`;
     if (disabled) {
         let form_control = form.querySelectorAll(".form-control");
         Array.prototype.forEach.call(form_control, f => {
@@ -512,7 +524,6 @@ add = (t, id = 0, data = null, disabled = 0) => {
         Array.prototype.forEach.call(form_control, f => {
             f.disabled = false;
         });
-        let action = `${url_simple}/adm/${window.pyrus.name}`;
         let method = "POST";
         form.classList.remove("no--send");
         if ($("#form .select__2").length)
@@ -524,7 +535,7 @@ add = (t, id = 0, data = null, disabled = 0) => {
         if(id != 0) {
             if (label)
                 label.textContent = "Editar elemento";
-            action = `${url_simple}/adm/${window.pyrus.name}/update/${id}`
+            action += `/update/${id}`;
             method = "PUT";
             form.dataset.id = id;
             window.formAction = "UPDATE";
@@ -532,7 +543,10 @@ add = (t, id = 0, data = null, disabled = 0) => {
         form.action = action;
         form.method = method;
     }
-    window.pyrus.show(url_simple, data);
+    if (Array.isArray(window.pyrus))
+        window.pyrus.forEach(e => e.entidad.show(url_simple, data));
+    else
+        entidad.show(url_simple, data);
     $( "#formModal" ).modal( "show" );
     addfinish( data );
 };
@@ -715,6 +729,28 @@ init = (callbackOK, normal = true, widthElements = true, type = "table", withAct
                 }
             }
         });
+        if (normal) {
+            if (withAction) {
+                targetElements.innerHTML = window.pyrus[0].entidad.table( [ { NAME:"ACCIONES" , COLUMN: "acciones" , CLASS: "text-center" , WIDTH: "150px" } ] );
+                btn = ["e" , "d"];
+            } else
+                targetElements.innerHTML = window.pyrus[0].entidad.table();
+            window.pyrus[0].entidad.editor( CKEDITOR );
+            if (widthElements) {
+                if (type == "table") {
+                    window.pyrus[0].entidad.elements("#tabla" , url_simple, window.data.elementos, btn);
+                    //---------------------
+                    const spans = document.querySelectorAll(".edit");
+                    if (spans.length > 0) {
+                        Array.prototype.forEach.call(spans, span => {
+                            span.addEventListener("dblclick", editable);
+                            span.addEventListener("blur", editableSave);
+                        })
+                    }
+                } else
+                    targetElements.innerHTML = window.pyrus[0].entidad.card(url_simple, window.data.elementos, ["e", "d"]);
+            }
+        }
     } else {
         let btn = [];
         targetForm.innerHTML = window.pyrus.formulario();

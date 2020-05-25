@@ -1,5 +1,10 @@
-<header class="header">
-    <div class="container d-flex justify-content-between align-items-center">
+<header class="header shadow">
+    <div class="header--address py-3 shadow-sm">
+        <div class="container">
+        <i class="fas fa-map-marked-alt mr-3"></i>@include('layouts.general.domicilio', ["dato" => $elementos->addresses, "link" => 1])
+        </div>
+    </div>
+    <div class="container d-flex justify-content-between align-items-center py-2">
         <div class="header-logo d-flex align-items-center align-self-center">
             @php
             $section = $elementos->sections[0];
@@ -37,7 +42,47 @@
         </div>
     </div>
     <div class="header--info">
-        <div class="container d-flex"></div>
+        <div class="container d-flex justify-content-between">
+            <div class="header--info__target">
+                @if (!empty($elementos->headers))
+                @foreach($elementos->headers AS $h)
+                <div class="header--info__element">
+                    {!! $h["icon"] !!}
+                    @php
+                    $element = "";
+                    $v = "";
+                    if (isset($h["element"]))
+                        $e = $elementos[$h["type"]][$h["element"]];
+                    if($h["type"] == "emails")
+                        $v = view('layouts.general.email', ['dato' => $e["email"]])->render();
+                    if($h["type"] == "phones")
+                        $v = view('layouts.general.telefono', ['dato' => $e])->render();
+                    if($h["type"] == "attention_schedule")
+                        $v = $elementos[$h["type"]];
+                    @endphp
+                    <div>
+                        <h3 class="header--title">{{$h["title"]}}</h3>
+                        <p class="header--text">{!! $v !!}</p>
+                    </div>
+                </div>
+                @endforeach
+                @endif
+            </div>
+            @php
+            $ARR_redes = [
+                "facebook" => '<i class="header--social__icon fab fa-facebook-square"></i>',
+                "instagram" => '<i class="header--social__icon fab fa-instagram"></i>',
+                "twitter" => '<i class="header--social__icon fab fa-twitter"></i>',
+                "youtube" => '<i class="header--social__icon fab fa-youtube"></i>',
+                "linkedin" => '<i class="header--social__icon fab fa-linkedin-in"></i>'
+            ];
+            @endphp
+            <div class="header--info__target header--social">
+                @foreach($elementos->social_networks AS $k => $v)
+                <a title="{{$v['titulo']}}" class="header--social__element" href="{{$v['url']}}" target="_blank">{!! $ARR_redes[$v["redes"]] !!}</a>
+                @endforeach
+            </div>
+        </div>
     </div>
 </header>
 <div id="wrapper-menu" class="position-fixed">

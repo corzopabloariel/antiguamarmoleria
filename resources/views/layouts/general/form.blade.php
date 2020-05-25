@@ -48,9 +48,9 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form" onsubmit="event.preventDefault(); formSubmit(this);" class="pt-2" action="@isset( $url ) {{ $url }} @endisset" @if( $buttonADD ) method="post" @else method="put" @endif enctype="multipart/form-data">
+            <form id="form" onsubmit="event.preventDefault(); formSubmit(this);" action="@isset( $url ) {{ $url }} @endisset" @if( $buttonADD ) method="post" @else method="put" @endif enctype="multipart/form-data">
                 @csrf
-                <p class="form-required">Datos necesarios</p>
+                <p class="form-required shadow-sm">Datos necesarios</p>
                 <div class="modal-body pyrus--form"></div>
                 <div class="modal-footer bg-light">
                     <button type="button" onclick="remove( this );" class="btn button--form btn-danger px-5 text-uppercase">cerrar</button>

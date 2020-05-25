@@ -205,6 +205,18 @@ class AdmController extends Controller
     public function TP_CHECK_value($value) {
         return $value;
     }
+    public function TP_COLOR($attr, $value, $valueNew, $specification) {
+        return $valueNew;
+    }
+    public function TP_COLOR_value($value) {
+        return $value;
+    }
+    public function TP_SLUG($attr, $value, $valueNew, $specification) {
+        return str_slug($valueNew);
+    }
+    public function TP_SLUG_value($value) {
+        return str_slug($value);
+    }
     public function TP_IMAGE($attr, $value, $valueNew, $specification) {
         $file = isset($valueNew[$attr]) ? $valueNew[$attr] : null;
         $path = "images/";
@@ -257,10 +269,10 @@ class AdmController extends Controller
                 $data = $data->toArray();
             } catch (\Throwable $th) {}
         }
-        $datosRequest["ATRIBUTOS"] = json_decode( $datosRequest["ATRIBUTOS"] , true );
+        $datosRequest["ATRIBUTOS"] = json_decode($datosRequest["ATRIBUTOS"], true);
         $OBJ = [];
-        for( $x = 0 ; $x < count( $datosRequest[ "ATRIBUTOS" ] ) ; $x++ ) {
-            $aux = $datosRequest[ "ATRIBUTOS" ][ $x ];
+        for ($x = 0 ; $x < count($datosRequest["ATRIBUTOS"]); $x++) {
+            $aux = $datosRequest["ATRIBUTOS"][$x];
             switch ($aux["TIPO"]) {
                 case "U":
                     $attrs = array_keys($aux["DATA"]["especificacion"]);
@@ -271,8 +283,13 @@ class AdmController extends Controller
                     for($i = 0; $i < count($attrs); $i++) {
                         $attr = $attrs[$i];
                         $specification = $specifications[$attr];
+                        if ($specification == "TP_ARRAY")
+                            continue;
                         $detail = isset($details[$attr]) ? $details[$attr] : null;
-                        $valueNew = $values[$attr];
+                        if ($specification == "TP_SLUG")
+                            $valueNew = $values[str_replace("_slug", "", $attr)];
+                        else
+                            $valueNew = $values[$attr];
                         if (empty($column)) {
                             $value = isset($data[$attr]) ? $data[$attr] : null;
                             $OBJ[$attr] = call_user_func_array("self::{$specification}", [$attr, $value, $valueNew, $detail]);
@@ -296,11 +313,26 @@ class AdmController extends Controller
                     for ($i = 0; $i < count($attrs); $i++) {
                         $attr = $attrs[$i];
                         $specification = $specifications[$attr];
+                        if ($specification == "TP_ARRAY")
+                            continue;
                         $detail = isset($details[$attr]) ? $details[$attr] : null;
                         $valueNew = $values[$attr];
+                        if ($specification == "TP_SLUG")
+                            $attr = str_replace("_slug", "", $attr);
                         $value = isset($data[$attr]) ? $data[$attr] : null;
                         for ($j = 0; $j < count($valueNew); $j++)
                             $OBJ[$column][$j][$attr] = call_user_func_array("self::{$specification}", [$attr, $value, $valueNew[$j], $detail]);
+                    }
+                    if (!empty($aux["DATA"]["sorteable"])) {
+                        for($i = 0; $i < count($OBJ[$column]) - 1 ; $i ++) {
+                            for($j = $i + 1; $j < count($OBJ[$column]) ; $j ++) {
+                                if ($OBJ[$column][ $i ][$aux["DATA"]["sorteable"]] > $OBJ[$column][$j][$aux["DATA"]["sorteable"]]) {
+                                    $temp = $OBJ[$column][$i];
+                                    $OBJ[$column][$i] = $OBJ[$column][$j];
+                                    $OBJ[$column][$j] = $temp;
+                                }
+                            }
+                        }
                     }
                     break;
                 case "A":

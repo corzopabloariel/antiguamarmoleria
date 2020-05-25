@@ -3,11 +3,14 @@
         <div class="mb-4">
             <h3 class="text-center mb-3">Encabezado de página</h3>
             @php
-            $view = View::make('layouts.general.header', ['elementos' => $data['elementos'], 'link' => 0]);
+            $view = view('layouts.general.header', ['elementos' => $data['elementos'], 'link' => 0])->render();
             @endphp
             {!! $view !!}
             <h3 class="text-center mt-4 mb-3">Pie de página</h3>
-            {{--@include('layouts.general.footer', ['elementos' => $data['elementos'], 'link' => 0])--}}
+            @php
+            $view = view('layouts.general.footer', ['elementos' => $data['elementos'], 'link' => 0])->render();
+            @endphp
+            {!! $view !!}
         </div>
         @include( 'layouts.general.form', [ 'buttonADD' => 0 , 'form' => 1 , 'close' => 0, 'url' => url('/adm/empresa/update') , 'modal' => 0 ] )
     </div>
@@ -88,6 +91,14 @@
                 return x;
         });
         let target = document.querySelector(`#wrapper-header`);
+        const total = target.querySelectorAll(".pyrus--element");
+        if (total.length === 3) {
+            Toast.fire({
+                icon: 'warning',
+                title: 'Máximo permitdo: 3 elementos'
+            })
+            return null
+        }
         let html = "";
         if (window[element.column] === undefined)
             window[element.column] = 0;
@@ -139,7 +150,10 @@
                 case "A":
                 case "M":
                     if (window.data.elementos[p.column])
-                        window.data.elementos[p.column].forEach(a => eval(`${p.function}Function('${JSON.stringify(a)}')`));
+                        window.data.elementos[p.column].forEach(a => {
+                            const func = new Function(`${p.function}Function(${JSON.stringify(a)})`);
+                            func.call(null);
+                        });
                 break;
             }
         })
@@ -151,6 +165,6 @@
         window.data.elementos.email.forEach(e => {addEmail($("#btnEmail"), e); });
         window.data.elementos.footer.forEach(e => {addText($("#btnText"), e); });
         window.data.elementos.telefono.forEach(t => {addTelefono($("#btnTelefono"), t); });*/
-    });
+    }, false);
 </script>
 @endpush

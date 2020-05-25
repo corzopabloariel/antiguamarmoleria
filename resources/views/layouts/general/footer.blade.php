@@ -1,37 +1,38 @@
 <footer class="footer">
     <div class="container">
         <div class="row">
-            <div class="col-12 col-md-4 col-lg-4 d-flex align-items-center">
-                @include( 'layouts.general.image' , [ 'i' => $elementos->images['logoFooter'] , 'c' => 'd-block footer--logo' , 'n' => 'Logo ' . env('APP_NAME') ] )
-            </div>
-            <div class="col-12 col-md-4 col-lg-4 d-flex">
+            <div class="col-12 col-md-4 col-lg-2 d-flex align-items-center">
                 <div class="w-100">
-                    <h3 class="footer--title">Secciones</h3>
-                    <ul class="list-unstyled mb-0 footer--list footer--list__column">
-                        @foreach($elementos->sections[$login] AS $section)
-                            <li class="text-truncate"><a href="{{ $link ? URL::to("{$section['LINK']}") : '#' }}">{{ $section['NAME'] }}</a></li>
-                        @endforeach
-                    </ul>
+                    @include( 'layouts.general.image' , [ 'i' => $elementos->images['logoFooter'] , 'c' => 'd-block footer--logo' , 'n' => 'Logo ' . env('APP_NAME') ] )
                     @if(!empty($elementos->social_networks))
                     @php
                     $ARR_redes = [
-                        "facebook" => '<i style="color: #A3A3A3; margin-right:10px; font-size: 16px;" class="fab fa-facebook-square"></i>',
-                        "instagram" => '<i style="color: #A3A3A3; margin-right:10px; font-size: 16px;" class="fab fa-instagram"></i>',
-                        "twitter" => '<i style="color: #A3A3A3; margin-right:10px; font-size: 16px;" class="fab fa-twitter"></i>',
-                        "youtube" => '<i style="color: #A3A3A3; margin-right:10px; font-size: 16px;" class="fab fa-youtube"></i>',
-                        "linkedin" => '<i style="color: #A3A3A3; margin-right:10px; font-size: 16px;" class="fab fa-linkedin-in"></i>'
+                        "facebook" => '<i class="header--social__icon fab fa-facebook-square"></i>',
+                        "instagram" => '<i class="header--social__icon fab fa-instagram"></i>',
+                        "twitter" => '<i class="header--social__icon fab fa-twitter"></i>',
+                        "youtube" => '<i class="header--social__icon fab fa-youtube"></i>',
+                        "linkedin" => '<i class="header--social__icon fab fa-linkedin-in"></i>'
                     ];
                     @endphp
-                    <div class="d-flex w-100 justify-content-start flex-column" style="">
-                        Seguinos
-                        <div class="mt-1">
-                            @foreach($elementos->redes AS $k => $v)
-                                <a href="{{$v['url']}}" target="_blank">{!! $ARR_redes[$v["redes"]] !!} {{$v["titulo"]}}</a>
-                            @endforeach
-                        </div>
+                    <div class="header--social header--social__footer">
+                        @foreach($elementos->social_networks AS $k => $v)
+                            <a title="{{$v['titulo']}}" class="header--social__element" href="{{$v['url']}}" target="_blank">{!! $ARR_redes[$v["redes"]] !!}</a>
+                        @endforeach
                     </div>
                     @endif
                 </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-3 d-flex">
+                <div class="w-100">
+                    <h3 class="footer--title">Secciones</h3>
+                    <ul class="list-unstyled mb-0 footer--list footer--list__column">
+                        @foreach($elementos->sections AS $section)
+                            <li class="text-truncate"><a href="{{ $link ? URL::to("{$section['LINK']}") : '#' }}">{{ $section['NAME'] }}</a></li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-3 d-flex">
             </div>
             <div class="col-12 col-md-4 col-lg-4 mt-md-4 mt-lg-0">
                 <h3 class="footer--title">{{ env('APP_NAME') }}</h3>
@@ -39,7 +40,7 @@
                     <li class="d-flex align-items-start">
                         <i class="footer--icon fas fa-map-marker-alt"></i>
                         <div class="footer--info">
-                            @include( 'layouts.general.domicilio' , [ "dato" => $elementos->domicilio , "link" => 1 ] )
+                            @include( 'layouts.general.domicilio' , [ "dato" => $elementos->addresses , "link" => 1 ] )
                         </div>
                     </li>
                     <li class="d-flex align-items-start">
@@ -48,7 +49,7 @@
                             @php
                             $tel = "";
                             $wha = "";
-                            foreach( $elementos->telefono AS $t ) {
+                            foreach( $elementos->phones AS $t ) {
                                 if ($t[ "tipo" ] == "tel")
                                     $tel .= "<p>" . view('layouts.general.telefono', ["dato" => $t])->render() . "</p>";
                                 else
@@ -58,17 +59,19 @@
                             {!! $tel !!}
                         </div>
                     </li>
+                    @if (!empty($wha))
                     <li class="d-flex align-items-start">
                         <i class="fab fa-whatsapp footer--icon"></i>
                         <div class="footer--info">
                             {!! $wha !!}
                         </div>
                     </li>
+                    @endif
                     <li class="d-flex align-items-start">
                         <i class="footer--icon far fa-envelope"></i>
                         <div class="footer--info">
-                            @foreach( $elementos->email as $e )
-                                <p class="text-truncate">@include( 'layouts.general.email' , [ "dato" => $e ] )</p>
+                            @foreach( $elementos->emails as $e )
+                                <p class="text-truncate">@include('layouts.general.email', ["dato" => $e["email"]])</p>
                             @endforeach
                         </div>
                     </li>
@@ -87,7 +90,7 @@
         </div>
         @endif
     </div>
-    <div class="osole py-3">
+    <div class="pablocorzo py-3">
         <div class="container">
             <div class="row by">
                 <div class="col-12">

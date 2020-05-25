@@ -20,8 +20,8 @@ class MarcaController extends Controller
     {
         $elements = $this->model;
         if (isset($request->search))
-            $elements = $elements->whereRaw( "UPPER(CONCAT_WS(' ',`name`)) LIKE UPPER('%{$request->search}%')" );
-        $elements = $elements->orderBy('name')->paginate(15);
+            $elements = $elements->whereRaw( "UPPER(CONCAT_WS(' ',`title`,`advantege`)) LIKE UPPER('%{$request->search}%')" );
+        $elements = $elements->where("elim", 0)->orderBy('order')->paginate(15);
         $data = [
             "view"      => "auth.parts.marcas",
             "title"     => "Marcas",
@@ -34,11 +34,6 @@ class MarcaController extends Controller
         if (isset($request->search))
             $data["search"] = $request->search;
         return view('auth.distribuidor',compact('data'));
-    }
-
-    public function modelos($id) {
-        $marca = self::edit($id);
-        return $marca->modelos()->orderBy("name")->pluck("name", "id");
     }
 
     public function show() {}
