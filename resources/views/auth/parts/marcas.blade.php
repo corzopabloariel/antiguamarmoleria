@@ -10,14 +10,23 @@
     window.pyrus.push({entidad: new Pyrus("marcas"), tipo: "U"});
     window.pyrus.push({entidad: new Pyrus("marcas_txt"), tipo: "U"});
     window.pyrus.push({entidad: new Pyrus("marca_advantage"), tipo: "M", column: "advantage", function: "telefono"});
-    addfinish = (data) => {
+    addfinish = data => {
         if (!data) {
-            document.querySelector(`#wrapper-ventaja`).innerHTML = "";
-            for(let inst in CKEDITOR.instances) {
-                if (!document.querySelector(inst))
-                    CKEDITOR.instances[inst].destroy();
+            const target = document.querySelector(`#wrapper-ventaja`);
+            if (target) {
+                let ck = target.querySelectorAll(".ckeditor")
+                if (ck.length > 0) {
+                    Array.prototype.forEach.call(ck, c => {
+                        if (CKEDITOR.instances[c.id])
+                            CKEDITOR.instances[c.id].destroy();
+                    });
+                }
+                target.innerHTML = "";
             }
+            return null;
         }
+        if (data.advantage)
+            data.advantage.forEach(a => ventajaFunction(a));
     };
     /** ------------------------------------- */
     ventajaFunction = (value = null) => {

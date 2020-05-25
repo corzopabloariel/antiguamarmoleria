@@ -195,12 +195,27 @@ dl, ol, ul {
     height: calc(100vh - 28px - 28px - 61px - 69px - 58px);
     overflow-y: auto;
 }
+.pyrus--edit__check {
+    border-radius: .5em;
+    font-size: 14px;
+    width: 150px;
+    position: absolute;
+    background-color: #ffffff;
+}
+.pyrus--edit__title {
+    font-size: 12px;
+    text-transform: uppercase;
+}
 .pyrus--color {
     display: flex;
 }
 .pyrus--color__element {
     margin-top: .3em;
     height: 10px;
+    border: 1px solid #7C7C7C;
+    width: 50px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .pyrus--color .form--input:first-child {
     border-top-right-radius: 0;
@@ -314,25 +329,11 @@ dl, ol, ul {
     list-style: none;
     display: flex;
     padding-left: 0;
-}
-.image--wh__details {
     flex-direction: column;
-}
-.image--wh li + li {
-    margin-left: 1em;
-}
-.image--wh li {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 .image--wh__details li + li {
     margin-left: 0;
     margin-top: .3em;
-}
-.image--wh li + li::before {
-    padding-right: 1em;
-    content: "x";
 }
 .image--wh__details li + li::before {
     padding-right: 0;

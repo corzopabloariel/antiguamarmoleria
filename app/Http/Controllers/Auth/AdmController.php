@@ -218,6 +218,7 @@ class AdmController extends Controller
         return str_slug($value);
     }
     public function TP_IMAGE($attr, $value, $valueNew, $specification) {
+        $file = null;
         $file = isset($valueNew[$attr]) ? $valueNew[$attr] : null;
         $path = "images/";
         $old = empty($value) ? null : $value["i"];//ruta vieja;
@@ -308,20 +309,20 @@ class AdmController extends Controller
                     $specifications = $aux["DATA"]["especificacion"];
                     $details = $aux["DATA"]["detalles"];
                     $OBJ[$column] = [];
-                    if (!empty($column))
-                        $values = $values[$column];
                     for ($i = 0; $i < count($attrs); $i++) {
+                        $value = isset($data[$column]) ? $data[$column] : null;
                         $attr = $attrs[$i];
                         $specification = $specifications[$attr];
                         if ($specification == "TP_ARRAY")
                             continue;
                         $detail = isset($details[$attr]) ? $details[$attr] : null;
-                        $valueNew = $values[$attr];
+                        $valueNew = $values[$attr][$column];
                         if ($specification == "TP_SLUG")
                             $attr = str_replace("_slug", "", $attr);
-                        $value = isset($data[$attr]) ? $data[$attr] : null;
-                        for ($j = 0; $j < count($valueNew); $j++)
+                        for ($j = 0; $j < count($valueNew); $j++) {
+                            $value = isset($value[$j][$attr]) ? $value[$j][$attr] : null;
                             $OBJ[$column][$j][$attr] = call_user_func_array("self::{$specification}", [$attr, $value, $valueNew[$j], $detail]);
+                        }
                     }
                     if (!empty($aux["DATA"]["sorteable"])) {
                         for($i = 0; $i < count($OBJ[$column]) - 1 ; $i ++) {
@@ -367,18 +368,22 @@ class AdmController extends Controller
                 switch ($element["TIPO"]) {
                     case "U":
                         foreach($element["DATA"]["especificacion"] AS $specification => $type) {
-                            if (isset($aux[$table][$specification])) {
-                                $value = $aux[$table][$specification];
-                                $values[$specification] = call_user_func_array("self::{$type}_value", [$value]);
+                            if ($type != "TP_ARRAY") {
+                                if (isset($aux[$table][$specification])) {
+                                    $value = $aux[$table][$specification];
+                                    $values[$specification] = call_user_func_array("self::{$type}_value", [$value]);
+                                }
                             }
                         }
                     break;
                     case "A":
                     case "M":
                         foreach($element["DATA"]["especificacion"] AS $specification => $type) {
-                            if (isset($aux[$table][$element["COLUMN"]][$specification])) {
-                                $value = $aux[$table][$element["COLUMN"]][$specification];
-                                $values[$specification] = call_user_func_array("self::{$type}_value", [$value]);
+                            if ($type != "TP_ARRAY") {
+                                if (isset($aux[$table][$element["COLUMN"]][$specification])) {
+                                    $value = $aux[$table][$element["COLUMN"]][$specification];
+                                    $values[$specification] = call_user_func_array("self::{$type}_value", [$value]);
+                                }
                             }
                         }
                     break;

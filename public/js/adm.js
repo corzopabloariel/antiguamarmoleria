@@ -669,12 +669,54 @@ shortcut.add( "Alt+Ctrl+Q" , function () {
 /** -------------------------------------
  *      INICIO
  ** ------------------------------------- */
+function getPosition(el) {
+    var xPos = 0;
+    var yPos = 0;
+    while (el) {
+        if (el.tagName == "BODY") {
+            var xScroll = el.scrollLeft || document.documentElement.scrollLeft;
+            var yScroll = el.scrollTop || document.documentElement.scrollTop;
+            xPos += (el.offsetLeft - xScroll + el.clientLeft);
+            yPos += (el.offsetTop - yScroll + el.clientTop);
+        } else {
+            xPos += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+            yPos += (el.offsetTop - el.scrollTop + el.clientTop);
+        }
+        el = el.offsetParent;
+    }
+    return {
+        x: xPos,
+        y: yPos
+    };
+}
+
 
 function elementFocus(evt) {
     this.previousElementSibling.classList.add("form--label__active");
 }
 function elementBlur(evt) {
     this.previousElementSibling.classList.remove("form--label__active");
+}
+function editCheck(evt) {
+    let e = document.querySelector(".pyrus--edit__check");
+    if (e)
+        e.remove();
+    const pos = getPosition(this);
+    let option = this.option;
+    let div = document.createElement("div");
+    div.classList.add("p-2", "pyrus--edit__check", "shadow")
+    div.setAttribute("style", `left: calc(${pos.x}px - 170px); top: ${pos.y}px`);
+    div.innerHTML = "<h3 class='pyrus--edit__title'>Cambiar opción</h3>";
+    if (option) {
+        option = JSON.parse(option);
+    }
+
+    document.querySelector("body").appendChild(div)
+    let formData = new FormData();
+    formData.set("table", this.dataset.name);
+    formData.set("key", this.dataset.column);
+    formData.set("value", this.textContent);
+    formData.set("id", this.dataset.id);
 }
 function editable(evt) {
     this.contentEditable = true;
@@ -735,19 +777,11 @@ init = (callbackOK, normal = true, widthElements = true, type = "table", withAct
                 btn = ["e" , "d"];
             } else
                 targetElements.innerHTML = window.pyrus[0].entidad.table();
-            window.pyrus[0].entidad.editor( CKEDITOR );
+            window.pyrus[0].entidad.editor();
             if (widthElements) {
-                if (type == "table") {
+                if (type == "table")
                     window.pyrus[0].entidad.elements("#tabla" , url_simple, window.data.elementos, btn);
-                    //---------------------
-                    const spans = document.querySelectorAll(".edit");
-                    if (spans.length > 0) {
-                        Array.prototype.forEach.call(spans, span => {
-                            span.addEventListener("dblclick", editable);
-                            span.addEventListener("blur", editableSave);
-                        })
-                    }
-                } else
+                else
                     targetElements.innerHTML = window.pyrus[0].entidad.card(url_simple, window.data.elementos, ["e", "d"]);
             }
         }
@@ -763,22 +797,28 @@ init = (callbackOK, normal = true, widthElements = true, type = "table", withAct
                 btn = ["e" , "d"];
             } else
                 targetElements.innerHTML = window.pyrus.table();
-            window.pyrus.editor( CKEDITOR );
+            window.pyrus.editor();
             if (widthElements) {
-                if (type == "table") {
+                if (type == "table")
                     window.pyrus.elements("#tabla" , url_simple, window.data.elementos, btn);
-                    //---------------------
-                    const spans = document.querySelectorAll(".edit");
-                    if (spans.length > 0) {
-                        Array.prototype.forEach.call(spans, span => {
-                            span.addEventListener("dblclick", editable);
-                            span.addEventListener("blur", editableSave);
-                        })
-                    }
-                } else
+                else
                     targetElements.innerHTML = window.pyrus.card(url_simple, window.data.elementos, ["e", "d"]);
             }
         }
+    }
+    //---------------------
+    const edit__text = document.querySelectorAll(".edit");
+    const edit__check = document.querySelectorAll(".edit--check");
+    if (edit__text.length > 0) {
+        Array.prototype.forEach.call(edit__text, e => {
+            e.addEventListener("dblclick", editable);
+            e.addEventListener("blur", editableSave);
+        })
+    }
+    if (edit__check.length > 0) {
+        Array.prototype.forEach.call(edit__check, e => {
+            e.addEventListener("click", editCheck);
+        })
     }
     callbackOK.call(this, [targetForm, targetElements]);
 };

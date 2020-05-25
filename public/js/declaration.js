@@ -665,15 +665,15 @@ const ENTIDADES = {
     marcas: {
         TABLE: "marcas",
         ATRIBUTOS: {
-            order: {TIPO:"TP_STRING",MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE", NOMBRE: "orden"},
+            order: {TIPO:"TP_STRING", LABEL: 1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE_FORM", NOMBRE: "orden"},
             logo: {TIPO:"TP_IMAGE", SIZE: "2MB", EXT: "jpeg, png, jpg, gif", RULE: "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "marcas",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"190px", HEIGHT: "48px"},
             color: {TIPO:"TP_COLOR",VISIBILIDAD:"TP_VISIBLE", HELP: "Color de fondo predominante", LABEL: 1, NECESARIO: 1},
-            color_text: {TIPO:"TP_COLOR",VISIBILIDAD:"TP_VISIBLE_FORM", HELP: "Color del texto predominante", LABEL: 1, NECESARIO: 1},
+            color_text: {TIPO:"TP_COLOR",VISIBILIDAD:"TP_VISIBLE_FORM", HELP: "Color del texto predominante", LABEL: 1, NECESARIO: 1, NOMBRE: "Color del texto"},
             title: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre"},
             title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
-            sliders: {TIPO:"TP_ARRAY",COLUMN:"sliders",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Imágenes"},
+            sliders: {TIPO:"TP_ARRAY",COLUMN:"sliders",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Sliders"},
             advantage: {TIPO:"TP_ARRAY",COLUMN:"advantage",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Ventajas"},
-            is_destacado: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE_FORM",CHECK:"¿Destacado?", HELP: "Marca a mostrar en la página principal y header", NOMBRE: "Destacado"}
+            is_destacado: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Destacado?", HELP: "Marca a mostrar en la página principal y header", NOMBRE: "Destacado", OPTION: {true: "Si", false: "No"}}
         },
         FORM: [
             {
@@ -777,7 +777,7 @@ const ENTIDADES = {
         ATRIBUTOS: {
             order: {TIPO:"TP_ENTERO",NECESARIO:1, LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"orden",SIMPLE:1, SORTEABLE: 1, MAX: 3, MIN: 1, STEP: 1},
             title: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE", NECESARIO: 1,NOMBRE: "Título"},
-            image: {TIPO:"TP_IMAGE", SIZE: "2MB", EXT: "jpeg, png, jpg, gif", RULE: "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "marcas",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"200px", HEIGHTop: "200px"},
+            image: {TIPO:"TP_IMAGE", SIZE: "2MB", EXT: "jpeg, png, jpg, gif", RULE: "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "marcas",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"60px", HEIGHT: "60px"},
             details: {TIPO:"TP_TEXT", LABEL: 1,EDITOR:1, CLASS: "ckeditor",VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"detalles"}
         },
         FORM: [
