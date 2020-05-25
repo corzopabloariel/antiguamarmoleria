@@ -580,7 +580,7 @@ removeFile = (t) => {
             })
         }
     }, err => {
-        console.log(err)
+        console.error(err)
     });
 };
 deleteFile = (t, url, txt, data, callbackOK = null, callbackFail = null) => {
@@ -697,26 +697,86 @@ function elementFocus(evt) {
 function elementBlur(evt) {
     this.previousElementSibling.classList.remove("form--label__active");
 }
+function saveEdit(t) {
+    t.disabled = true;
+    let formData = new FormData(t.parentElement.previousElementSibling);
+    formData.append("table", t.dataset.table);
+    formData.append("key", t.dataset.key);
+    formData.append("id", t.dataset.id);
+    formData.append("ATRIBUTOS",JSON.stringify([{ DATA: window.entidad_eventual.objetoSimple , TIPO: "U" }]));
+    axios({
+        method: "post",
+        url: `${url_simple}/adm/edit`,
+        data: formData,
+        responseType: 'json',
+        config: { headers: {'Content-Type': 'multipart/form-data' }}
+    })
+    .then((res) => {
+        if(res.data.error === 0) {
+            Toast.fire({
+                icon: 'success',
+                title: 'Guardado'
+            });
+            columna = window.entidad_eventual.columnas().find(c => {
+                if(c.COLUMN == t.dataset.key)
+                    return c;
+            });
+            let td = document.createElement("td");
+            td.style.maxWidth = "500px";
+            window.td_eventual.innerHTML = window.entidad_eventual.convert(res.data.obj[t.dataset.key], td, url_simple, window.entidad_eventual.especificacion[t.dataset.key].TIPO, window.entidad_eventual.especificacion[t.dataset.key], null, columna).innerHTML;
+            const edit__check = window.td_eventual.querySelectorAll(".edit--check");
+            if (edit__check.length > 0) {
+                Array.prototype.forEach.call(edit__check, e => {
+                    e.addEventListener("click", editCheck);
+                })
+            }
+            removeEdit(t);
+            //location.reload();
+        } else  {
+            Toast.fire({
+                icon: 'error',
+                title: 'Error'
+            })
+        }
+    })
+    .catch((err) => {
+        console.error( `ERROR en ${url}` );
+        alertify.error( "Error" );
+    })
+    .then(() => {});
+}
+function removeEdit(t) {
+    let e = t.closest(".pyrus--edit__check");
+    e.remove();
+    delete window.entidad_eventual;
+    delete window.td_eventual;
+}
 function editCheck(evt) {
     let e = document.querySelector(".pyrus--edit__check");
     if (e)
         e.remove();
-    const pos = getPosition(this);
-    let option = this.option;
+    const pos = getPosition(this.parentElement);
+    const w = 250;
+    let name = this.dataset.name;
+    let column = this.dataset.column;
+    let value = this.dataset.value;
     let div = document.createElement("div");
+    let entidad = null;
+    if (Array.isArray(window.pyrus))
+        entidad = window.pyrus.find(e => {
+            if(e.entidad.name == name)
+                return e;
+        }).entidad;
+    else
+        entidad = window.pyrus;
+    window.entidad_eventual = entidad;
+    window.td_eventual = this.parentElement;
     div.classList.add("p-2", "pyrus--edit__check", "shadow")
-    div.setAttribute("style", `left: calc(${pos.x}px - 170px); top: ${pos.y}px`);
-    div.innerHTML = "<h3 class='pyrus--edit__title'>Cambiar opción</h3>";
-    if (option) {
-        option = JSON.parse(option);
-    }
-
-    document.querySelector("body").appendChild(div)
-    let formData = new FormData();
-    formData.set("table", this.dataset.name);
-    formData.set("key", this.dataset.column);
-    formData.set("value", this.textContent);
-    formData.set("id", this.dataset.id);
+    div.setAttribute("style", `left: calc(${pos.x}px - ${w}px); top: ${pos.y}px`);
+    div.innerHTML = '<h3 class="pyrus--edit__title">Cambiar opción<button type="button" class="close" onclick="removeEdit(this);"><span aria-hidden="true">&times;</span></button></h3>';
+    div.innerHTML += `<form>${entidad.elementForm(column, value)}</form>`;
+    div.innerHTML += `<div class="d-flex justify-content-end border-top mt-2 pt-2"><button onclick="saveEdit(this);" data-table="${this.dataset.name}" data-key="${this.dataset.column}" data-id="${this.dataset.id}" class="btn btn-sm button--form btn-primary" type="button"><i class="fas fa-save"></i></button></div>`;
+    document.querySelector("body").appendChild(div);
 }
 function editable(evt) {
     this.contentEditable = true;

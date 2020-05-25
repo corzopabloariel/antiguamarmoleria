@@ -359,35 +359,34 @@ class AdmController extends Controller
         $aux = $request->all();
         $attr = json_decode($request->ATRIBUTOS, true);
         $flag = false;
+        $aa = [];
         for($i = 0; $i < count($attr); $i++) {
             $elements = [];
             $values = [];
             $table = $attr[$i]["DATA"]["name"];
-            for($x = 0; $x < count($attr); $x++) {
-                $element = $attr[ $x ];
-                switch ($element["TIPO"]) {
-                    case "U":
-                        foreach($element["DATA"]["especificacion"] AS $specification => $type) {
-                            if ($type != "TP_ARRAY") {
-                                if (isset($aux[$table][$specification])) {
-                                    $value = $aux[$table][$specification];
-                                    $values[$specification] = call_user_func_array("self::{$type}_value", [$value]);
-                                }
+            $element = $attr[$i];
+            switch ($element["TIPO"]) {
+                case "U":
+                    foreach($element["DATA"]["especificacion"] AS $specification => $type) {
+                        if ($type != "TP_ARRAY") {
+                            if (isset($aux[$table][$specification])) {
+                                $value = $aux[$table][$specification];
+                                $values[$specification] = call_user_func_array("self::{$type}_value", [$value]);
                             }
                         }
-                    break;
-                    case "A":
-                    case "M":
-                        foreach($element["DATA"]["especificacion"] AS $specification => $type) {
-                            if ($type != "TP_ARRAY") {
-                                if (isset($aux[$table][$element["COLUMN"]][$specification])) {
-                                    $value = $aux[$table][$element["COLUMN"]][$specification];
-                                    $values[$specification] = call_user_func_array("self::{$type}_value", [$value]);
-                                }
+                    }
+                break;
+                case "A":
+                case "M":
+                    foreach($element["DATA"]["especificacion"] AS $specification => $type) {
+                        if ($type != "TP_ARRAY") {
+                            if (isset($aux[$table][$specification][$element["COLUMN"]])) {
+                                $value = $aux[$table][$specification][$element["COLUMN"]];
+                                $values[$specification] = call_user_func_array("self::{$type}_value", [$value]);
                             }
                         }
-                    break;
-                }
+                    }
+                break;
             }
             $rules = isset($attr[$i]["DATA"]["rules"]) ? $attr[$i]["DATA"]["rules"] : [];
             if (!empty($rules)) {
@@ -396,6 +395,7 @@ class AdmController extends Controller
                         $elements[$k] = $v;
                 }
             }
+            $aa[] = ["r" => $rules, "e" => $elements, "t" => $element["TIPO"]];
             $normal = true;
             foreach($rules AS $k => $v) {
                 if (isset($elements[$k])) {
@@ -457,15 +457,33 @@ class AdmController extends Controller
     }
 
     public function edit (Request $request) {
-        try {
-            $data = [];
-            $data[$request->key] = $request->value;
-            DB::table($request->table)
-                ->where('id', $request->id)
-                ->update($data);
-        } catch (\Throwable $th) {
+        //try {
+            if (isset($request->ATRIBUTOS)) {
+                $OBJ = [];
+                $data = DB::table($request->table)->find($request->id, [$request->key]);
+                $value = collect($data)->map(function($x){ return (array) $x; })->toArray()[$request->key][0];
+                $dataRequest = json_decode($request->ATRIBUTOS, true)[0];
+                $attr = $request->key;
+                $specification = $dataRequest["DATA"]["especificacion"][$attr];
+                $valueNew = $request->all()[$dataRequest["DATA"]["name"]];
+                dd($valueNew);
+                $detail = isset($dataRequest["DATA"]["detalles"][$attr]) ? $dataRequest["DATA"]["detalles"][$attr] : null;
+                $OBJ[$attr] = call_user_func_array("self::{$specification}", [$attr, $value, $valueNew, $detail]);
+                dd($OBJ[$attr]);
+                DB::table($request->table)
+                    ->where('id', $request->id)
+                    ->update($OBJ);
+                return json_encode(['success' => true, "error" => 0, "obj" => DB::table($request->table)->find($request->id)]);
+            } else {
+                $data = [];
+                $data[$request->key] = $request->value;
+                DB::table($request->table)
+                    ->where('id', $request->id)
+                    ->update($data);
+            }
+        /*} catch (\Throwable $th) {
             return json_encode(["error" => 1]);
-        }
+        }*/
         return json_encode(['success' => true, "error" => 0]);
     }
 

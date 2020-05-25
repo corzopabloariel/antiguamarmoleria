@@ -198,13 +198,14 @@ dl, ol, ul {
 .pyrus--edit__check {
     border-radius: .5em;
     font-size: 14px;
-    width: 150px;
+    width: 250px;
     position: absolute;
     background-color: #ffffff;
 }
 .pyrus--edit__title {
     font-size: 12px;
     text-transform: uppercase;
+    margin-bottom: 1em;
 }
 .pyrus--color {
     display: flex;
@@ -359,7 +360,7 @@ dl, ol, ul {
     display: none;
 }
 .check input:checked + * + div {
-    color: #111111;
+    color: #ffffff;
     background-color: #43ac6a;
 }
 .check input:checked + * + div::after {
