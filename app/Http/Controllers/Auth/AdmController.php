@@ -465,11 +465,13 @@ class AdmController extends Controller
                 $dataRequest = json_decode($request->ATRIBUTOS, true)[0];
                 $attr = $request->key;
                 $specification = $dataRequest["DATA"]["especificacion"][$attr];
-                $valueNew = $request->all()[$dataRequest["DATA"]["name"]];
-                dd($valueNew);
+                $valueNew = $request->all()[$dataRequest["DATA"]["name"]][$attr];
                 $detail = isset($dataRequest["DATA"]["detalles"][$attr]) ? $dataRequest["DATA"]["detalles"][$attr] : null;
-                $OBJ[$attr] = call_user_func_array("self::{$specification}", [$attr, $value, $valueNew, $detail]);
-                dd($OBJ[$attr]);
+                $aux = call_user_func_array("self::{$specification}", [$attr, $value, $valueNew, $detail]);
+                if (is_string($aux))
+                    $OBJ[$attr] = $aux;
+                else
+                    $OBJ[$attr] = json_encode($aux);
                 DB::table($request->table)
                     ->where('id', $request->id)
                     ->update($OBJ);

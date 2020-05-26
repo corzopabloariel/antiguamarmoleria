@@ -50,145 +50,6 @@ const ENTIDADES = {
             }
         },
     },
-    cliente: {
-        TABLE: "clientes",
-        ATRIBUTOS: {
-            provincia_id: {TIPO:"TP_ENUM",VISIBILIDAD:"TP_VISIBLE_FORM",CLASS:"selectpicker",ENUMOP:"provincias",NOMBRE:"Provincia",COMUN:1},
-            localidad_id: {TIPO:"TP_ENUM",VISIBILIDAD:"TP_VISIBLE_FORM",CLASS:"selectpicker",ENUMOP:"localidades",NOMBRE:"Localidad",COMUN:1,DISABLED:1},
-            cuit: {TIPO:"TP_ENTERO",VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0 text-right",NOMBRE:"c.u.i.t.",LABEL:1},
-            nrodni: {TIPO:"TP_ENTERO",VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0 text-right",NOMBRE:"nro. doc.",LABEL:1},
-            cliente: {TIPO:"TP_ENTERO",VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0 text-right",NOMBRE:"cliente",LABEL:1},
-            nombre: {TIPO:"TP_STRING",MAXLENGTH:120,VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",LABEL:1},
-            direccion: {TIPO:"TP_STRING",MAXLENGTH:200,VISIBILIDAD:"TP_VISIBLE_FORM",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",NOMBRE:"dirección",LABEL:1},
-            telefono1: {TIPO:"TP_STRING",MAXLENGTH:200,VISIBILIDAD:"TP_VISIBLE_FORM",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",NOMBRE:"teléfono #1",LABEL:1},
-            telefono2: {TIPO:"TP_STRING",MAXLENGTH:200,VISIBILIDAD:"TP_VISIBLE_FORM",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",NOMBRE:"teléfono #2",LABEL:1},
-            telefono3: {TIPO:"TP_STRING",MAXLENGTH:200,VISIBILIDAD:"TP_VISIBLE_FORM",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",NOMBRE:"teléfono #3",LABEL:1},
-            email: {TIPO:"TP_EMAIL",MAXLENGTH:200,VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",NOMBRE:"email #1",LABEL:1},
-            email2: {TIPO:"TP_EMAIL",MAXLENGTH:200,VISIBILIDAD:"TP_VISIBLE_FORM",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",NOMBRE:"email #2",LABEL:1},
-        },
-        FORM: [
-            {
-                '<div class="col-12 col-md-6 col-lg-5">/provincia_id/</div><div class="col-12 col-md-6 col-lg-5">/localidad_id/</div>':['provincia_id','localidad_id']
-            },
-            {
-                '<div class="col-12">/direccion/</div>':['direccion']
-            },
-            {
-                '<div class="col-12">/nombre/</div>':['nombre']
-            },
-            {
-                '<div class="col-12 col-md-4">/cliente/</div><div class="col-12 col-md-4">/cuit/</div><div class="col-12 col-md-4">/nrodni/</div>':['cliente','cuit','nrodni'],
-            },
-            {
-                '<div class="col-12 col-md">/email/</div><div class="col-12 col-md">/email2/</div>':['email','email2'],
-            },
-            {
-                '<div class="col-12 col-md-6 col-lg-4">/telefono1/</div><div class="col-12 col-md-6 col-lg-4">/telefono2/</div><div class="col-12 col-md-6 col-lg-4">/telefono3/</div>':['telefono1','telefono2','telefono3'],
-            }
-        ],
-        FUNCIONES: {
-            provincia_id: { onchange: "localidades( this );" }
-        }
-    },
-    marca: {
-        TABLE: "marcas",
-        ATRIBUTOS: {
-            name: {TIPO:"TP_STRING",MAXLENGTH:70,VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",NOMBRE:"marca"},
-            image: {TIPO:"TP_IMAGE",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Imagen - 60x60",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"60px",WIDTHTABLE:"120px", SIMPLE: 1},
-        },
-        FORM: [
-            {
-                '<div class="col-12 col-md-6 col-lg-5">/name/</div>':['name']
-            },
-            {
-                '<div class="col-12 col-md-6">/image/</div>':['image']
-            }
-        ],
-        FUNCIONES: {
-            image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
-        }
-    },
-    modelo: {
-        TABLE: "modelos",
-        ATRIBUTOS: {
-            name: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:70,VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",NOMBRE:"Modelo"},
-            marca_id: {TIPO:"TP_ENTERO",VISIBILIDAD:"TP_INVISIBLE",NOMBRE:"Marca",COMUN:1},
-        },
-        FORM: [
-            {
-                '/marca_id/<div class="col-12 col-md-6 col-lg-5">/name/</div>':['marca_id','name']
-            },
-        ],
-    },
-    automovil: {
-        TABLE: "automoviles",
-        ATRIBUTOS: {
-            marca_id: {TIPO:"TP_ENUM",RELACION:"marcas",RELACIONNAME:"name",VISIBILIDAD:"TP_VISIBLE",ENUMOP:"marcas",NOMBRE:"Marca",COMUN:1},
-            modelo_id: {TIPO:"TP_ENUM",RELACION:"modelos", DISABLED: 1, CLASS:"selectpicker",RELACIONNAME:"name",VISIBILIDAD:"TP_VISIBLE",ENUMOP:"modelos",NOMBRE:"Modelo",COMUN:1, NOT_TRIGGER: 1},
-            version: {TIPO:"TP_STRING",MAXLENGTH:70,VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",NOMBRE:"alimentación",LABEL:1},
-            combustible: {TIPO:"TP_STRING",MAXLENGTH:5,VISIBILIDAD:"TP_VISIBLE_FORM",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",LABEL:1},
-            motor: {TIPO:"TP_FLOAT",VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",NOMBRE:"Versión",LABEL:1},
-            puertas: {TIPO:"TP_ENTERO",VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",LABEL:1},
-            anio: {TIPO:"TP_LIST",VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",NOMBRE:"Año",LABEL:1 },
-            //"0km": {TIPO:"TP_ENUM",ENUM:{false:"No", true:"Si"},VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"0 KM",CLASS:"border-left-0 border-top-0 border-right-0"}
-        },
-        FORM: [
-            {
-                '<div class="col-12 col-md-6 col-lg-5">/marca_id/</div><div class="col-12 col-md-6 col-lg-5">/modelo_id/</div>':['marca_id','modelo_id']
-            },
-            {
-                '<div class="col-12 col-md-6">/combustible/</div><div class="col-12 col-md-6">/version/</div>':['combustible','version']
-            },
-            {
-                '<div class="col-12 col-md-6">/motor/</div><div class="col-12 col-md-6">/puertas/</div>':['motor','puertas']
-            },
-            {
-                '<div class="col-12 col-md-6">/anio/</div>':['anio'],
-            },
-        ],
-        FUNCIONES: {
-            marca_id: { onchange: "marcamodelos( this );" }
-        }
-    },
-
-    poliza_file: {
-        ATRIBUTOS: {
-            file: {TIPO:"TP_FILE",FOLDER:"poliza",NECESARIO:1,VALID:"Ficha seleccionada",INVALID:"Seleccione archivo",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/jpeg,application/pdf",NOMBRE:"Archivo",WIDTH:"190px",SIMPLE:1},
-            enviar: {TIPO:"TP_CHECK",CHECK:"Enviar / Archivo enviado",VISIBILIDAD:"TP_VISIBLE_TABLE",COMUN:1,DEFAULT:1},
-        },
-        FORM: [
-            {
-                '<div class="col-12">/file/</div>':['file']
-            },
-        ]
-    },
-    poliza: {
-        TABLE: "polizas",
-        ATRIBUTOS: {
-            compania: {TIPO:"TP_STRING",MAXLENGTH:200,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"compañia",CLASS:"border-top-0 border-left-0 border-right-0 rounded-0"},
-            poliza: {TIPO:"TP_STRING",MAXLENGTH:30,LABEL:1,VISIBILIDAD:"TP_VISIBLE",CLASS:"border-top-0 border-left-0 border-right-0 rounded-0"},
-            seccion: {TIPO:"TP_STRING",MAXLENGTH:80,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"sección",CLASS:"border-top-0 border-left-0 border-right-0 rounded-0"},
-            cliente: {TIPO:"TP_ENTERO",VISIBILIDAD:"TP_INVISIBLE",CLASS:"border-top-0 border-left-0 border-right-0 rounded-0"},
-            cliente_id: {TIPO:"TP_ENUM",LABEL:1,VISIBILIDAD:"TP_VISIBLE",CLASS:"selectpicker",NOMBRE:"Cliente"},
-            desde: {TIPO:"TP_DATE",LABEL:1,VISIBILIDAD:"TP_VISIBLE",CLASS:"border-top-0 border-left-0 border-right-0 rounded-0", NOMBRE:"VIGENCIA DESDE",FORMAT:[ "dd" , "/" , "mm" , "/" , "aaaa" ]},
-            hasta: {TIPO:"TP_DATE",LABEL:1,VISIBILIDAD:"TP_VISIBLE_FORM",CLASS:"border-top-0 border-left-0 border-right-0 rounded-0", NOMBRE:"VIGENCIA HASTA",FORMAT:[ "dd" , "/" , "mm" , "/" , "aaaa" ]},
-            file: {TIPO:"TP_ARRAY",COLUMN:"file",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Archivos",CLASS:"text-center"}
-        },
-        FORM: [
-            {
-                '<div class="col-12">/compania/</div>':['compania']
-            },
-            {
-                '<div class="col-12 col-md-6">/poliza/</div><div class="col-12 col-md-6">/seccion/</div>':['poliza','seccion']
-            },
-            {
-                '<div class="col-12">/cliente_id/</div>':['cliente_id']
-            },
-            {
-                '<div class="col-12 col-md-6">/desde/</div><div class="col-12 col-md-6">/hasta/</div>':['desde','hasta']
-            }
-        ]
-    },
     contenido_home: {
         ATRIBUTOS: {
             titulo: {TIPO:"TP_STRING",MAXLENGTH:70,VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",NOMBRE:"título",LABEL:1},
@@ -407,28 +268,93 @@ const ENTIDADES = {
             }
         }
     },
-    contenido_empresa_anio: {
+
+    faqs: {
+        TABLE: "faqs",
         ATRIBUTOS: {
-            order: {TIPO:"TP_ENTERO",LABEL: 1,CLASS:"border-left-0 rounded-0 bg-transparent border-right-0 border-top-0",VISIBILIDAD:"TP_VISIBLE",NOMBRE:"año",SIMPLE:1},
-            image: {TIPO:"TP_IMAGE",RULE: "required|image|mimes:jpeg,png,jpg,gif|max:2048", FOLDER: "contenido",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Logotipo - 234x54",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"230px",SIMPLE: 1},
-            texto: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"texto"}
+            order: {TIPO:"TP_STRING", LABEL: 1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE", NOMBRE: "orden"},
+            title: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"pregunta"},
+            title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
+            resume: {TIPO:"TP_TEXT", LABEL: 1,EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"respuesta"},
+            answer: {TIPO:"TP_TEXT", LABEL: 1,EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"detalles"},
+            sliders: {TIPO:"TP_ARRAY",COLUMN:"sliders",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Sliders"}
         },
         FORM: [
             {
-                '<div class="col-12 col-md-6">/order/</div>' : ['order']
+                '<div class="col-12 col-md-4">/order/</div>': ['order']
             },
             {
-                '<div class="col-12">/texto/</div>' : ['texto']
+                '<div class="col-12">/title/</div>': ['title']
+            },
+            {
+                '<div class="col-12">/resume/</div>' : ["resume"]
+            },
+            {
+                '<div class="col-12">/answer/</div>' : ["answer"]
+            },
+        ],
+
+        EDITOR: {
+            resume : {
+                toolbarGroups: [
+                    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+                    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+                    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+                    { name: 'forms', groups: [ 'forms' ] },
+                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+                    { name: 'links', groups: [ 'links' ] },
+                    { name: 'insert', groups: [ 'insert' ] },
+                    { name: 'styles', groups: [ 'styles' ] },
+                    { name: 'colors', groups: [ 'colors' ] },
+                    { name: 'tools', groups: [ 'tools' ] },
+                    { name: 'others', groups: [ 'others' ] },
+                    { name: 'about', groups: [ 'about' ] }
+                ],
+                removeButtons: 'Save,Preview,NewPage,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Redo,Find,Undo,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,RemoveFormat,CopyFormatting,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Language,BidiRtl,BidiLtr,Unlink,Anchor,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Format,Font,FontSize,ShowBlocks,Maximize,About',
+                colorButton_colors : colorPick,
+                height: '80px'
+            },
+            answer: {
+                toolbarGroups: [
+                    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+                    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+                    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+                    { name: 'forms', groups: [ 'forms' ] },
+                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+                    { name: 'links', groups: [ 'links' ] },
+                    { name: 'insert', groups: [ 'insert' ] },
+                    { name: 'styles', groups: [ 'styles' ] },
+                    { name: 'colors', groups: [ 'colors' ] },
+                    { name: 'tools', groups: [ 'tools' ] },
+                    { name: 'others', groups: [ 'others' ] },
+                    { name: 'about', groups: [ 'about' ] }
+                ],
+                removeButtons: 'Save,NewPage,Preview,Print,Cut,Templates,Copy,Paste,PasteText,PasteFromWord,Find,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,RemoveFormat,CopyFormatting,CreateDiv,BidiLtr,BidiRtl,Language,Anchor,Flash,Smiley,SpecialChar,PageBreak,Iframe,Styles,Font,Maximize,ShowBlocks,About,Replace',
+                colorButton_colors : colorPick,
+                height: '250px'
+            },
+        }
+    },
+    faqs_images: {
+        ONE: 1,
+        MULTIPLE: "imagen",
+        NOMBRE: "Imagénes",
+        ATRIBUTOS: {
+            order: {TIPO:"TP_ENTERO",NECESARIO:1, LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"orden",SIMPLE:1, SORTEABLE: 1, MAX: 3, MIN: 1, STEP: 1},
+            image: {TIPO:"TP_IMAGE", SIZE: "2MB", EXT: "jpeg, png, jpg, gif", RULE: "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "faqs",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"600px", HEIGHT: "400px"},
+        },
+        FORM: [
+            {
+                '<div class="col-12 col-md-5">/order/</div>': ['order']
             },
             {
                 '<div class="col-12">/image/</div>': ['image']
             }
         ],
-        FUNCIONES: {
-            image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
-        },
         EDITOR: {
-            texto: {
+            details : {
                 toolbarGroups: [
                     { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
                     { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
@@ -444,146 +370,12 @@ const ENTIDADES = {
                     { name: 'others', groups: [ 'others' ] },
                     { name: 'about', groups: [ 'about' ] }
                 ],
-                removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Redo,Undo,Find,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,Underline,RemoveFormat,CopyFormatting,NumberedList,Blockquote,CreateDiv,BidiLtr,BidiRtl,Language,Anchor,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Image,Styles,Format,Font,ShowBlocks,Maximize,About,BulletedList,Indent,Outdent,JustifyBlock,Italic,Unlink,Link',
+                removeButtons: 'Save,Preview,NewPage,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Redo,Find,Undo,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,RemoveFormat,CopyFormatting,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Language,BidiRtl,BidiLtr,Unlink,Anchor,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Format,Font,FontSize,ShowBlocks,Maximize,About',
                 colorButton_colors : colorPick,
-                height: '120px'
+                height: '140px'
             }
         }
     },
-
-    contenido_video: {
-        ATRIBUTOS: {
-            order: {TIPO:"TP_ENTERO",MAXLENGTH:2,NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"orden",CLASS:"bg-transparent border-left-0 border-right-0 bg-transparent border-top-0 rounded-0",SIMPLE:1},
-            titulo: {TIPO:"TP_STRING", LABEL:1,MAXLENGTH:100,VISIBILIDAD:"TP_VISIBLE",CLASS:"bg-transparent border-left-0 border-right-0 border-top-0 rounded-0"},
-            video: {TIPO:"TP_YOUTUBE",LABEL:1 ,MAXLENGTH:30,VISIBILIDAD:"TP_VISIBLE",WIDTH:"150px",CLASS:"bg-transparent border-left-0 rounded-0 border-right-0 border-top-0",HELP:"Copie el código del video de YouTuve (https://www.youtube.com/watch?v=<strong>XXXXXX</strong>) e inserte en el cuadro de texto"},
-        },
-        FORM: [
-            {
-                '<div class="col-12 col-md-4">/order/</div><div class="col-12 mt-3">/video/</div>' : ["order", "video"]
-            },
-            {
-                '<div class="col-12"><div class="row">/titulo/</div></div>' : [ 'titulo' ],
-            }
-        ],
-    },
-    contenido_servicio: {
-        ATRIBUTOS: {
-            order: {TIPO:"TP_ENTERO",MAXLENGTH:2,NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"orden",CLASS:"border-left-0 border-right-0 bg-transparent border-top-0 rounded-0",SIMPLE:1},
-            image: {TIPO:"TP_IMAGE",FOLDER: "servicio",RULE: "required|image|mimes:jpeg,png,jpg,gif|max:2048",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"600x400",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"600px", SIMPLE: 1},
-            titulo: {TIPO:"TP_STRING",RULE: "max:150",NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título",LABEL:1, CLASS:"border-left-0 rounded-0 border-right-0 border-top-0 bg-transparent"},
-            texto: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"texto"}
-        },
-        FORM: [
-            {
-                '<div class="col-12 col-md-5"><div class="row justify-content-center"><div class="col-12 col-md-4 mb-3">/order/</div><div class="col-12">/image/</div></div></div><div class="col-12 col-md-7"><div class="row"><div class="col-12 mb-3">/titulo/</div><div class="col-12">/texto/</div></div></div>' : [ "order", "image", "titulo", "texto" ]
-            }
-        ],
-        FUNCIONES: {
-            image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
-        },
-        EDITOR: {
-            texto: {
-                toolbarGroups: [
-                    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-                    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-                    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-                    { name: 'forms', groups: [ 'forms' ] },
-                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-                    { name: 'links', groups: [ 'links' ] },
-                    { name: 'insert', groups: [ 'insert' ] },
-                    { name: 'styles', groups: [ 'styles' ] },
-                    { name: 'colors', groups: [ 'colors' ] },
-                    { name: 'tools', groups: [ 'tools' ] },
-                    { name: 'others', groups: [ 'others' ] },
-                    { name: 'about', groups: [ 'about' ] }
-                ],
-                removeButtons: 'Save,NewPage,Print,Preview,Templates,Cut,Copy,Paste,PasteFromWord,PasteText,Undo,Redo,Replace,Find,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,BidiLtr,Language,Anchor,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Format,Font,FontSize,ShowBlocks,Maximize,About',
-                colorButton_colors : colorPick,
-                height: '250px'
-            }
-        }
-    },
-    contenido_post: {
-        ATRIBUTOS: {
-            texto: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"texto"}
-        },
-        FORM: [
-            {
-                '<div class="col-12"><div class="row">/texto/</div></div>' : [ "texto" ]
-            }
-        ],
-        EDITOR: {
-            texto: {
-                toolbarGroups: [
-                    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-                    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-                    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-                    { name: 'forms', groups: [ 'forms' ] },
-                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-                    { name: 'links', groups: [ 'links' ] },
-                    { name: 'insert', groups: [ 'insert' ] },
-                    { name: 'styles', groups: [ 'styles' ] },
-                    { name: 'colors', groups: [ 'colors' ] },
-                    { name: 'tools', groups: [ 'tools' ] },
-                    { name: 'others', groups: [ 'others' ] },
-                    { name: 'about', groups: [ 'about' ] }
-                ],
-                removeButtons: 'Save,NewPage,Print,Preview,Templates,Cut,Copy,Paste,PasteFromWord,PasteText,Undo,Redo,Replace,Find,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,BidiLtr,Language,Anchor,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Format,Font,FontSize,ShowBlocks,Maximize,About',
-                colorButton_colors : colorPick,
-                height: '250px'
-            }
-        }
-    },
-    contenido_post_form: {
-        ATRIBUTOS: {
-            texto: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"texto"}
-        },
-        FORM: [
-            {
-                '<div class="col-12"><div class="row">/texto/</div></div>' : [ "texto" ]
-            }
-        ],
-        EDITOR: {
-            texto: {
-                toolbarGroups: [
-                    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-                    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-                    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-                    { name: 'forms', groups: [ 'forms' ] },
-                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-                    { name: 'links', groups: [ 'links' ] },
-                    { name: 'insert', groups: [ 'insert' ] },
-                    { name: 'styles', groups: [ 'styles' ] },
-                    { name: 'colors', groups: [ 'colors' ] },
-                    { name: 'tools', groups: [ 'tools' ] },
-                    { name: 'others', groups: [ 'others' ] },
-                    { name: 'about', groups: [ 'about' ] }
-                ],
-                removeButtons: 'Save,NewPage,Print,Preview,Templates,Cut,Copy,Paste,PasteFromWord,PasteText,Undo,Redo,Replace,Find,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,BidiLtr,Language,Anchor,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Font,ShowBlocks,Maximize,About',
-                colorButton_colors : colorPick,
-                height: '250px'
-            }
-        }
-    },
-    localidad: {
-        TABLE: "localidades",
-        ATRIBUTOS: {
-            provincia_id: {TIPO:"TP_ENUM",LABEL:1,CLASS:"selectpicker",VISIBILIDAD:"TP_VISIBLE",ENUMOP:"provincias",NOMBRE:"Provincia",COMUN:1},
-            nombre: {TIPO:"TP_STRING",MAXLENGTH:120,LABEL:1,VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",NOMBRE:"localidad"},
-            codigopostal: {TIPO:"TP_STRING",MAXLENGTH:15,LABEL:1,VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0 text-right",NOMBRE: "Código postal"},
-        },
-        FORM: [
-            {
-                '<div class="col-12 col-md-10">/provincia_id/</div>':['provincia_id'],
-                '<div class="col-12 col-md-10">/nombre/</div>':['nombre'],
-                '<div class="col-12 col-md-10">/codigopostal/</div>':['codigopostal'],
-            },
-        ]
-    },
-
     /**********************************
             BLOG
      ********************************** */
@@ -667,10 +459,10 @@ const ENTIDADES = {
         ATRIBUTOS: {
             order: {TIPO:"TP_STRING", LABEL: 1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE_FORM", NOMBRE: "orden"},
             title: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre"},
+            title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
             logo: {TIPO:"TP_IMAGE", SIZE: "2MB", EXT: "jpeg, png, jpg, gif", RULE: "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "marcas",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"190px", HEIGHT: "48px"},
             color: {TIPO:"TP_COLOR",VISIBILIDAD:"TP_VISIBLE", HELP: "Color de fondo predominante", LABEL: 1, NECESARIO: 1},
             color_text: {TIPO:"TP_COLOR",VISIBILIDAD:"TP_VISIBLE_FORM", HELP: "Color del texto predominante", LABEL: 1, NECESARIO: 1, NOMBRE: "Color del texto"},
-            title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
             sliders: {TIPO:"TP_ARRAY",COLUMN:"sliders",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Sliders"},
             advantage: {TIPO:"TP_ARRAY",COLUMN:"advantage",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Ventajas"},
             is_destacado: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Destacado?", HELP: "Marca a mostrar en la página principal y header", NOMBRE: "Destacado", OPTION: {true: "Si", "1": "Si", false: "No", "0": "No"}}
@@ -809,89 +601,24 @@ const ENTIDADES = {
         }
     },
 
-    producto: {
-        TABLE: "coberturas",
+    productos: {
+        TABLE: "productos",
         ATRIBUTOS: {
-            orden: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:4,VISIBILIDAD:"TP_VISIBLE",CLASS:"text-center border-top-0 border-left-0 border-right-0 rounded-0",WIDTH:"150px"},
-            name: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:150,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre",CLASS:"border-top-0 border-left-0 border-right-0 rounded-0"},
-            url: {TIPO:"TP_STRING",MAXLENGTH:150,VISIBILIDAD:"TP_INVISIBLE"},
-            image: {TIPO:"TP_IMAGE",FOLDER: "coberturas/icono",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Ícono - 60x60",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"60px", HEIGHT: "60px", SIMPLE: 1,WIDTHTABLE: "170px"},
+            orden: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE"},
+            marca_id: {TIPO:"TP_RELATIONSHIP",RULE: "required", NECESARIO: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"marca", ENTIDAD: "marcas",LABEL:1, ATTR: ["id", "title"]},
+            title: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre"},
+            title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
             images: {TIPO:"TP_ARRAY",COLUMN:"images",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Imágenes",CLASS:"text-center"},
-            color: {TIPO:"TP_COLOR",VISIBILIDAD:"TP_VISIBLE",CLASS:"border-top-0 border-left-0 border-right-0 rounded-0"},
-            hsl: {TIPO:"TP_STRING",VISIBILIDAD:"TP_INVISIBLE"},
-            resumen: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"resumen"},
-            detalle: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"detalle"},
-            caracteristicas: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"características"},
-            formulario: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"formulario"},
-            destacado: {TIPO:"TP_ENUM",ENUM:{1:"Mostrar en HOME",0:"Producto normal"},VISIBILIDAD:"TP_VISIBLE_FORM",COMUN:1},
+            characteristics: {TIPO:"TP_ARRAY",COLUMN:"characteristics",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Características",CLASS:"text-center"}
         },
         FORM: [
             {
-                '/hsl/<div class="col-12 col-md-4">/image/</div><div class="col-12 col-md-8"><div class="row"><div class="col-12 col-md-5 mb-3">/orden/</div><div class="col-12 mb-3">/color/</div><div class="col-12">/name/</div></div></div>':['image','name','color','hsl', 'orden']
+                '<div class="col-12 col-md-4">/orden/</div><div class="col-12 col-md-6">/marca_id/</div>':['orden', 'marca_id'],
             },
             {
-                '<div class="col-12">/resumen/</div>':['resumen'],
-            },
-            {
-                '<div class="col-12">/detalle/</div>':['detalle'],
-            },
-            {
-                '<div class="col-12">/caracteristicas/</div>':['caracteristicas'],
-            },
-        ],
-        FUNCIONES: {
-            image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
-        },
-        EDITOR: {
-            resumen : {
-                toolbarGroups: [
-                    { name: "basicstyles",groups: ["basicstyles"] },
-                    { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
-                    { name: 'colors', groups: [ 'TextColor', 'BGColor' ] },
-                ],
-                removeButtons: 'Save,NewPage,Print,Preview,Templates,Language,CreateDiv',
-            },
-            detalle: {
-                toolbarGroups: [
-                    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-                    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-                    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-                    { name: 'forms', groups: [ 'forms' ] },
-                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-                    { name: 'links', groups: [ 'links' ] },
-                    { name: 'insert', groups: [ 'insert' ] },
-                    { name: 'styles', groups: [ 'styles' ] },
-                    { name: 'colors', groups: [ 'colors' ] },
-                    { name: 'tools', groups: [ 'tools' ] },
-                    { name: 'others', groups: [ 'others' ] },
-                    { name: 'about', groups: [ 'about' ] }
-                ],
-                removeButtons: 'Save,NewPage,Preview,Print,Cut,Templates,Copy,Paste,PasteText,PasteFromWord,Find,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,RemoveFormat,CopyFormatting,CreateDiv,BidiLtr,BidiRtl,Language,Anchor,Flash,Smiley,SpecialChar,PageBreak,Iframe,Styles,Font,Maximize,ShowBlocks,About,Replace',
-                colorButton_colors : colorPick,
-                height: '250px'
-            },
-            caracteristicas: {
-                toolbarGroups: [
-                    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-                    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-                    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-                    { name: 'forms', groups: [ 'forms' ] },
-                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-                    { name: 'links', groups: [ 'links' ] },
-                    { name: 'insert', groups: [ 'insert' ] },
-                    { name: 'styles', groups: [ 'styles' ] },
-                    { name: 'colors', groups: [ 'colors' ] },
-                    { name: 'tools', groups: [ 'tools' ] },
-                    { name: 'others', groups: [ 'others' ] },
-                    { name: 'about', groups: [ 'about' ] }
-                ],
-                removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Paste,Copy,PasteText,PasteFromWord,Redo,Undo,Find,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,RemoveFormat,CopyFormatting,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,BidiLtr,BidiRtl,Language,Anchor,Unlink,Link,Flash,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Format,Font,FontSize,ShowBlocks,Maximize,About',
-                colorButton_colors : colorPick,
-                height: '150px'
+                '<div class="col-12">/title/</div>':['title'],
             }
-        }
+        ]
     },
     producto_images: {
         ATRIBUTOS: {

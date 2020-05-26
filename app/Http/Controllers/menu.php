@@ -45,7 +45,7 @@ define( "MENU" ,
             ],[
                 "nombre"    => "Compañias",
                 "icono"     => '<i class="fas fa-boxes"></i>',
-                "url"       => @route('companias.index')
+                "url"       => @route('productos.index'),
             ]
         ]
     ],
@@ -53,7 +53,7 @@ define( "MENU" ,
         "id"        => "faq",
         "nombre"    => "FAQ",
         "icono"     => '<i class="fas fa-users"></i>',
-        "url"       => null
+        "url"       => @route('faqs.index')
     ],
     [
         "separar"   => 1

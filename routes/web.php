@@ -57,9 +57,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
     Route::post('imagen/update/{element}', ['uses' => 'Auth\AdmController@imagenUpdate', 'as' => 'imagen.update']);
     Route::delete('imagen/delete', ['uses' => 'Auth\AdmController@imagenDestroy', 'as' => 'imagen.delete']);
     Route::post('imagen', ['uses' => 'Auth\AdmController@imagenStore', 'as' => 'imagen.create']);
-
-    Route::match(['get', 'post'], 'newsletter',['as' => 'newsletter.index','uses' => 'Auth\EmpresaController@newsletter' ]);
-    Route::delete('newsletter/delete', ['uses' => 'Auth\EmpresaController@newsletterDestroy', 'as' => 'newsletter.delete']);
     /**
      * SLIDERS
      */
@@ -74,63 +71,25 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
         Route::post('{seccion}/update', ['uses' => 'Auth\ContenidoController@update', 'as' => 'update']);
     });
     /**
-     * POLIZAS
-     */
-    Route::resource('polizas', 'Auth\PolizaController')->except(['index,update']);
-    Route::match(['get', 'post'], 'polizas', [ 'uses' => 'Auth\PolizaController@index', 'as' => 'polizas.index' ]);
-    Route::post('polizas/update/{id}', ['uses' => 'Auth\PolizaController@update', 'as' => 'polizas.update']);
-    Route::post('polizas/file', ['uses' => 'Auth\PolizaController@file', 'as' => 'polizas.file']);
-    Route::post('polizas/send', ['uses' => 'Auth\PolizaController@send', 'as' => 'polizas.send']);
-    /**
      * PRODUCTOS
      */
     Route::resource('coberturas', 'Auth\ProductoController')->except(['update']);
     Route::post('coberturas/update/{id}', ['uses' => 'Auth\ProductoController@update', 'as' => 'coberturas.update']);
     /**
-     * CLIENTES
+     * FAQ
      */
-    Route::resource('clientes', 'Auth\ClienteController')->except(['update']);
-    Route::post('clientes/update/{id}', ['uses' => 'Auth\ClienteController@update', 'as' => 'clientes.update']);
-    Route::post('clientes/pass', ['uses' => 'Auth\ClienteController@password', 'as' => 'clientes.password']);
-    /**
-     * Companias
-     */
-    Route::resource('companias', 'Auth\CompaniaController')->except(['update']);
-    Route::post('companias/update/{id}', ['uses' => 'Auth\CompaniaController@update', 'as' => 'companias.update']);
+    Route::resource('faqs', 'Auth\FaqController')->except(['update']);
+    Route::post('faqs/update/{id}', ['uses' => 'Auth\FaqController@update', 'as' => 'faqs.update']);
     /**
      * Marcas
      */
     Route::resource('marcas', 'Auth\MarcaController')->except(['update']);
     Route::post('marcas/update/{id}', ['uses' => 'Auth\MarcaController@update', 'as' => 'marcas.update']);
-
-    Route::resource('modelos', 'Auth\ModeloController')->except(['update', 'index']);
-    Route::post('modelos/update/{id}', ['uses' => 'Auth\ModeloController@update', 'as' => 'modelos.update']);
-    Route::get('marca/{id}/modelos', ['uses' => 'Auth\ModeloController@index', 'as' => 'modelos.index']);
-    /**
-     * Automoviles
-     */
-    Route::resource('automoviles', 'Auth\AutomovilController')->except(['update']);
-    Route::post('automoviles/update/{id}', ['uses' => 'Auth\AutomovilController@update', 'as' => 'automoviles.update']);
     /**
      * Novedad
      */
-    Route::resource('novedades', 'Auth\NovedadController')->except(['update']);
-    Route::post('novedades/update/{id}', ['uses' => 'Auth\NovedadController@update', 'as' => 'novedades.update']);
-    /**
-     * Staff
-     */
-    Route::resource('staff', 'Auth\StaffController')->except(['update']);
-    Route::post('staff/update/{id}', ['uses' => 'Auth\StaffController@update', 'as' => 'staff.update']);
-    /**
-     * Riesgos
-     */
-    Route::resource('riesgos', 'Auth\RiesgoController')->except(['update']);
-    Route::post('riesgos/update/{id}', ['uses' => 'Auth\RiesgoController@update', 'as' => 'riesgos.update']);
-    /**
-     * Localidades
-     */
-    Route::resource('localidades', 'Auth\LocalidadController')->except(['update']);
-    Route::post('localidades/update/{id}', ['uses' => 'Auth\LocalidadController@update', 'as' => 'localidades.update']);
+    Route::resource('productos', 'Auth\NovedadController')->except(['update']);
+    Route::post('productos/update/{id}', ['uses' => 'Auth\NovedadController@update', 'as' => 'productos.update']);
     /**
      * BLOG
      */

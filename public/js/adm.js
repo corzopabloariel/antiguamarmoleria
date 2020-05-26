@@ -543,6 +543,7 @@ add = (t, id = 0, data = null, disabled = 0) => {
         form.action = action;
         form.method = method;
     }
+    console.log("AAA")
     if (Array.isArray(window.pyrus))
         window.pyrus.forEach(e => e.entidad.show(url_simple, data));
     else
@@ -755,8 +756,9 @@ function editCheck(evt) {
     let e = document.querySelector(".pyrus--edit__check");
     if (e)
         e.remove();
-    const pos = getPosition(this.parentElement);
-    const w = 250;
+    const td = this.closest("td");
+    const pos = getPosition(td);
+    const w = td.cellIndex === 0 ? (td.offsetWidth * -1) : 250;
     let name = this.dataset.name;
     let column = this.dataset.column;
     let value = this.dataset.value;
@@ -770,11 +772,11 @@ function editCheck(evt) {
     else
         entidad = window.pyrus;
     window.entidad_eventual = entidad;
-    window.td_eventual = this.parentElement;
+    window.td_eventual = this.closest("td");
     div.classList.add("p-2", "pyrus--edit__check", "shadow")
     div.setAttribute("style", `left: calc(${pos.x}px - ${w}px); top: ${pos.y}px`);
     div.innerHTML = '<h3 class="pyrus--edit__title">Cambiar opción<button type="button" class="close" onclick="removeEdit(this);"><span aria-hidden="true">&times;</span></button></h3>';
-    div.innerHTML += `<form>${entidad.elementForm(column, value)}</form>`;
+    div.innerHTML += `<form onsubmit="event.preventDefault();">${entidad.elementForm(column, value)}</form>`;
     div.innerHTML += `<div class="d-flex justify-content-end border-top mt-2 pt-2"><button onclick="saveEdit(this);" data-table="${this.dataset.name}" data-key="${this.dataset.column}" data-id="${this.dataset.id}" class="btn btn-sm button--form btn-primary" type="button"><i class="fas fa-save"></i></button></div>`;
     document.querySelector("body").appendChild(div);
 }
