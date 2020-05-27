@@ -33,8 +33,18 @@
                 </div>
             </div>
             <div class="col-12 col-md-4 col-lg-3 d-flex">
+                <div class="w-100">
+                    <h3 class="footer--title">Productos</h3>
+                    @isset($data["productos_footer"])
+                    <ul class="list-unstyled mb-0 footer--list footer--list__column">
+                        @foreach($data["productos_footer"] AS $m)
+                        <li class="text-truncate"><a href="{{ $link ? URL::to($m->link()) : '#' }}">{{ $m->title }}</a></li>
+                        @endforeach
+                    </ul>
+                    @endisset
+                </div>
             </div>
-            <div class="col-12 col-md-4 col-lg-4 mt-md-4 mt-lg-0">
+            <div class="col-12 col-md col-lg-4 mt-md-4 mt-lg-0">
                 <h3 class="footer--title">{{ env('APP_NAME') }}</h3>
                 <ul class="list-unstyled mb-0 footer--list">
                     <li class="d-flex align-items-start">

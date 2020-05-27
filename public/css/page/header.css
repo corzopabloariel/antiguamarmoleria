@@ -77,6 +77,10 @@
     transform: rotate(-135deg);
     background-color: #ccc;
 }
+.menu--lateral__title {
+    margin-top: 1em;
+    text-align: center;
+}
 @media (max-width: 991px) {
     #wrapper-menu,
     #menu-buscador {
@@ -90,7 +94,7 @@
         margin-top: 0;
     }
     #wrapper-menu .active {
-        color: #E0AE0E;
+        color: #b0d81a;
     }
     #wrapper-menu {
         position: fixed;
@@ -101,10 +105,10 @@
         height: 100vh;
         top: 0;
         font-family: 'Quattrocento Sans', sans-serif;
-        background-color: #1f3856;
+        background-color: #ffffff;
         z-index: 1111;
-        border-left: 2px solid #E0AE0E;
-        color: #fefefe;
+        border-left: 2px solid #b0d81a;
+        color: #777777;
     }
     #wrapper-menu .close-menu {
         position: absolute;

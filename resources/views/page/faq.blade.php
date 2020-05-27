@@ -6,14 +6,16 @@
     </div>
     <div class="py-5">
         <div class="container py-5">
-            <div class="card-columns">
+            <div class="row mt-4n justify-content-center">
                 @foreach($data["elementos"] as $e)
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $e->title }}</h5>
-                        <div class="card-text">{!! $e->resume !!}</div>
+                <div class="col-12 col-md-6 col-lg-4 mt-4">
+                    <div class="card border-0 shadow">
+                        @include( 'layouts.general.image' , [ 'i' => $e->sliders , 'n' => "" , 'c' => 'card-img-top' ] )
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $e->title }}</h5>
+                            <div class="card-text">{!! $e->resume !!}</div>
+                        </div>
                     </div>
-                    @include( 'layouts.general.image' , [ 'i' => $e->sliders , 'n' => "" , 'c' => 'card-img-top' ] )
                 </div>
                 @endforeach
             </div>

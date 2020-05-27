@@ -157,14 +157,6 @@
                 break;
             }
         })
-        /*window.pyrus.show(null, url_simple, window.data.elementos);
-        window.pyrusImage.show(null, url_simple, window.data.elementos.images);
-        window.pyrusDomicilio.show(null, url_simple , window.data.elementos.domicilio);
-        window.pyrusCaptcha.show(null, null, window.data.elementos.captcha);
-        window.pyrusMensaje.show(CKEDITOR, null, window.data.elementos.mensaje);
-        window.data.elementos.email.forEach(e => {addEmail($("#btnEmail"), e); });
-        window.data.elementos.footer.forEach(e => {addText($("#btnText"), e); });
-        window.data.elementos.telefono.forEach(t => {addTelefono($("#btnTelefono"), t); });*/
     }, false);
 </script>
 @endpush

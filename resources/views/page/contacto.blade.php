@@ -67,7 +67,7 @@
                                 <label class="mt-4" for="telefono">Teléfono</label>
                                 <input aria-label="Teléfono" placeholder="Teléfono" type="phone" id="telefono" name="telefono" class="form-control form--input" value="{{ old('telefono') }}">
                             </div>
-                            <div class="col-12 col-md">
+                            <div class="col-12 col-md-12 col-lg mt-md-3">
                                 <label for="mensaje">Mensaje (*)</label>
                                 <textarea rows="5" aria-label="Mensaje" placeholder="Mensaje (*)" required id="mensaje" name="mensaje" class="form-control form--input"></textarea>
                             </div>

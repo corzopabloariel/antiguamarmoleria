@@ -9,6 +9,7 @@ class Marca extends Model
     protected $fillable = [
         'order',
         'logo',
+        'logo2',
         'color',
         'color_text',
         'title',
@@ -23,17 +24,27 @@ class Marca extends Model
     ];
     protected $casts = [
         'order' => 'string',
-        'logo' => 'json',
-        'color' => 'json',
-        'color_text' => 'json',
+        'logo' => 'array',
+        'logo2' => 'array',
+        'color' => 'array',
+        'color_text' => 'array',
         'title' => 'string',
         'title_slug' => 'string',
         'resume' => 'string',
         'description' => 'string',
         'features' => 'string',
-        'sliders' => 'json',
-        'advantage' => 'json',
+        'sliders' => 'array',
+        'advantage' => 'array',
         'is_destacado' => 'boolean',
         'elim' => 'boolean'
     ];
+
+    public function link() {
+        return 'producto/' . $this->title_slug;
+    }
+
+    public function productos()
+    {
+        return $this->hasMany('App\Producto','producto_id');
+    }
 }

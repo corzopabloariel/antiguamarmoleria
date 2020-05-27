@@ -136,8 +136,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
 
 Route::get( '{link?}' ,
     [ 'uses' => 'Page\GeneralController@index' , 'as' => 'index' ]
-)->where( 'link' , "index|faq|productos|contacto" );
-
+)->where( 'link' , "index|faq|empresa|productos|contacto" );
+Route::get('producto/{title}', ['uses' => 'Page\GeneralController@marca' , 'as' => 'marca']);
 Route::get('search', ['uses' => 'Page\GeneralController@search' , 'as' => 'search']);
 
 Route::post('pedido-de-presupuesto ', ['uses' => 'Page\FormController@presupuesto' , 'as' => 'presupuesto']);

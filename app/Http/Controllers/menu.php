@@ -19,7 +19,7 @@ define( "MENU" ,
     ],
     [
         "id"        => "empresa",
-        "nombre"    => "Quienes somos",
+        "nombre"    => "Empresa",
         "icono"     => "<i class='nav-icon fas fa-building'></i>",
         "submenu"   => [
             [

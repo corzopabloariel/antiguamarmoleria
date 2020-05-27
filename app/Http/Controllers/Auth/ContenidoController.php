@@ -10,9 +10,9 @@ use App\Slider;
 class ContenidoController extends Controller
 {
     public function edit($section) {
-        $contenido = Contenido::where("seccion", $section)->first();
+        $contenido = Contenido::where("section", $section)->first();
         if(empty($contenido))
-            $contenido = Contenido::create(["seccion" => $section, "data" => []]);
+            $contenido = Contenido::create(["section" => $section, "data" => []]);
         $data = [
             "view" => "auth.parts.contenido" . ucwords($section),
             "title" => "Contenido: " . strtoupper($section),

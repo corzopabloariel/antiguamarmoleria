@@ -166,7 +166,7 @@ const ENTIDADES = {
 
     contenido_empresa: {
         ATRIBUTOS: {
-            titulo: {TIPO:"TP_STRING",MAXLENGTH:70,LABEL:1,CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título"},
+            titulo: {TIPO:"TP_STRING",MAXLENGTH:70,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título"},
             texto: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"texto"},
         },
         FORM: [
@@ -201,10 +201,12 @@ const ENTIDADES = {
         }
     },
     contenido_empresa_mision: {
+        ONE: 1,
+        NOMBRE: "Misión",
         ATRIBUTOS: {
-            titulo: {TIPO:"TP_STRING",LABEL:1,CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",MAXLENGTH:70,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título"},
+            titulo: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:70,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título"},
             texto: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"texto"},
-            image: {TIPO:"TP_IMAGE",RULE: "required|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "contenido",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Ícono - 54x54",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"54px", SIMPLE: 1},
+            image: {TIPO:"TP_IMAGE", EXT: "jpeg, png, jpg, gif", SIZE: "2MB", RULE: "required|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "contenido",NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"77px", HEIGHT: "92px"},
         },
         FORM: [
             {
@@ -214,9 +216,6 @@ const ENTIDADES = {
                 '<div class="col-12">/texto/</div>' : ['texto']
             }
         ],
-        FUNCIONES: {
-            image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
-        },
         EDITOR: {
             texto: {
                 toolbarGroups: [
@@ -241,10 +240,12 @@ const ENTIDADES = {
         }
     },
     contenido_empresa_vision: {
+        ONE: 1,
+        NOMBRE: "Visión",
         ATRIBUTOS: {
-            titulo: {TIPO:"TP_STRING",MAXLENGTH:70,LABEL:1,CLASS:"border-left-0 border-right-0 rounded-0 border-top-0",VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título"},
+            titulo: {TIPO:"TP_STRING",MAXLENGTH:70,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título"},
             texto: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"texto"},
-            image: {TIPO:"TP_IMAGE",RULE: "required|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER:"contenido",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Ícono - 54x54",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"54px", SIMPLE: 1},
+            image: {TIPO:"TP_IMAGE", EXT: "jpeg, png, jpg, gif", SIZE: "2MB", RULE: "required|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER:"contenido",NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"77px", HEIGHT: "92px"},
         },
         FORM: [
             {
@@ -254,9 +255,6 @@ const ENTIDADES = {
                 '<div class="col-12">/texto/</div>' : ['texto']
             }
         ],
-        FUNCIONES: {
-            image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
-        },
         EDITOR: {
             texto: {
                 toolbarGroups: [
@@ -473,6 +471,7 @@ const ENTIDADES = {
             title: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre"},
             title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
             logo: {TIPO:"TP_IMAGE", SIZE: "2MB", EXT: "jpeg, png, jpg, gif", RULE: "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "marcas",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"190px", HEIGHT: "48px"},
+            logo2: {TIPO:"TP_IMAGE", SIZE: "2MB", EXT: "jpeg, png, jpg, gif", RULE: "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "marcas",VISIBILIDAD:"TP_VISIBLE_FORM",ACCEPT:"image/*",NOMBRE:"imagen 2",WIDTH:"190px", HEIGHT: "48px", HELP: "Logo en escala de grisis sin fondo"},
             color: {TIPO:"TP_COLOR",VISIBILIDAD:"TP_VISIBLE", HELP: "Color de fondo predominante", LABEL: 1, NECESARIO: 1},
             color_text: {TIPO:"TP_COLOR",VISIBILIDAD:"TP_VISIBLE_FORM", HELP: "Color del texto predominante", LABEL: 1, NECESARIO: 1, NOMBRE: "Color del texto"},
             sliders: {TIPO:"TP_ARRAY",COLUMN:"sliders",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Sliders"},
@@ -481,10 +480,13 @@ const ENTIDADES = {
         },
         FORM: [
             {
+                '<div class="col-12 col-md-6">/order/</div><div class="col-12 col-md-6">/is_destacado/</div>': ["is_destacado", "order"]
+            },
+            {
                 '<div class="col-12">/title/</div>': ['title']
             },
             {
-                '<div class="col-12 col-md-6">/logo/</div><div class="col-12 col-md-6"><div class="row"><div class="col-12 col-md-6">/order/</div><div class="col-12 mt-3">/is_destacado/</div></div></div>' : ["logo", "is_destacado", "order"]
+                '<div class="col-12 col-md-6">/logo/</div><div class="col-12 col-md-6">/logo2/</div>' : ["logo", "logo2"]
             },
             {
                 '<div class="col-12 col-md-6">/color/</div><div class="col-12 col-md-6">/color_text/</div>' : ["color", "color_text"]
@@ -752,17 +754,6 @@ const ENTIDADES = {
                 '/section/<div class="col-12">/description/</div><div class="col-12 mt-2">/keywords/</div>' : ['description', 'keywords', 'section']
             }
         ],
-    },
-    newsletter: {
-        ATRIBUTOS: {
-            idioma: {TIPO:"TP_STRING",MAXLENGTH:3,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"idioma",CLASS:"border-left-0 rounded-0 border-right-0 border-top-0 rounded-0"},
-            mail: {TIPO:"TP_STRING",MAXLENGTH:150,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"email",CLASS:"border-left-0 rounded-0 border-right-0 border-top-0 rounded-0"},
-        },
-        FORM: [
-            {
-                '<div class="col-12 col-md-4">/idioma/</div><div class="col-12 col-md-8">/mail/</div>' : ['idioma','mail']
-            }
-        ]
     },
     redes: {
         ATRIBUTOS: {
