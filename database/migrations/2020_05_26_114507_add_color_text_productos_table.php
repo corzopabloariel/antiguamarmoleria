@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColorTextMarcasTable extends Migration
+class AddColorTextProductosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,8 @@ class AddColorTextMarcasTable extends Migration
      */
     public function up()
     {
-        Schema::table('marcas', function (Blueprint $table) {
+        Schema::table('productos', function (Blueprint $table) {
+            $table->json('color')->nullable()->default(NULL)->after("characteristics");
             $table->json('color_text')->nullable()->default(NULL)->after("color");
         });
     }
@@ -25,7 +26,7 @@ class AddColorTextMarcasTable extends Migration
      */
     public function down()
     {
-        Schema::table('marcas', function (Blueprint $table) {
+        Schema::table('productos', function (Blueprint $table) {
             //
         });
     }

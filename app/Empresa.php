@@ -19,6 +19,7 @@ class Empresa extends Model
         'forms',
         'captcha',
         'headers',
+        'text',
         'attention_schedule'
     ];
 
@@ -33,6 +34,7 @@ class Empresa extends Model
         'forms' => 'array',
         'captcha' => 'array',
         'headers' => 'array',
+        'text' => 'array',
         'attention_schedule' => 'string'
     ];
 }

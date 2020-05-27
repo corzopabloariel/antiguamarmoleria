@@ -6,30 +6,34 @@ use Illuminate\Database\Eloquent\Model;
 
 class Producto extends Model
 {
-    protected $table = "coberturas";
+    protected $table = "productos";
     protected $fillable = [
-        'orden',
-        'name',
-        'image',
+        'marca_id',
+        'order',
+        'title',
+        'title_slug',
         'images',
+        'characteristics',
         'color',
-        'hsl',
-        'resumen',
-        'detalle',
-        'caracteristicas'
+        'color_text',
+        'elim'
     ];
     protected $appends = ['images_total'];
 
     protected $casts = [
-        'image' => 'array',
-        'images' => 'array'
+        'marca_id' => 'integer',
+        'order' => 'string',
+        'title' => 'string',
+        'images' => 'array',
+        'characteristics' => 'array',
+        'color' => 'array',
+        'color_text' => 'array',
+        'elim' => 'boolean'
     ];
     public function getImagesTotalAttribute() {
-        return count($this->image);
+        return empty($this->images) ? 0 : count($this->images);
     }
     public function getImage() {
-        if (empty($this->images))
-            return null;
-        return $this->images[0];
+        return empty($this->images) ? null : $this->images[0];
     }
 }

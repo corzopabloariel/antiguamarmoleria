@@ -1,7 +1,7 @@
 <header class="header shadow">
     <div class="header--address py-3 shadow-sm">
         <div class="container">
-        <i class="fas fa-map-marked-alt mr-3"></i>@include('layouts.general.domicilio', ["dato" => $elementos->addresses, "link" => 1])
+        <i class="far fa-map mr-3"></i>@include('layouts.general.domicilio', ["dato" => $elementos->addresses, "link" => 1])
         </div>
     </div>
     <div class="container d-flex justify-content-between align-items-center py-2">

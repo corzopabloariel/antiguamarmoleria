@@ -23,7 +23,7 @@
     window.pyrus.push({entidad: new Pyrus("empresa_images", null, src), tipo: "U", column: "images"});
     window.pyrus.push({entidad: new Pyrus("empresa_domicilio"), tipo: "U", column: "addresses"});
     window.pyrus.push({entidad: new Pyrus("empresa_captcha"), tipo: "U", column: "captcha"});
-    window.pyrus.push({entidad: new Pyrus("empresa_mensaje"), tipo: "U", column: "mensaje"});
+    window.pyrus.push({entidad: new Pyrus("empresa_mensaje"), tipo: "U", column: "text"});
     window.pyrus.push({entidad: new Pyrus("empresa_telefono"), tipo: "M", column: "phones", function: "telefono"});
     window.pyrus.push({entidad: new Pyrus("empresa_email"), tipo: "M", column: "emails", function: "email"});
     window.pyrus.push({entidad: new Pyrus("empresa_header"), tipo: "M", column: "headers", function: "header"});

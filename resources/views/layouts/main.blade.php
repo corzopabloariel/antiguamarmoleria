@@ -56,11 +56,11 @@
         </div>
         @include( 'layouts.general.message' )
         <div id="wrapper-body">
-            @include('layouts.general.header', ['elementos' => $data['empresa'], 'link' => 1, 'login' => auth()->guard('clientAuth')->check() ? 1 : 0])
+            @include('layouts.general.header', ['elementos' => $data['empresa'], 'link' => 1])
             <section>
             @include($data['view'])
             </section>
-            @include('layouts.general.footer', ['elementos' => $data['empresa'], 'link' => 1, 'login' => auth()->guard('clientAuth')->check() ? 1 : 0])
+            @include('layouts.general.footer', ['elementos' => $data['empresa'], 'link' => 1])
         </div>
         <!-- Scripts -->
         @include( 'layouts.general.script' )

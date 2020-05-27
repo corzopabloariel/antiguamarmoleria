@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -14,6 +15,7 @@ class AdmController extends Controller
     public $acceptedFormats = [ 'gif' , 'png' ,'jpg', 'jpeg' , 'pdf' , 'bmp' , 'svg' , 'txt' , 'xls' , 'dbf' ];
     public $model;
     public function __construct() {
+        App::setLocale("es");
         $this->model = new Imagen;
     }
     public function index() {
@@ -95,6 +97,26 @@ class AdmController extends Controller
         return json_encode(['success' => true, "error" => 0, "msg" => "Archivo eliminado correctamente"]);
     }
 
+    public function relation(Request $request) {
+        try {
+            $entidad = $request->table;
+            eval("\$model = new \\App\\{$entidad};");
+            $attr = json_decode($request->attr, true);
+            if (isset($request->id))
+                $data = $model->find($request->id, $attr);
+            else {
+                $fillable = $model->getFillable();
+                $data = $model;
+                if (in_array("elim", $fillable))
+                    $data = $data->where("elim", 0);
+                $data = $data->get($attr)->toArray();
+            }
+        } catch (\Throwable $th) {
+            return json_encode(["error" => 1, "msg" => $th->errorInfo[2]]);
+        }
+        return json_encode(['success' => true, "error" => 0, "data" => $data]);
+    }
+
     public function delete( $data , $fillable ) {
         try {
             if (in_array("elim", $fillable)) {
@@ -125,7 +147,7 @@ class AdmController extends Controller
                 $data->delete();
             }
         } catch (\Throwable $th) {
-            return json_encode(["error" => 1]);
+            return json_encode(["error" => 1, "msg" => $th->errorInfo[2]]);
         }
         return json_encode(['success' => true, "error" => 0]);
     }
@@ -140,13 +162,13 @@ class AdmController extends Controller
      * @date 19/02/2020
      */
     public function TP_STRING($attr, $value, $valueNew, $specification) {
-        return $valueNew;
+        return self::clear($valueNew);
     }
     public function TP_STRING_value($value) {
         return $value;
     }
     public function TP_EMAIL($attr, $value, $valueNew, $specification) {
-        return $valueNew;
+        return trim($valueNew);
     }
     public function TP_EMAIL_value($value) {
         return $value;
@@ -155,6 +177,12 @@ class AdmController extends Controller
         return empty($valueNew) ? $value : Hash::make($valueNew);
     }
     public function TP_PASSWORD_value($value) {
+        return $value;
+    }
+    public function TP_RELATIONSHIP($attr, $value, $valueNew, $specification) {
+        return $valueNew;
+    }
+    public function TP_RELATIONSHIP_value($value) {
         return $value;
     }
     public function TP_ENUM($attr, $value, $valueNew, $specification) {
@@ -176,7 +204,7 @@ class AdmController extends Controller
         return $value;
     }
     public function TP_TEXT($attr, $value, $valueNew, $specification) {
-        return $valueNew;
+        return self::clear($valueNew);
     }
     public function TP_TEXT_value($value) {
         return $value;
@@ -188,7 +216,7 @@ class AdmController extends Controller
         return $value;
     }
     public function TP_LIST($attr, $value, $valueNew, $specification) {
-        return $valueNew;
+        return self::clear($valueNew);
     }
     public function TP_LIST_value($value) {
         return $value;
@@ -424,7 +452,7 @@ class AdmController extends Controller
         if ($flag)
             return json_encode(["error" => 1, "msg" => "Error en los datos de ingreso."]);
         else {
-            //try {
+            try {
                 $OBJ = self::object($request, $data);
                 if ($rule) {
                     $flag = true;
@@ -449,15 +477,15 @@ class AdmController extends Controller
                     $data->fill($OBJ);
                     $data->save();
                 }
-            /*} catch (\Throwable $th) {
-                return json_encode(["error" => 1]);
-            }*/
+            } catch (\Throwable $th) {
+                return json_encode(["error" => 1, "msg" => $th->errorInfo[2]]);
+            }
             return json_encode(['success' => true, "error" => 0]);
         }
     }
 
     public function edit (Request $request) {
-        //try {
+        try {
             if (isset($request->ATRIBUTOS)) {
                 $OBJ = [];
                 $data = DB::table($request->table)->find($request->id, [$request->key]);
@@ -483,9 +511,9 @@ class AdmController extends Controller
                     ->where('id', $request->id)
                     ->update($data);
             }
-        /*} catch (\Throwable $th) {
-            return json_encode(["error" => 1]);
-        }*/
+        } catch (\Throwable $th) {
+            return json_encode(["error" => 1, "msg" => $th->errorInfo[2]]);
+        }
         return json_encode(['success' => true, "error" => 0]);
     }
 

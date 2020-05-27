@@ -38,14 +38,23 @@
                 <h3 class="footer--title">{{ env('APP_NAME') }}</h3>
                 <ul class="list-unstyled mb-0 footer--list">
                     <li class="d-flex align-items-start">
-                        <i class="footer--icon fas fa-map-marker-alt"></i>
+                        <i class="footer--icon far fa-map"></i>
                         <div class="footer--info">
+                            <p class="footer--title footer--title__info">Showroom/Fábrica</p>
                             @include( 'layouts.general.domicilio' , [ "dato" => $elementos->addresses , "link" => 1 ] )
                         </div>
                     </li>
                     <li class="d-flex align-items-start">
-                        <i class="footer--icon fas fa-phone-alt"></i>
+                        <i class="far fa-clock footer--icon"></i>
                         <div class="footer--info">
+                            <p class="footer--title footer--title__info">Horario de Atención</p>
+                            {!! $elementos->attention_schedule !!}
+                        </div>
+                    </li>
+                    <li class="d-flex align-items-start">
+                        <i class="footer--icon fas fa-phone-volume"></i>
+                        <div class="footer--info">
+                            <p class="footer--title footer--title__info">Teléfonos</p>
                             @php
                             $tel = "";
                             $wha = "";
@@ -70,6 +79,7 @@
                     <li class="d-flex align-items-start">
                         <i class="footer--icon far fa-envelope"></i>
                         <div class="footer--info">
+                            <p class="footer--title footer--title__info">Consultas Email</p>
                             @foreach( $elementos->emails as $e )
                                 <p class="text-truncate">@include('layouts.general.email', ["dato" => $e["email"]])</p>
                             @endforeach

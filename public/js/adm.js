@@ -259,17 +259,19 @@ remove_ = ( t , class_ ) => {
         confirmButtonAriaLabel: 'Confirmar',
         cancelButtonText: '<i class="fas fa-times"></i> Cancelar',
         cancelButtonAriaLabel: 'Cancelar'
-    }).then( ( result ) => {
-        if ( result.value ) {
-            if( window.imgDelete === undefined )
-                window.imgDelete = [];
-            if( target.find( ".imgURL" ).val() != "" )
-                window.imgDelete.push( target.find( ".imgURL" ).val() );
-            target.remove();
-            Toast.fire({
-                icon: 'warning',
-                title: 'Debe guardar el contenido para ver los cambios'
-            })
+    }).then(result => {
+        if (result.value) {
+            if (window.formAction === "UPDATE") {
+                if (!window.imgDelete)
+                    window.imgDelete = [];
+                if (target.find( ".imgURL" ).val() != "")
+                    window.imgDelete.push( target.find( ".imgURL" ).val() );
+                target.remove();
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'Debe guardar el contenido para ver los cambios'
+                })
+            }
         }
     });
 };
@@ -279,10 +281,19 @@ remove_ = ( t , class_ ) => {
 edit = (t, id, disabled = 0) => {
     const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
     t.disabled = true
-    entidad.one( `${url_simple}/adm/${entidad.name}/${id}/edit`, res => {
+    entidad.one(`${url_simple}/adm/${entidad.name}/${id}/edit`, res => {
         $('[data-toggle="tooltip"]').tooltip('hide');
         t.disabled = false;
         add($("#btnADD"), parseInt(id), res.data, disabled);
+    });
+};
+clone = (t, id, disabled = 0) => {
+    const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
+    t.disabled = true
+    entidad.one(`${url_simple}/adm/${entidad.name}/${id}/edit`, res => {
+        $('[data-toggle="tooltip"]').tooltip('hide');
+        t.disabled = false;
+        add($("#btnADD"), parseInt(id), res.data, disabled, true);
     });
 };
 see = (t, id) => {
@@ -505,7 +516,7 @@ searchTable = ( t ) => {
 /** -------------------------------------
  *      ABRIR FORMULARIO
  ** ------------------------------------- */
-add = (t, id = 0, data = null, disabled = 0) => {
+add = (t, id = 0, data = null, disabled = 0, clone = false) => {
     const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
     let label = document.querySelector("#formModalLabel");
     let form = document.querySelector("#form");
@@ -533,17 +544,19 @@ add = (t, id = 0, data = null, disabled = 0) => {
         if (label)
             label.textContent = "Nuevo elemento";
         if(id != 0) {
-            if (label)
-                label.textContent = "Editar elemento";
-            action += `/update/${id}`;
-            method = "PUT";
-            form.dataset.id = id;
-            window.formAction = "UPDATE";
+            if (!clone) {
+                if (label)
+                    label.textContent = "Editar elemento";
+                action += `/update/${id}`;
+                method = "PUT";
+                form.dataset.id = id;
+                window.formAction = "UPDATE";
+            } else
+                window.formAction = "CLONE";
         }
         form.action = action;
         form.method = method;
     }
-    console.log("AAA")
     if (Array.isArray(window.pyrus))
         window.pyrus.forEach(e => e.entidad.show(url_simple, data));
     else
@@ -775,7 +788,7 @@ function editCheck(evt) {
     window.td_eventual = this.closest("td");
     div.classList.add("p-2", "pyrus--edit__check", "shadow")
     div.setAttribute("style", `left: calc(${pos.x}px - ${w}px); top: ${pos.y}px`);
-    div.innerHTML = '<h3 class="pyrus--edit__title">Cambiar opción<button type="button" class="close" onclick="removeEdit(this);"><span aria-hidden="true">&times;</span></button></h3>';
+    div.innerHTML = '<h3 class="pyrus--edit__title">Edición del campo<button type="button" class="close" onclick="removeEdit(this);"><span aria-hidden="true">&times;</span></button></h3>';
     div.innerHTML += `<form onsubmit="event.preventDefault();">${entidad.elementForm(column, value)}</form>`;
     div.innerHTML += `<div class="d-flex justify-content-end border-top mt-2 pt-2"><button onclick="saveEdit(this);" data-table="${this.dataset.name}" data-key="${this.dataset.column}" data-id="${this.dataset.id}" class="btn btn-sm button--form btn-primary" type="button"><i class="fas fa-save"></i></button></div>`;
     document.querySelector("body").appendChild(div);
@@ -817,7 +830,7 @@ function editableSave(evt) {
     .then(() => {});
 }
 
-init = (callbackOK, normal = true, widthElements = true, type = "table", withAction = true) => {
+init = (callbackOK, normal = true, widthElements = true, type = "table", withAction = true, btn = ["e" , "d"]) => {
     let targetForm = document.querySelector(".pyrus--form");
     let targetElements = document.querySelector("#wrapper-tabla");
     if (Array.isArray(window.pyrus)) {
@@ -834,37 +847,38 @@ init = (callbackOK, normal = true, widthElements = true, type = "table", withAct
             }
         });
         if (normal) {
-            if (withAction) {
+            if (withAction)
                 targetElements.innerHTML = window.pyrus[0].entidad.table( [ { NAME:"ACCIONES" , COLUMN: "acciones" , CLASS: "text-center" , WIDTH: "150px" } ] );
-                btn = ["e" , "d"];
-            } else
+            else {
+                btn = [];
                 targetElements.innerHTML = window.pyrus[0].entidad.table();
+            }
             window.pyrus[0].entidad.editor();
             if (widthElements) {
                 if (type == "table")
                     window.pyrus[0].entidad.elements("#tabla" , url_simple, window.data.elementos, btn);
                 else
-                    targetElements.innerHTML = window.pyrus[0].entidad.card(url_simple, window.data.elementos, ["e", "d"]);
+                    targetElements.innerHTML = window.pyrus[0].entidad.card(url_simple, window.data.elementos, btn);
             }
         }
     } else {
-        let btn = [];
         targetForm.innerHTML = window.pyrus.formulario();
         const ck = document.querySelector(".ckeditor");
         if (ck)
             window.pyrus.editor();
         if (normal) {
-            if (withAction) {
+            if (withAction)
                 targetElements.innerHTML = window.pyrus.table( [ { NAME:"ACCIONES" , COLUMN: "acciones" , CLASS: "text-center" , WIDTH: "150px" } ] );
-                btn = ["e" , "d"];
-            } else
+            else {
+                btn = [];
                 targetElements.innerHTML = window.pyrus.table();
+            }
             window.pyrus.editor();
             if (widthElements) {
                 if (type == "table")
                     window.pyrus.elements("#tabla" , url_simple, window.data.elementos, btn);
                 else
-                    targetElements.innerHTML = window.pyrus.card(url_simple, window.data.elementos, ["e", "d"]);
+                    targetElements.innerHTML = window.pyrus.card(url_simple, window.data.elementos, btn);
             }
         }
     }

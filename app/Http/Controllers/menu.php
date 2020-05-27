@@ -43,7 +43,7 @@ define( "MENU" ,
                 "icono"     => "<i class='nav-icon fas fa-file-contract'></i>",
                 "url"       => @route('marcas.index'),
             ],[
-                "nombre"    => "Compañias",
+                "nombre"    => "Productos",
                 "icono"     => '<i class="fas fa-boxes"></i>',
                 "url"       => @route('productos.index'),
             ]
@@ -53,7 +53,30 @@ define( "MENU" ,
         "id"        => "faq",
         "nombre"    => "FAQ",
         "icono"     => '<i class="fas fa-users"></i>',
-        "url"       => @route('faqs.index')
+        "submenu"   => [
+            [
+                "nombre"    => "Preguntas",
+                "icono"     => '<i class="fas fa-question"></i>',
+                "url"       => @route('faqs.index')
+            ],
+            [
+                "nombre"    => "Portada",
+                "icono"     => '<i class="far fa-image"></i>',
+                "url"       => @route('portada.index', ['seccion' => 'faq'])
+            ]
+        ]
+    ],
+    [
+        "id"        => "contacto",
+        "nombre"    => "Contacto",
+        "icono"     => '<i class="fas fa-pager"></i>',
+        "submenu"   => [
+            [
+                "nombre"    => "Portada",
+                "icono"     => '<i class="far fa-image"></i>',
+                "url"       => @route('portada.index', ['seccion' => 'contacto'])
+            ]
+        ]
     ],
     [
         "separar"   => 1

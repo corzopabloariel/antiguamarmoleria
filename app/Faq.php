@@ -12,7 +12,6 @@ class Faq extends Model
         'title_slug',
         'resume',
         'answer',
-        'features',
         'sliders',
         'elim'
     ];

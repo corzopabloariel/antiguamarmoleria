@@ -4,40 +4,27 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\URL;
-
-use App\Producto;
-class ProductoController extends Controller
+use App\Slider;
+class PortadaController extends Controller
 {
     public $model;
     public function __construct() {
-        $this->model = new Producto;
+        $this->model = new Slider;
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $id = null)
+    public function index($seccion)
     {
-        $data = [];
-        $data[ "view" ] = "auth.parts.producto";
-        $elementos = $this->model;
-        $elementos = $elementos->join('marcas', 'productos.marca_id', '=', 'marcas.id');
-        if (isset($request->search)) {
-            $data["search"] = $request->search;
-            $elementos = $elementos->whereRaw( "UPPER(CONCAT_WS( ' ' ,productos.title ,productos.title_slug, productos.characteristics, marcas.title, marcas.title_slug)) LIKE UPPER('%{$request->search}%')" );
-        }
-        if (!empty($id))
-            $elementos = $elementos->where("producto_id", $id);
-        $elementos = $elementos->select("productos.*");
-        $elementos = $elementos->orderBy('marcas.order')->orderBy('productos.order')->paginate(15);
-        $data[ "title" ] = "Productos";
-        $data[ "elementos" ] = $elementos;
-        $data[ "buttons" ] = [
-            [ "i" => "fas fa-pencil-alt" , "b" => "btn-warning" , "t" => "Editar" ],
-            [ "i" => "fas fa-trash-alt" , "b" => "btn-danger" , "t" => "Eliminar" ],
-            [ "i" => "far fa-clone" , "b" => "btn-info" , "t" => "Copiar" ]
+        $data = $this->model->where('section', "por_{$seccion}")->where("elim", 0)->first();
+        $data = [
+            "view"      => "auth.parts.portada",
+            "title"     => "Portada: " . strtoupper($seccion),
+            "section"   => "por_{$seccion}",
+            "portada"   => $data,
+            "buttons" => [],
         ];
         return view('auth.distribuidor',compact('data'));
     }
@@ -63,7 +50,7 @@ class ProductoController extends Controller
      */
     public function edit($id)
     {
-        return $this->model::find($id);
+        return $this->model->find($id);
     }
 
     /**

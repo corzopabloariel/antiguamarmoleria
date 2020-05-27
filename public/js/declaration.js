@@ -50,6 +50,18 @@ const ENTIDADES = {
             }
         },
     },
+    portada: {
+        TABLE: "sliders",
+        ATRIBUTOS: {
+            image: {TIPO:"TP_IMAGE", EXT: 'jpeg, png, jpg, gif', SIZE: '3MB',RULE: "required|image|mimes:jpeg,png,jpg,gif|max:3072",FOLDER:"portadas",NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"1400px", HEIGHTop:"250px"},
+            section: {TIPO:"TP_STRING",RULE: "required|max:20",VISIBILIDAD:"TP_INVISIBLE",NOMBRE:"sección", NECESARIO: 1},
+        },
+        FORM: [
+            {
+                '/section/<div class="col-12">/image/</div>': ['image', 'section']
+            }
+        ]
+    },
     contenido_home: {
         ATRIBUTOS: {
             titulo: {TIPO:"TP_STRING",MAXLENGTH:70,VISIBILIDAD:"TP_VISIBLE",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",NOMBRE:"título",LABEL:1},
@@ -604,8 +616,8 @@ const ENTIDADES = {
     productos: {
         TABLE: "productos",
         ATRIBUTOS: {
-            orden: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE"},
-            marca_id: {TIPO:"TP_RELATIONSHIP",RULE: "required", NECESARIO: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"marca", ENTIDAD: "marcas",LABEL:1, ATTR: ["id", "title"]},
+            order: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE", NOMBRE: "orden"},
+            marca_id: {TIPO:"TP_RELATIONSHIP", ENUM: null,LABEL: 1,RULE: "required", NECESARIO: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"marca", ENTIDAD: "Marca",LABEL:1, ATTR: ["id", "title AS text"], ORDER: "order", NORMAL: 1},
             title: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre"},
             title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
             images: {TIPO:"TP_ARRAY",COLUMN:"images",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Imágenes",CLASS:"text-center"},
@@ -613,7 +625,7 @@ const ENTIDADES = {
         },
         FORM: [
             {
-                '<div class="col-12 col-md-4">/orden/</div><div class="col-12 col-md-6">/marca_id/</div>':['orden', 'marca_id'],
+                '<div class="col-12 col-md-4">/order/</div><div class="col-12 col-md-8">/marca_id/</div>':['order', 'marca_id'],
             },
             {
                 '<div class="col-12">/title/</div>':['title'],
@@ -621,21 +633,46 @@ const ENTIDADES = {
         ]
     },
     producto_images: {
+        ONE: 1,
+        MULTIPLE: "imagen",
+        NOMBRE: "Imágenes",
         ATRIBUTOS: {
-            order: {TIPO:"TP_ENTERO",MAXLENGTH:2,NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"orden",CLASS:"border-left-0 border-right-0 bg-transparent border-top-0 rounded-0",SIMPLE:1},
-            image: {TIPO:"TP_IMAGE",FOLDER: "coberturas",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Ícono - 600x400",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"600px",SIMPLE: 1,WIDTHTABLE: "170px"},
+            order: {TIPO:"TP_ENTERO",MAXLENGTH:2,NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"orden", SORTEABLE: 1, MIN: 1, STEP: 1},
+            image: {TIPO:"TP_IMAGE", EXT: "jpeg, png, jpg, gif",RULE: "required|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "productos",NECESARIO:1, SIZE: "2MB",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"600px", HEIGHT:"400px"},
         },
         FORM: [
             {
-                '<div class="col-12 col-md">/order/</div>':['order']
+                '<div class="col-12 col-md-6">/order/</div>':['order']
             },
             {
                 '<div class="col-12">/image/</div>':['image'],
             },
-        ],
-        FUNCIONES: {
-            image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
-        }
+        ]
+    },
+    producto_caracteristicas: {
+        ONE: 1,
+        MULTIPLE: "caracteristica",
+        NOMBRE: "Características",
+        ATRIBUTOS: {
+            order: {TIPO:"TP_ENTERO",NECESARIO:1, LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"orden",SIMPLE:1, SORTEABLE: 1, MIN: 1, STEP: 1},
+            title: {TIPO:"TP_STRING",LABEL:1,VISIBILIDAD:"TP_VISIBLE", NECESARIO: 1,NOMBRE: "Título"},
+            data: {TIPO:"TP_TEXT",VISIBILIDAD:"TP_VISIBLE_FORM", NOMBRE:"Elementos", LABEL: 1, NORMAL:1, HELP: "Separe los elementos con <strong>/</strong>, el sistema lo reconocerá y separará la información en la vista"},
+            icon: {TIPO:"TP_STRING", RULE: "required|max:40", MAXLENGTH: 40,LABEL:1,VISIBILIDAD:"TP_VISIBLE", NECESARIO: 1,NOMBRE: "Ícono", HELP: "Íconos sacados de <a href='https://fontawesome.com/icons?d=gallery&m=free' target='blank'>https://fontawesome.com/icons?d=gallery&m=free</a>"}
+        },
+        FORM: [
+            {
+                '<div class="col-12 col-md-6">/order/</div>': ['order']
+            },
+            {
+                '<div class="col-12">/title/</div>': ['title']
+            },
+            {
+                '<div class="col-12">/icon/</div>': ['icon']
+            },
+            {
+                '<div class="col-12">/data/</div>': ['data']
+            }
+        ]
     },
     /**********************************
             DATOS DE LA EMPRESA
@@ -869,18 +906,17 @@ const ENTIDADES = {
     },
     empresa_mensaje: {
         ONE: 1,
-        NOMBRE: "Mensajes",
+        NOMBRE: "Textos",
         ATRIBUTOS: {
-            end: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"Poliza por vencer"},
-            add: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"Poliza activa"},
+            contacto: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"Texto en contacto", LABEL: "1"}
         },
         FORM: [
             {
-                '<div class="col-12 col-md-6">/add/</div><div class="col-12 col-md-6">/end/</div>' : ['add', 'end']
+                '<div class="col-12 col-md">/contacto/</div>' : ['contacto']
             }
         ],
         EDITOR: {
-            end: {
+            contacto: {
                 toolbarGroups: [
                     { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
                     { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
@@ -896,26 +932,7 @@ const ENTIDADES = {
                     { name: 'others', groups: [ 'others' ] },
                     { name: 'about', groups: [ 'about' ] }
                 ],
-                removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Redo,Undo,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,RemoveFormat,CopyFormatting,CreateDiv,Language,BidiRtl,BidiLtr,Anchor,Flash,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Font,ShowBlocks,Maximize,About',
-                colorButton_colors : colorPick
-            },
-            add: {
-                toolbarGroups: [
-                    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-                    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-                    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-                    { name: 'forms', groups: [ 'forms' ] },
-                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-                    { name: 'links', groups: [ 'links' ] },
-                    { name: 'insert', groups: [ 'insert' ] },
-                    { name: 'styles', groups: [ 'styles' ] },
-                    { name: 'colors', groups: [ 'colors' ] },
-                    { name: 'tools', groups: [ 'tools' ] },
-                    { name: 'others', groups: [ 'others' ] },
-                    { name: 'about', groups: [ 'about' ] }
-                ],
-                removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Redo,Undo,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,RemoveFormat,CopyFormatting,CreateDiv,Language,BidiRtl,BidiLtr,Anchor,Flash,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Font,ShowBlocks,Maximize,About',
+                removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Redo,Undo,Find,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Anchor,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Format,Font,FontSize,ShowBlocks,Maximize,About',
                 colorButton_colors : colorPick
             }
         }

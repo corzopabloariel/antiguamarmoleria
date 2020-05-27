@@ -10,23 +10,18 @@ use App;
 use App\Contenido;
 use App\Slider;
 use App\Empresa;
-use App\Cliente;
-use App\Staff;
-use App\Novedad;
+use App\Faq;
 use App\Producto;
-use App\Compania;
-use App\Cobertura;
 use App\Marca;
-use App\Familia;
 class GeneralController extends Controller
 {
     public function __construct() {}
 
     function section($arr, $item) {
         $search = $item === "home" ? "" : $item;
-        for($i = 0; $i < count($arr[auth()->guard('clientAuth')->check() ? 1 : 0]); $i++) {
-            if($arr[auth()->guard('clientAuth')->check() ? 1 : 0][$i]["LINK"] == "/{$search}")
-                return $arr[auth()->guard('clientAuth')->check() ? 1 : 0][$i];
+        for($i = 0; $i < count($arr); $i++) {
+            if($arr[$i]["LINK"] == "/{$search}")
+                return $arr[$i];
         }
         return null;
     }
@@ -37,9 +32,10 @@ class GeneralController extends Controller
         $section = self::section($datos->sections, $link);
         $data = [
             "empresa" => $datos,
-            "contenido" => Contenido::where("seccion", $section["FUNCTION"])->first(),
-            "slider" => Slider::where("seccion", $section["FUNCTION"])->orderBy("orden")->get(),
-            "terminos" => Contenido::where("seccion", "terminos")->first(),
+            "contenido" => Contenido::where("section", $section["FUNCTION"])->first(),
+            "slider" => Slider::where("section", $section["FUNCTION"])->where("elim" , 0)->orderBy("order")->get(),
+            "portada" => Slider::where("section", "por_{$section["FUNCTION"]}")->where("elim" , 0)->first(),
+            "terminos" => Contenido::where("section", "terminos")->first(),
             "metadato" => [
                 "description" => "",
                 "keywords" => ""
@@ -62,19 +58,16 @@ class GeneralController extends Controller
         switch($data["section"]["FUNCTION"]) {
             case "home":
             break;
+            case "faq":
+                $data["elementos"] = Faq::where("elim", 0)->orderBy("order")->get(["title", "title_slug", "sliders", "resume", "answer"]);
+            break;
             case "blogs":
                 $data["elementos"] = Novedad::orderBy("orden")->simplePaginate(15);
             break;
-            case "clientes":
-                $data[ "elementos" ] = Cliente::where("elim", 0)->orderBy("order")->get();
-            break;
             case "productos":
                 $data["elementos"] = [];
-                $data["elementos"]["companias"] = Compania::where("elim", 0)->orderBy("orden")->get();
-                $data["elementos"]["coberturas"] = Producto::orderBy("orden")->get();
             break;
             case "contacto":
-                $data["elementos"] = Staff::where("elim", 0)->orderBy("orden")->get();
             break;
         }
 

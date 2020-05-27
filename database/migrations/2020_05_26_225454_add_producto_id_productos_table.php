@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColorTextMarcasTable extends Migration
+class AddProductoIdProductosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddColorTextMarcasTable extends Migration
      */
     public function up()
     {
-        Schema::table('marcas', function (Blueprint $table) {
-            $table->json('color_text')->nullable()->default(NULL)->after("color");
+        Schema::table('productos', function (Blueprint $table) {
+            $table->unsignedBigInteger('producto_id')->nullable()->default(NULL)->after("marca_id");
+            $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
         });
     }
 
@@ -25,7 +26,7 @@ class AddColorTextMarcasTable extends Migration
      */
     public function down()
     {
-        Schema::table('marcas', function (Blueprint $table) {
+        Schema::table('productos', function (Blueprint $table) {
             //
         });
     }

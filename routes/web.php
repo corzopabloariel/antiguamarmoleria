@@ -52,6 +52,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
     Route::match(['get', 'post'], 'url',['as' => '.url','uses' => 'Auth\EmpresaController@url' ]);
     Route::get('update', ['uses' => 'Auth\AdmController@update', 'as' => 'update.index']);
 
+    Route::post('relation', ['uses' => 'Auth\AdmController@relation', 'as' => 'adm.relation']);
+
     Route::get('empresa/imagen', ['uses' => 'Auth\AdmController@imagen', 'as' => 'imagen']);
     Route::get('imagen/{id}/edit', ['uses' => 'Auth\AdmController@imagenShow', 'as' => 'imagen.show']);
     Route::post('imagen/update/{element}', ['uses' => 'Auth\AdmController@imagenUpdate', 'as' => 'imagen.update']);
@@ -63,6 +65,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
     Route::resource('slider', 'Auth\SliderController')->except(['index','update','show']);
     Route::get('slider/{seccion}', ['uses' => 'Auth\SliderController@index', 'as' => 'slider.index']);
     Route::post('slider/update/{id}', ['uses' => 'Auth\SliderController@update', 'as' => 'slider.update']);
+    /**
+     * PORTADA
+     */
+    Route::resource('portada', 'Auth\PortadaController')->except(['index','update','show']);
+    Route::get('portada/{seccion}', ['uses' => 'Auth\PortadaController@index', 'as' => 'portada.index']);
+    Route::post('portada/update/{id}', ['uses' => 'Auth\PortadaController@update', 'as' => 'portada.update']);
     /**
      * CONTENIDO
      */
@@ -86,10 +94,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
     Route::resource('marcas', 'Auth\MarcaController')->except(['update']);
     Route::post('marcas/update/{id}', ['uses' => 'Auth\MarcaController@update', 'as' => 'marcas.update']);
     /**
-     * Novedad
+     * PRODUCTOS
      */
-    Route::resource('productos', 'Auth\NovedadController')->except(['update']);
-    Route::post('productos/update/{id}', ['uses' => 'Auth\NovedadController@update', 'as' => 'productos.update']);
+    Route::resource('productos', 'Auth\ProductoController')->except(['update', 'index']);
+    Route::get('productos/{id?}', ['uses' => 'Auth\ProductoController@index', 'as' => 'productos.index']);
+    Route::post('productos/update/{id}', ['uses' => 'Auth\ProductoController@update', 'as' => 'productos.update']);
     /**
      * BLOG
      */
@@ -127,16 +136,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
 
 Route::get( '{link?}' ,
     [ 'uses' => 'Page\GeneralController@index' , 'as' => 'index' ]
-)->where( 'link' , "index|pedido-de-presupuesto|quienes-somos|productos|servicio-tecnico|galeria|novedades|clientes|contacto" );
+)->where( 'link' , "index|faq|productos|contacto" );
 
 Route::get('search', ['uses' => 'Page\GeneralController@search' , 'as' => 'search']);
 
 Route::post('pedido-de-presupuesto ', ['uses' => 'Page\FormController@presupuesto' , 'as' => 'presupuesto']);
 Route::post('contacto', ['uses' => 'Page\FormController@contacto' , 'as' => 'contacto']);
-Route::post('servicio-tecnico', ['uses' => 'Page\FormController@contacto' , 'as' => 'servicios']);
-Route::post('productos/cobertura', ['uses' => 'Page\FormController@cobertura' , 'as' => 'productos.cobertura']);
-
 Route::get('productos/categoria/{title}/{id}', ['uses' => 'Page\GeneralController@categoria' , 'as' => 'categoria']);
 Route::get('productos/cobertura/{title}/{id}', ['uses' => 'Page\GeneralController@producto' , 'as' => 'producto']);
-
-Route::get('novedad/{title}/{id}', ['uses' => 'Page\GeneralController@blog' , 'as' => 'blog']);
