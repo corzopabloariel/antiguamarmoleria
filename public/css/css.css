@@ -515,6 +515,8 @@ td:hover .edit--check {
 }
 .header {
     color: #7C7C7C;
+    position: relative;
+    z-index: 1;
     font-size: 16px;
     background-color: #ffffff;
 }
@@ -579,6 +581,23 @@ td:hover .edit--check {
 .header--marca__link:hover {
     background-color: #b0d81a;
     color: #ffffff !important;
+    -webkit-transition: all 600ms ease;
+    -moz-transition: all 600ms ease;
+    -ms-transition: all 600ms ease;
+    -o-transition: all 600ms ease;
+    transition: all 600ms ease;
+}
+.header--marca__link:hover .img--gris {
+    -webkit-transition: all 600ms ease;
+    -moz-transition: all 600ms ease;
+    -ms-transition: all 600ms ease;
+    -o-transition: all 600ms ease;
+    transition: all 600ms ease;
+    -webkit-filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(183deg) brightness(105%) contrast(101%);
+    -moz-filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(183deg) brightness(105%) contrast(101%);
+    -ms-filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(183deg) brightness(105%) contrast(101%);
+    -o-filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(183deg) brightness(105%) contrast(101%);
+    filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(183deg) brightness(105%) contrast(101%);
 }
 /**/
 .productos {
@@ -598,12 +617,50 @@ td:hover .edit--check {
     background-color: var(--bg);
     color: var(--txt);
 }
+.producto--characteristics {
+    background-color: #f8f8f8;
+}
 .producto--title {
     text-transform: uppercase;
-    margin-bottom: .4em;
+    margin-bottom: .8em;
 }
 .producto--title__principal {
     font-size: 32px;
+}
+/**/
+.advantage {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: .5em;
+    border: 1px solid #888888;
+    color: #888888;
+}
+.advantage--title {
+    text-align: center;
+}
+.advantage--icon {
+    width: auto;
+    height: 60px;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: .6em;
+}
+.advantage--details {
+    color: #777777;
+    font-size: 13px;
+    margin-top: .9em;
+    padding-top: .6em;
+    position: relative;
+}
+.advantage--details::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -5px;
+    width: 50px;
+    height: 3px;
+    background-color: #707070;
 }
 /**/
 .home {
@@ -831,11 +888,11 @@ td:hover .edit--check {
 }
 /**/
 .img--gris {
-    -webkit-filter: grayscale(100%);
-    -moz-filter: grayscale(100%);
-    -ms-filter: grayscale(100%);
-    -o-filter: grayscale(100%);
-    filter: grayscale(100%);
+    -webkit-filter: invert(62%) sepia(7%) saturate(13%) hue-rotate(329deg) brightness(96%) contrast(92%);
+    -moz-filter: invert(62%) sepia(7%) saturate(13%) hue-rotate(329deg) brightness(96%) contrast(92%);
+    -ms-filter: invert(62%) sepia(7%) saturate(13%) hue-rotate(329deg) brightness(96%) contrast(92%);
+    -o-filter: invert(62%) sepia(7%) saturate(13%) hue-rotate(329deg) brightness(96%) contrast(92%);
+    filter: invert(62%) sepia(7%) saturate(13%) hue-rotate(329deg) brightness(96%) contrast(92%);
 }
 /**/
 @media (min-width: 768px) {

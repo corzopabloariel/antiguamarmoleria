@@ -161,91 +161,91 @@ class AdmController extends Controller
      * @param @type array $merge
      * @date 19/02/2020
      */
-    public function TP_STRING($attr, $value, $valueNew, $specification) {
+    public function TP_STRING($attr, $value, $valueNew, $specification, $index = 0) {
         return self::clear($valueNew);
     }
     public function TP_STRING_value($value) {
         return $value;
     }
-    public function TP_EMAIL($attr, $value, $valueNew, $specification) {
+    public function TP_EMAIL($attr, $value, $valueNew, $specification, $index = 0) {
         return trim($valueNew);
     }
     public function TP_EMAIL_value($value) {
         return $value;
     }
-    public function TP_PASSWORD($attr, $value, $valueNew, $specification) {
+    public function TP_PASSWORD($attr, $value, $valueNew, $specification, $index = 0) {
         return empty($valueNew) ? $value : Hash::make($valueNew);
     }
     public function TP_PASSWORD_value($value) {
         return $value;
     }
-    public function TP_RELATIONSHIP($attr, $value, $valueNew, $specification) {
+    public function TP_RELATIONSHIP($attr, $value, $valueNew, $specification, $index = 0) {
         return $valueNew;
     }
     public function TP_RELATIONSHIP_value($value) {
         return $value;
     }
-    public function TP_ENUM($attr, $value, $valueNew, $specification) {
+    public function TP_ENUM($attr, $value, $valueNew, $specification, $index = 0) {
         return $valueNew;
     }
     public function TP_ENUM_value($value) {
         return $value;
     }
-    public function TP_FECHA($attr, $value, $valueNew, $specification) {
+    public function TP_FECHA($attr, $value, $valueNew, $specification, $index = 0) {
         return $valueNew;
     }
     public function TP_FECHA_value($value) {
         return $value;
     }
-    public function TP_LINK($attr, $value, $valueNew, $specification) {
+    public function TP_LINK($attr, $value, $valueNew, $specification, $index = 0) {
         return $valueNew;
     }
     public function TP_LINK_value($value) {
         return $value;
     }
-    public function TP_TEXT($attr, $value, $valueNew, $specification) {
+    public function TP_TEXT($attr, $value, $valueNew, $specification, $index = 0) {
         return self::clear($valueNew);
     }
     public function TP_TEXT_value($value) {
         return $value;
     }
-    public function TP_ENTERO($attr, $value, $valueNew, $specification) {
+    public function TP_ENTERO($attr, $value, $valueNew, $specification, $index = 0) {
         return $valueNew;
     }
     public function TP_ENTERO_value($value) {
         return $value;
     }
-    public function TP_LIST($attr, $value, $valueNew, $specification) {
+    public function TP_LIST($attr, $value, $valueNew, $specification, $index = 0) {
         return self::clear($valueNew);
     }
     public function TP_LIST_value($value) {
         return $value;
     }
-    public function TP_PHONE($attr, $value, $valueNew, $specification) {
+    public function TP_PHONE($attr, $value, $valueNew, $specification, $index = 0) {
         return $valueNew;
     }
     public function TP_PHONE_value($value) {
         return $value;
     }
-    public function TP_CHECK($attr, $value, $valueNew, $specification) {
+    public function TP_CHECK($attr, $value, $valueNew, $specification, $index = 0) {
         return $valueNew;
     }
     public function TP_CHECK_value($value) {
         return $value;
     }
-    public function TP_COLOR($attr, $value, $valueNew, $specification) {
+    public function TP_COLOR($attr, $value, $valueNew, $specification, $index = 0) {
         return $valueNew;
     }
     public function TP_COLOR_value($value) {
         return $value;
     }
-    public function TP_SLUG($attr, $value, $valueNew, $specification) {
+    public function TP_SLUG($attr, $value, $valueNew, $specification, $index = 0) {
         return str_slug($valueNew);
     }
     public function TP_SLUG_value($value) {
         return str_slug($value);
     }
-    public function TP_IMAGE($attr, $value, $valueNew, $specification) {
+    public function TP_IMAGE($attr, $value, $valueNew, $specification, $index = 0) {
         $file = null;
         $file = isset($valueNew[$attr]) ? $valueNew[$attr] : null;
         $path = "images/";
@@ -255,14 +255,13 @@ class AdmController extends Controller
             $path .= "{$specification["FOLDER"]}/";
         if (!file_exists($path))
             mkdir($path, 0777, true);
-
         if (!empty($file)) {
             $fileNameNew = $file->getClientOriginalName();
             list($aux, $ext) = explode(".", $fileNameNew);
             $fileNameNew = $aux;
             if (empty($valueNew["check"])) {
                 if (empty($fileName))
-                    $fileNameNew = time() . "_{$attr}";
+                    $fileNameNew = time() . "_{$attr}_{$index}";
                 else
                     $fileNameNew = $fileName;
             }
@@ -348,8 +347,8 @@ class AdmController extends Controller
                         if ($specification == "TP_SLUG")
                             $attr = str_replace("_slug", "", $attr);
                         for ($j = 0; $j < count($valueNew); $j++) {
-                            $value = isset($value[$j][$attr]) ? $value[$j][$attr] : null;
-                            $OBJ[$column][$j][$attr] = call_user_func_array("self::{$specification}", [$attr, $value, $valueNew[$j], $detail]);
+                            $valueAux = isset($value[$j][$attr]) ? $value[$j][$attr] : null;
+                            $OBJ[$column][$j][$attr] = call_user_func_array("self::{$specification}", [$attr, $valueAux, $valueNew[$j], $detail, $j]);
                         }
                     }
                     if (!empty($aux["DATA"]["sorteable"])) {
@@ -452,7 +451,7 @@ class AdmController extends Controller
         if ($flag)
             return json_encode(["error" => 1, "msg" => "Error en los datos de ingreso."]);
         else {
-            try {
+            //try {
                 $OBJ = self::object($request, $data);
                 if ($rule) {
                     $flag = true;
@@ -477,9 +476,9 @@ class AdmController extends Controller
                     $data->fill($OBJ);
                     $data->save();
                 }
-            } catch (\Throwable $th) {
+            /*} catch (\Throwable $th) {
                 return json_encode(["error" => 1, "msg" => $th->errorInfo[2]]);
-            }
+            }*/
             return json_encode(['success' => true, "error" => 0]);
         }
     }
