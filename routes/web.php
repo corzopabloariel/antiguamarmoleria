@@ -138,6 +138,8 @@ Route::get( '{link?}' ,
     [ 'uses' => 'Page\GeneralController@index' , 'as' => 'index' ]
 )->where( 'link' , "index|faq|empresa|productos|contacto" );
 Route::get('producto/{title}', ['uses' => 'Page\GeneralController@marca' , 'as' => 'marca']);
+//Route::get('producto/{title}/colores', ['uses' => 'Page\GeneralController@colores' , 'as' => 'colores']);
+Route::get('producto/{title}/{query}', 'Page\GeneralController@producto')->where('query','.+');
 Route::get('search', ['uses' => 'Page\GeneralController@search' , 'as' => 'search']);
 
 Route::post('pedido-de-presupuesto ', ['uses' => 'Page\FormController@presupuesto' , 'as' => 'presupuesto']);

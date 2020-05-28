@@ -472,15 +472,16 @@ const ENTIDADES = {
             title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
             logo: {TIPO:"TP_IMAGE", SIZE: "2MB", EXT: "jpeg, png, jpg, gif", RULE: "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "marcas",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"190px", HEIGHT: "48px"},
             logo2: {TIPO:"TP_IMAGE", SIZE: "2MB", EXT: "jpeg, png, jpg, gif", RULE: "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "marcas",VISIBILIDAD:"TP_VISIBLE_FORM",ACCEPT:"image/*",NOMBRE:"imagen 2",WIDTH:"190px", HEIGHT: "48px", HELP: "Logo en negro sin fondo"},
-            color: {TIPO:"TP_COLOR",VISIBILIDAD:"TP_VISIBLE", HELP: "Color de fondo predominante", LABEL: 1, NECESARIO: 1},
+            color: {TIPO:"TP_COLOR",VISIBILIDAD:"TP_VISIBLE_FORM", HELP: "Color de fondo predominante", LABEL: 1, NECESARIO: 1},
             color_text: {TIPO:"TP_COLOR",VISIBILIDAD:"TP_VISIBLE_FORM", HELP: "Color del texto predominante", LABEL: 1, NECESARIO: 1, NOMBRE: "Color del texto"},
             sliders: {TIPO:"TP_ARRAY",COLUMN:"sliders",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Sliders"},
             advantage: {TIPO:"TP_ARRAY",COLUMN:"advantage",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Ventajas"},
-            is_destacado: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Destacado?", HELP: "Marca a mostrar en la página principal y header", NOMBRE: "Destacado", OPTION: {true: "Si", "1": "Si", false: "No", "0": "No"}}
+            is_destacado: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Destacado?", HELP: "Marca a mostrar en la página principal y header", NOMBRE: "Destacado", OPTION: {true: "Si", "1": "Si", false: "No", "0": "No"}},
+            only_colors: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Solo mostrar los colores?", HELP: "Si el campo esta activo, muestra los colores directamente en la sección", NOMBRE: "Mostrar colores", OPTION: {true: "Si", "1": "Si", false: "No", "0": "No"}}
         },
         FORM: [
             {
-                '<div class="col-12 col-md-6">/order/</div><div class="col-12 col-md-6">/is_destacado/</div>': ["is_destacado", "order"]
+                '<div class="col-12 col-md-6">/order/</div><div class="col-12 col-md-6">/is_destacado//only_colors/</div>': ["is_destacado", "only_colors", "order"]
             },
             {
                 '<div class="col-12">/title/</div>': ['title']
@@ -664,7 +665,7 @@ const ENTIDADES = {
         NOMBRE: "Imágenes",
         ATRIBUTOS: {
             order: {TIPO:"TP_ENTERO",MAXLENGTH:2,NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"orden", SORTEABLE: 1, MIN: 1, STEP: 1},
-            image: {TIPO:"TP_IMAGE", EXT: "jpeg, png, jpg, gif",RULE: "required|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "productos",NECESARIO:1, SIZE: "2MB",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"600px", HEIGHT:"400px"},
+            image: {TIPO:"TP_IMAGE", EXT: "jpeg, png, jpg, gif",RULE: "nullable|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "productos", SIZE: "2MB",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"600px", HEIGHT:"400px"},
         },
         FORM: [
             {

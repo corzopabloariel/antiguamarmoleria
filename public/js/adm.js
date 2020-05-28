@@ -830,9 +830,10 @@ function editableSave(evt) {
     .then(() => {});
 }
 
-init = (callbackOK, normal = true, widthElements = true, type = "table", withAction = true, btn = ["e" , "d"]) => {
+init = (callbackOK, normal = true, widthElements = true, type = "table", withAction = true, btn = ["e" , "d"], btnsAdd = null) => {
     let targetForm = document.querySelector(".pyrus--form");
     let targetElements = document.querySelector("#wrapper-tabla");
+    const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
     if (Array.isArray(window.pyrus)) {
         window.pyrus.forEach(p => {
             targetForm.innerHTML += p.entidad.formulario();
@@ -846,40 +847,25 @@ init = (callbackOK, normal = true, widthElements = true, type = "table", withAct
                 }
             }
         });
-        if (normal) {
-            if (withAction)
-                targetElements.innerHTML = window.pyrus[0].entidad.table( [ { NAME:"ACCIONES" , COLUMN: "acciones" , CLASS: "text-center" , WIDTH: "150px" } ] );
-            else {
-                btn = [];
-                targetElements.innerHTML = window.pyrus[0].entidad.table();
-            }
-            window.pyrus[0].entidad.editor();
-            if (widthElements) {
-                if (type == "table")
-                    window.pyrus[0].entidad.elements("#tabla" , url_simple, window.data.elementos, btn);
-                else
-                    targetElements.innerHTML = window.pyrus[0].entidad.card(url_simple, window.data.elementos, btn);
-            }
-        }
     } else {
-        targetForm.innerHTML = window.pyrus.formulario();
+        targetForm.innerHTML = entidad.formulario();
         const ck = document.querySelector(".ckeditor");
         if (ck)
-            window.pyrus.editor();
-        if (normal) {
-            if (withAction)
-                targetElements.innerHTML = window.pyrus.table( [ { NAME:"ACCIONES" , COLUMN: "acciones" , CLASS: "text-center" , WIDTH: "150px" } ] );
-            else {
-                btn = [];
-                targetElements.innerHTML = window.pyrus.table();
-            }
-            window.pyrus.editor();
-            if (widthElements) {
-                if (type == "table")
-                    window.pyrus.elements("#tabla" , url_simple, window.data.elementos, btn);
-                else
-                    targetElements.innerHTML = window.pyrus.card(url_simple, window.data.elementos, btn);
-            }
+            entidad.editor();
+    }
+    if (normal) {
+        if (withAction)
+            targetElements.innerHTML = entidad.table([{NAME: "ACCIONES", COLUMN: "acciones", CLASS: "text-center", WIDTH: "100px"}]);
+        else {
+            btn = [];
+            targetElements.innerHTML = entidad.table();
+        }
+        entidad.editor();
+        if (widthElements) {
+            if (type == "table")
+                entidad.elements("#tabla" , url_simple, window.data.elementos, btn, btnsAdd);
+            else
+                targetElements.innerHTML = entidad.card(url_simple, window.data.elementos, btn);
         }
     }
     //---------------------

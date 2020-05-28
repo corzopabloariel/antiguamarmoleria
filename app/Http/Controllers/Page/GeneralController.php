@@ -76,7 +76,6 @@ class GeneralController extends Controller
 
         return view( 'layouts.main' ,compact( 'data' ) );
     }
-
     public function marca($title) {
         $data = self::datos("productos");
         $data["view"] = "page.marca";
@@ -86,12 +85,20 @@ class GeneralController extends Controller
         return view( 'layouts.main' ,compact( 'data' ) );
     }
 
-    public function producto($title, $id) {
+    public function producto($title, $query) {
+        $aux = explode("/", $query);
         $data = self::datos("productos");
-        $data["view"] = "page.producto";
-        $data["producto"] = Producto::find($id);
-        $data["coberturas"] = Producto::orderBy("orden")->get();
-        $data["title"] = "Cobertura: " . $data["producto"]->name;
+        $data["view"] = "page.marca";
+        $data["marca"] = Marca::where("title_slug", $title)->where("elim", 0)->first();
+        if (count($aux) == 1 && strcmp($aux[0], "colores") == 0)
+            $data["productos"] = $data["marca"]->productos()->where("elim", 0)->orderBy("order")->paginate(20);
+        else {
+            $data["view"] = "page.producto";
+            $data["producto"] = $data["marca"]->productos()->where("elim", 0)->where("title_slug", array_pop($aux))->first();
+            $data["productos"] = $data["producto"]->productos()->where("elim", 0)->orderBy("order")->paginate(20);
+        }
+        $data["title"] = $data["marca"]->title . " - colores";
+        $data["colores"] = 1;
         return view( 'layouts.main' ,compact( 'data' ) );
     }
 

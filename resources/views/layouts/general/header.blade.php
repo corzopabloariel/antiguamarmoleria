@@ -89,13 +89,20 @@
         <div class="container">
             <div class="row">
                 @foreach($data["marcas"] AS $marca)
-                <a href="{{ URL::to($marca->link()) }}" class="col d-flex justify-content-center align-items-center header--marca__link">
-                    @if (empty($marca->logo2))
-                        <p class="text-center">{{ $marca->title }}</p>
-                    @else
-                        @include( 'layouts.general.image' , [ 'i' => $marca->logo2 , 'c' => 'img--gris header--marca' , 'n' => $marca->title ] )
-                    @endif
-                </a>
+                <div class="col d-flex align-items-stretch">
+                    @php
+                        $class = "d-flex w-100 justify-content-center align-items-center header--marca__link";
+                        if (Request::is("{$marca->link()}*"))
+                            $class .= " active--marca";
+                    @endphp
+                    <a href="{{ URL::to($marca->link()) }}" class="{{$class}}">
+                        @if (empty($marca->logo2))
+                            <p class="text-center">{{ $marca->title }}</p>
+                        @else
+                            @include( 'layouts.general.image' , [ 'i' => $marca->logo2 , 'c' => 'img--gris header--marca' , 'n' => $marca->title ] )
+                        @endif
+                    </a>
+                </div>
                 @endforeach
             </div>
         </div>
@@ -169,8 +176,13 @@
     <h3 class="menu--lateral__title">Productos</h3>
     <ul class="list-unstyled mb-0 flex-column">
         @foreach($data["marcas"] AS $marca)
+        @php
+            $class = "";
+            if (Request::is("{$marca->link()}*"))
+                $class = "active";
+        @endphp
         <li>
-            <a href="{{ URL::to($marca->link()) }}">{{ $marca->title }}</a>
+            <a class="{{$class}}" href="{{ URL::to($marca->link()) }}">{{ $marca->title }}</a>
         </li>
         @endforeach
     </ul>

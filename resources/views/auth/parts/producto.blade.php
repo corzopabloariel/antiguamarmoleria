@@ -85,6 +85,14 @@
     /** -------------------------------------
      *      INICIO
      ** ------------------------------------- */
-    init(data => {}, true, true, "table", true, ["e", "d", "c"]);
+    init(
+        data => {},
+        true,
+        true,
+        "table",
+        true,
+        ["e", "d", "c"],
+        [{icon: '<i class="fas fa-clipboard-list"></i>', class: 'btn-dark', title: 'Elementos' , function: 'elemento' }]
+    );
 </script>
 @endpush
