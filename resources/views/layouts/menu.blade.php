@@ -38,7 +38,7 @@
             @endif
         @endforeach
     </ul>
-    <a class="nav-soporte position-absolute" href="https://osole.freshdesk.com/support/home" target="_blank">
+    <a class="nav-soporte position-absolute" href="mailto:hola@pablocorzo.dev" target="_blank">
         <i class="nav-icon fas fa-ticket-alt"></i>
         <span class="nav-label">Soporte</span>
     </a>

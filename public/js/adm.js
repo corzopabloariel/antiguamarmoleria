@@ -246,7 +246,7 @@ removeFile = ( t ) => {
  *      MODO TEST: QUITAR ELEMENTO
  ** ------------------------------------- */
 remove_ = ( t , class_ ) => {
-    let target =  $( t ).closest( `.${class_}` );
+    let target =  t.closest(`.${class_}`);
     Swal.fire({
         title: "Atención!",
         text: "¿Eliminar elemento?",
@@ -265,13 +265,13 @@ remove_ = ( t , class_ ) => {
                 if (!window.imgDelete)
                     window.imgDelete = [];
                 if (target.find( ".imgURL" ).val() != "")
-                    window.imgDelete.push( target.find( ".imgURL" ).val() );
-                target.remove();
+                    window.imgDelete.push(target.find( ".imgURL" ).val());
                 Toast.fire({
                     icon: 'warning',
                     title: 'Debe guardar el contenido para ver los cambios'
                 })
             }
+            target.remove();
         }
     });
 };

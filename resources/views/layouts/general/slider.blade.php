@@ -9,6 +9,8 @@
         @for( $i = 0 ; $i < count( $slider ) ; $i++ )
         <div class="carousel-item @if( $i == 0 ) active @endif">
             @php
+            $class_texto = "slider--texto";
+            $class_container = "container position-relative h-100 w-100 d-flex justify-content-start";
             try {
                 $img = $slider[ $i ]->image;
                 if( gettype( $img ) != "string" )
@@ -25,6 +27,12 @@
             } catch (\Throwable $th) {
                 $text = "";
             }
+            if (isset($title)) {
+                $class_texto .= " slider--texto__title";
+                $text = $title;
+                $class_container .= " align-items-end";
+            } else
+                $class_container .= " align-items-center";
             if(!isset($class))
                 $class = "img";
             @endphp
@@ -32,8 +40,8 @@
                 <div class="{{ $class }}" style="background-image: url('{{ asset($img) }}');" >
                     @if(!empty($text))
                     <div class="carousel-caption position-absolute w-100" style="top: 0; left: 0;">
-                        <div class="container position-relative h-100 w-100 d-flex align-items-center justify-content-start">
-                            <div class="texto">
+                        <div class="{{$class_container}}">
+                            <div class="{{$class_texto}}">
                                 {!! $text !!}
                             </div>
                         </div>
@@ -51,8 +59,8 @@
                 @include('layouts.general.image', $arr)
                 @if(!empty($text))
                 <div class="carousel-caption position-absolute w-100" style="top: 0; left: 0;">
-                    <div class="container position-relative h-100 w-100 d-flex align-items-center justify-content-start">
-                        <div class="texto">
+                    <div class="{{$class_container}}">
+                        <div class="{{$class_texto}}">
                             {!! $text !!}
                         </div>
                     </div>

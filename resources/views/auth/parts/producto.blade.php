@@ -4,7 +4,7 @@
         @include('layouts.general.table', [
             "paginate" => $data["elementos"],
             "form" => [
-                "url" => Route("productos.index"),
+                "url" => isset($data["url_search"]) ? $data["url_search"] : route("productos.index"),
                 "placeholder" => "Buscar por Nombre, Características y Marca",
                 "search" => isset($data["search"]) ? $data["search"] : null
             ]
@@ -15,23 +15,37 @@
 <script>
     window.pyrus = [];
     window.pyrus.push({entidad: new Pyrus("productos"), tipo: "U"});
-    //window.pyrus.push({entidad: new Pyrus("marcas_txt"), tipo: "U"});
     window.pyrus.push({entidad: new Pyrus("producto_caracteristicas"), tipo: "M", column: "characteristics", function: "caracteristica"});
     window.pyrus.push({entidad: new Pyrus("producto_images"), tipo: "M", column: "images", function: "imagen"});
     addfinish = data => {
+        const marcaTarget = document.querySelector(`#${window.pyrus[0].entidad.name}_marca_id_target`);
+        const marca = document.querySelector(`#${window.pyrus[0].entidad.name}_marca_id`);
+        const producto = document.querySelector(`#${window.pyrus[0].entidad.name}_producto_id`);
+        if (window.data.producto_id)
+            producto.value = window.data.producto_id;
+        if (window.data.marca_id) {
+            marca.value = window.data.marca_id;
+            marcaTarget.classList.add("d-none");
+        }
+        const target_1 = document.querySelector(`#wrapper-caracteristica`);
         if (!data) {
-            const target_1 = document.querySelector(`#wrapper-caracteristica`);
             const target_2 = document.querySelector(`#wrapper-imagen`);
             if (target_1)
                 target_1.innerHTML = "";
             if (target_2)
                 target_2.innerHTML = "";
+            window.characteristicsArr.forEach(a => caracteristicaFunction(a));
             return null;
         }
+        if (target_1)
+            target_1.innerHTML = "";
         if (data.images)
             data.images.forEach(a => imagenFunction(a));
         if (data.characteristics)
             data.characteristics.forEach(a => caracteristicaFunction(a));
+    };
+    elementoFunction = (t, id) => {
+        window.location = `${url_simple}/adm/producto/${id}/elementos`;
     };
     /** ------------------------------------- */
     caracteristicaFunction = (value = null) => {
@@ -86,7 +100,10 @@
      *      INICIO
      ** ------------------------------------- */
     init(
-        data => {},
+        data => {
+            if (window.data.characteristics)
+                window.characteristicsArr = window.data.characteristics;
+        },
         true,
         true,
         "table",

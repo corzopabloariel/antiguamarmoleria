@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\DB;
 
 use App\Producto;
 class ProductoController extends Controller
@@ -28,9 +29,32 @@ class ProductoController extends Controller
             $data["search"] = $request->search;
             $elementos = $elementos->whereRaw( "UPPER(CONCAT_WS( ' ' ,productos.title ,productos.title_slug, productos.characteristics, marcas.title, marcas.title_slug)) LIKE UPPER('%{$request->search}%')" );
         }
-        if (!empty($id))
-            $elementos = $elementos->where("producto_id", $id);
-        $elementos = $elementos->select("productos.*");
+        $elementos = $elementos->leftJoin('productos AS pr', function($join) {
+            $join->on('pr.producto_id', '=', 'productos.id');
+        });
+        if (!empty($id)) {
+            $elementos = $elementos->where("productos.producto_id", $id);
+            $data["url_search"] = URL::to("adm/producto/{$id}/elementos");
+            $url = route("productos.index");
+            $data["url"] = $url;
+            $data["producto_id"] = intVal($id);
+            $data["breadcrumb"] = "<li class='breadcrumb-item'><a href='{$url}'>Productos</a></li>";
+            $elemento = $this->model::find($id);
+            $data["marca_id"] = $elemento->marca_id;
+            $data["characteristics"] = $elemento->characteristics;
+            $aux = $elemento->padres();
+            foreach ($aux AS $a) {
+                if (strcmp($a->getTable(), "marcas") == 0) {
+                    $url = URL::to("adm/productos?search={$elemento->title_slug}");
+                    $data["breadcrumb"] .= "<li class='breadcrumb-item'><a href='{$url}'>{$a->title}</a></li>";
+                } else {
+                    $url = URL::to("adm/producto/{$a->id}/elementos");
+                    $data["breadcrumb"] .= "<li class='breadcrumb-item'><a href='{$url}'>{$a->title}</a></li>";
+                }
+            }
+        } else
+            $elementos = $elementos->whereNull("productos.producto_id");
+        $elementos = $elementos->select("productos.*",DB::raw('count(pr.id) as elementos'));
         $elementos = $elementos->orderBy('marcas.order')->orderBy('productos.order')->paginate(15);
         $data[ "title" ] = "Productos";
         $data[ "elementos" ] = $elementos;

@@ -1,4 +1,19 @@
-<div class="productos py-5">
+@if(!empty($data["marca"]->sliders))
+    @include('layouts.general.slider', ['slider' => $data["marca"]->sliders, 'sliderID' => "marca--slider" , 'div' => 1 , 'arrow' => 0, "class" => "marca--slider", "title" => $data['marca']->title])
+@endif
+<div class="productos pb-5 pt-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ol class="breadcrumb bread--pyrus">
+                    <li class="breadcrumb-item"><a href="{{URL::to($data['marca']->link())}}">{{$data['marca']->title}}</a></li>
+                    @if(isset($data["colores"]))
+                    <li class="breadcrumb-item"><a href="{{URL::to($data['marca']->link() . '/colores')}}">Colores</a></li>
+                    @endif
+                </ol>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             @if(!empty($data["marca"]->description))
@@ -71,7 +86,7 @@
             <div class="row mt-n4">
                 @foreach($data["productos"] AS $p)
                 <div class="col-12 col-md-4 col-lg-3 mt-5 d-flex align-items-stretch">
-                    <a @isset($data['colores']) href="{{ URL::to($p->link()) }}" @endisset class="producto--color shadow-sm w-100  @if(empty($p->images)) d-flex @endif">
+                    <a @isset($data['colores']) href="{{ URL::to($p->link()) }}" @endisset class="producto--color producto--hover shadow-sm w-100 @if(empty($p->images)) d-flex @endif">
                         @if (!empty($p->images))
                             @include( 'layouts.general.image' , [ 'i' => $p->firstImage()["image"] , 'c' => 'producto--image' , 'n' => "", "in_div" => 1] )
                         @endif

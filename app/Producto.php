@@ -41,7 +41,7 @@ class Producto extends Model
 
     public function productos()
     {
-        return $this->hasMany('App\Producto','marca_id');
+        return $this->hasMany('App\Producto','producto_id');
     }
 
     public function link() {

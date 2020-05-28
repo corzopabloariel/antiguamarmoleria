@@ -116,7 +116,17 @@
                 <div class="col-12">
                     <p class="mb-0 d-flex">
                         <span class="mr-3">© {{ env('APP_YEAR') }}</span>
-                        <a target="_blank" href="{{ env('APP_UAUTHOR') }}" style="color:inherit" class="right text-uppercase">by {{ env('APP_AUTHOR') }}</a>
+                        @php
+                        $urls = explode("-", env('APP_UAUTHOR'));
+                        $names = explode("-", env('APP_AUTHOR'));
+                        $links = "";
+                        for ($i = 0; $i < count($urls); $i++) {
+                            if (!empty($links))
+                                $links .= " / ";
+                            $links .= "<a target='_blank' href='{$urls[$i]}' style='color:inherit' class='right text-uppercase mx-2'>{$names[$i]}</a>";
+                        }
+                        @endphp
+                        BY {!! $links !!}
                     </p>
                 </div>
             </div>

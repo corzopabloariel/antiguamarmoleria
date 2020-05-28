@@ -79,11 +79,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
         Route::post('{seccion}/update', ['uses' => 'Auth\ContenidoController@update', 'as' => 'update']);
     });
     /**
-     * PRODUCTOS
-     */
-    Route::resource('coberturas', 'Auth\ProductoController')->except(['update']);
-    Route::post('coberturas/update/{id}', ['uses' => 'Auth\ProductoController@update', 'as' => 'coberturas.update']);
-    /**
      * FAQ
      */
     Route::resource('faqs', 'Auth\FaqController')->except(['update']);
@@ -97,7 +92,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
      * PRODUCTOS
      */
     Route::resource('productos', 'Auth\ProductoController')->except(['update', 'index']);
-    Route::get('productos/{id?}', ['uses' => 'Auth\ProductoController@index', 'as' => 'productos.index']);
+    Route::get('productos/', ['uses' => 'Auth\ProductoController@index', 'as' => 'productos.index']);
+    Route::get('producto/{id?}/elementos', ['uses' => 'Auth\ProductoController@index', 'as' => 'productos.elementos']);
     Route::post('productos/update/{id}', ['uses' => 'Auth\ProductoController@update', 'as' => 'productos.update']);
     /**
      * BLOG

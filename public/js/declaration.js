@@ -639,20 +639,39 @@ const ENTIDADES = {
             }
         }
     },
+    marca_images: {
+        ONE: 1,
+        MULTIPLE: "slider",
+        NOMBRE: "Sliders",
+        ATRIBUTOS: {
+            order: {TIPO:"TP_ENTERO",MAXLENGTH:2,NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"orden", SORTEABLE: 1, MIN: 1, STEP: 1},
+            image: {TIPO:"TP_IMAGE", EXT: "jpeg, png, jpg, gif",RULE: "nullable|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "marcas/sliders", SIZE: "2MB",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"1400px", HEIGHTop:"300px", HELP: "Respete las medidas detalladas o idénticas para que el slider no se vea afectado"}
+        },
+        FORM: [
+            {
+                '<div class="col-12 col-md-6">/order/</div>':['order']
+            },
+            {
+                '<div class="col-12">/image/</div>':['image'],
+            },
+        ]
+    },
 
     productos: {
         TABLE: "productos",
         ATRIBUTOS: {
+            producto_id: {TIPO:"TP_STRING",VISIBILIDAD:"TP_VISIBLE_INVISIBLE"},
             order: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE", NOMBRE: "orden"},
             marca_id: {TIPO:"TP_RELATIONSHIP", ENUM: null,LABEL: 1,RULE: "required", NECESARIO: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"marca", ENTIDAD: "Marca",LABEL:1, ATTR: ["id", "title AS text"], ORDER: "order", NORMAL: 1},
             title: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre"},
             title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
             images: {TIPO:"TP_ARRAY",COLUMN:"images",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Imágenes",CLASS:"text-center"},
-            characteristics: {TIPO:"TP_ARRAY",COLUMN:"characteristics",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Características",CLASS:"text-center"}
+            characteristics: {TIPO:"TP_ARRAY",COLUMN:"characteristics",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Características",CLASS:"text-center"},
+            elementos: {TIPO:"TP_INT",VISIBILIDAD:"TP_VISIBLE_TABLE"},
         },
         FORM: [
             {
-                '<div class="col-12 col-md-4">/order/</div><div class="col-12 col-md-8">/marca_id/</div>':['order', 'marca_id'],
+                '/producto_id/<div class="col-12 col-md-4">/order/</div><div class="col-12 col-md-8">/marca_id/</div>':['order', 'marca_id', 'producto_id'],
             },
             {
                 '<div class="col-12">/title/</div>':['title'],
