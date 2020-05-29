@@ -39,8 +39,15 @@ if ($e->show == 2) {
 }
 if ($e->show == 3)
     $html .= $image;
-if (isset($data['colores']) && $data['colores'] && !empty($e->images) || $e->productos()->count() > 0)
+
+if (isset($data['colores']) && $data['colores']) {
     $flag = true;
+    if ($e->productos()->count() == 0)
+        $flag = false;
+} else {
+    if ((empty($e->characteristic) || empty($e->images)) && $e->productos()->count() == 0)
+        $flag = false;
+}
 @endphp
 <a @if($flag) href="{{ URL::to($e->link()) }}" @endif class="{{ $class }}">
     {!! $html !!}

@@ -231,8 +231,9 @@ a:hover {
     border-radius: .5em;
     font-size: 14px;
     width: 250px;
-    position: absolute;
+    position: fixed;
     background-color: #ffffff;
+    border: 1px solid #707070;
 }
 .pyrus--edit__title {
     font-size: 12px;
@@ -648,7 +649,7 @@ td:hover .edit--check {
     width: 100%;
 }
 div.producto--image {
-    height: 150px;
+    height: 160px;
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;

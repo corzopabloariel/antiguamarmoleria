@@ -478,7 +478,7 @@ class AdmController extends Controller
                 if ($return)
                     return $OBJ;
                 if(is_null($data))
-                    $model->create($OBJ);
+                    $data = $model->create($OBJ);
                 else {
                     $data->fill($OBJ);
                     $data->save();
@@ -486,7 +486,7 @@ class AdmController extends Controller
             /*} catch (\Throwable $th) {
                 return json_encode(["error" => 1, "msg" => $th->errorInfo[2]]);
             }*/
-            return json_encode(['success' => true, "error" => 0]);
+            return json_encode(["success" => true, "error" => 0, "data" => $data]);
         }
     }
 

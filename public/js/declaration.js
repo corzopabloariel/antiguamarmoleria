@@ -477,14 +477,12 @@ const ENTIDADES = {
             sliders: {TIPO:"TP_ARRAY",COLUMN:"sliders",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Sliders"},
             advantage: {TIPO:"TP_ARRAY",COLUMN:"advantage",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Ventajas"},
             is_destacado: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Destacado?", HELP: "Marca a mostrar en la página principal y header", NOMBRE: "Destacado", OPTION: {true: "Si", "1": "Si", false: "No", "0": "No"}},
+            //in_background: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE_FORM",CHECK:"¿1era imagen normal?", HELP: "Si no esta marcado, deja la imagen en Background", NOMBRE: "Background", OPTION: {true: "Si", "1": "Si", false: "No", "0": "No"}},
             only_colors: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Solo mostrar los colores?", HELP: "Si el campo esta activo, muestra los colores directamente en la sección", NOMBRE: "Mostrar colores", OPTION: {true: "Si", "1": "Si", false: "No", "0": "No"}}
         },
         FORM: [
             {
-                '<div class="col-12 col-md-6">/order/</div><div class="col-12 col-md-6">/is_destacado//only_colors/</div>': ["is_destacado", "only_colors", "order"]
-            },
-            {
-                '<div class="col-12">/title/</div>': ['title']
+                '<div class="col-12 col-md-6"><div class="row"><div class="col-12 mb-3">/order/</div><div class="col-12">/title/</div></div></div><div class="col-12 col-md-6">/is_destacado//only_colors/</div>': ["is_destacado", "only_colors", "order", "title"]
             },
             {
                 '<div class="col-12 col-md-6">/logo/</div><div class="col-12 col-md-6">/logo2/</div>' : ["logo", "logo2"]
@@ -661,12 +659,13 @@ const ENTIDADES = {
         TABLE: "productos",
         ATRIBUTOS: {
             producto_id: {TIPO:"TP_RELATIONSHIP",VISIBILIDAD:"TP_VISIBLE_INVISIBLE"},
-            show: {TIPO:"TP_ENUM", LABEL: 1,VISIBILIDAD:"TP_VISIBLE_FORM",ENUM:[{id: 1, text: "Todo"}, {id: 2, text: "Título"}, {id: 3, text: "Imagen"}],NOMBRE:"Mostrar",CLASS:"form--input", NECESARIO: 1, VALUE: 0},
+            show: {TIPO:"TP_ENUM", LABEL: 1,VISIBILIDAD:"TP_VISIBLE_FORM",ENUM:[{id: 1, text: "Todo"}, {id: 2, text: "Título"}, {id: 3, text: "Imagen"}],NOMBRE:"Mostrar",CLASS:"form--input", NECESARIO: 1, DEFAULT: 1},
             order: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE", NOMBRE: "orden"},
             marca_id: {TIPO:"TP_RELATIONSHIP", ENUM: null,LABEL: 1,RULE: "required", NECESARIO: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"marca", ENTIDAD: "Marca",LABEL:1, ATTR: ["id", "title AS text"], ORDER: "order", NORMAL: 1},
             title: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre"},
             title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
             images: {TIPO:"TP_ARRAY",COLUMN:"images",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Imágenes",CLASS:"text-center"},
+            in_background: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿1era imagen normal?", HELP: "Si no esta marcado, deja la imagen en Background", NOMBRE: "Background", OPTION: {true: "Si", "1": "Si", false: "No", "0": "No"}},
             characteristics: {TIPO:"TP_ARRAY",COLUMN:"characteristics",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Características",CLASS:"text-center"},
             elementos: {TIPO:"TP_INT",VISIBILIDAD:"TP_VISIBLE_TABLE"},
         },
@@ -675,7 +674,7 @@ const ENTIDADES = {
                 '/producto_id/<div class="col-12 col-md-4">/order/</div><div class="col-12 col-md-4">/marca_id/</div><div class="col-12 col-md-4">/show/</div>':['order', 'show', 'marca_id', 'producto_id'],
             },
             {
-                '<div class="col-12">/title/</div>':['title'],
+                '<div class="col-12 col-md-9">/title/</div><div class="col-12 col-md">/in_background/</div>':['title', 'in_background'],
             }
         ]
     },

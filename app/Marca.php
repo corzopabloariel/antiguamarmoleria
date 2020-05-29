@@ -21,6 +21,8 @@ class Marca extends Model
         'sliders',
         'advantage',
         'is_destacado',
+        'in_background',
+        'only_colors',
         'elim'
     ];
     protected $casts = [
@@ -38,6 +40,8 @@ class Marca extends Model
         'sliders' => 'array',
         'advantage' => 'array',
         'is_destacado' => 'boolean',
+        'in_background' => 'boolean',
+        'only_colors' => 'boolean',
         'elim' => 'boolean'
     ];
 

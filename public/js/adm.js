@@ -747,11 +747,10 @@ function saveEdit(t) {
             const edit__check = window.td_eventual.querySelectorAll(".edit--check");
             if (edit__check.length > 0) {
                 Array.prototype.forEach.call(edit__check, e => {
-                    e.addEventListener("click", editCheck);
+                    e.addEventListener("click", editElement);
                 })
             }
             removeEdit(t);
-            //location.reload();
         } else  {
             Toast.fire({
                 icon: 'error',
@@ -771,13 +770,14 @@ function removeEdit(t) {
     delete window.entidad_eventual;
     delete window.td_eventual;
 }
-function editCheck(evt) {
+function editElement(evt) {
     let e = document.querySelector(".pyrus--edit__check");
     if (e)
         e.remove();
     const td = this.closest("td");
     const pos = getPosition(td);
     const w = td.cellIndex === 0 ? (td.offsetWidth * -1) : 250;
+    const h = pos.y + td.offsetHeight;
     let name = this.dataset.name;
     let column = this.dataset.column;
     let value = this.dataset.value;
@@ -793,7 +793,7 @@ function editCheck(evt) {
     window.entidad_eventual = entidad;
     window.td_eventual = this.closest("td");
     div.classList.add("p-2", "pyrus--edit__check", "shadow")
-    div.setAttribute("style", `left: calc(${pos.x}px - ${w}px); top: ${pos.y}px`);
+    div.setAttribute("style", `left: calc(${pos.x}px - ${w}px); bottom: calc(100% - ${h}px)`);
     div.innerHTML = '<h3 class="pyrus--edit__title">Edición del campo<button type="button" class="close" onclick="removeEdit(this);"><span aria-hidden="true">&times;</span></button></h3>';
     div.innerHTML += `<form onsubmit="event.preventDefault();">${entidad.elementForm(column, value)}</form>`;
     div.innerHTML += `<div class="d-flex justify-content-end border-top mt-2 pt-2"><button onclick="saveEdit(this);" data-table="${this.dataset.name}" data-key="${this.dataset.column}" data-id="${this.dataset.id}" class="btn btn-sm button--form btn-primary" type="button"><i class="fas fa-save"></i></button></div>`;
@@ -885,7 +885,7 @@ init = (callbackOK, normal = true, widthElements = true, type = "table", withAct
     }
     if (edit__check.length > 0) {
         Array.prototype.forEach.call(edit__check, e => {
-            e.addEventListener("click", editCheck);
+            e.addEventListener("click", editElement);
         })
     }
     callbackOK.call(this, [targetForm, targetElements]);
