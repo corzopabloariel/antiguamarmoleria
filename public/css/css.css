@@ -676,6 +676,8 @@ div.producto--image__element {
 .producto--title {
     text-transform: uppercase;
     margin-bottom: .8em;
+    position: relative;
+    z-index: 1;
 }
 .producto--title__principal {
     font-size: 32px;
@@ -720,11 +722,9 @@ div.producto--image__element {
     transition: all 600ms ease;
 }
 .producto--hover:hover .producto--image {
-    -moz-transform: scale(1.2) rotate(5deg);
-    -webkit-transform: scale(1.2) rotate(5deg);
-    -o-transform: scale(1.2) rotate(5deg);
-    -ms-transform: scale(1.2) rotate(5deg);
-    transform: scale(1.2) rotate(5deg);
+}
+.producto--color__sin {
+    background-color: #f0f0f0;
 }
 /**/
 .advantage {

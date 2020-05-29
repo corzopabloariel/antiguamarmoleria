@@ -29,9 +29,6 @@ class ProductoController extends Controller
             $data["search"] = $request->search;
             $elementos = $elementos->whereRaw( "UPPER(CONCAT_WS( ' ' ,productos.title ,productos.title_slug, productos.characteristics, marcas.title, marcas.title_slug)) LIKE UPPER('%{$request->search}%')" );
         }
-        $elementos = $elementos->leftJoin('productos AS pr', function($join) {
-            $join->on('pr.producto_id', '=', 'productos.id');
-        });
         if (!empty($id)) {
             $elementos = $elementos->where("productos.producto_id", $id);
             $data["url_search"] = URL::to("adm/producto/{$id}/elementos");
@@ -54,8 +51,10 @@ class ProductoController extends Controller
             }
         } else
             $elementos = $elementos->whereNull("productos.producto_id");
-        $elementos = $elementos->select("productos.*",DB::raw('count(pr.id) as elementos'));
+        $elementos = $elementos->select("productos.*");
         $elementos = $elementos->orderBy('marcas.order')->orderBy('productos.order')->paginate(15);
+        foreach ($elementos AS $e)
+            $e["elementos"] = $e->productos()->count();
         $data[ "title" ] = "Productos";
         $data[ "elementos" ] = $elementos;
         $data[ "buttons" ] = [

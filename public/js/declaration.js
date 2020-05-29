@@ -660,7 +660,8 @@ const ENTIDADES = {
     productos: {
         TABLE: "productos",
         ATRIBUTOS: {
-            producto_id: {TIPO:"TP_STRING",VISIBILIDAD:"TP_VISIBLE_INVISIBLE"},
+            producto_id: {TIPO:"TP_RELATIONSHIP",VISIBILIDAD:"TP_VISIBLE_INVISIBLE"},
+            show: {TIPO:"TP_ENUM", LABEL: 1,VISIBILIDAD:"TP_VISIBLE_FORM",ENUM:[{id: 1, text: "Todo"}, {id: 2, text: "Título"}, {id: 3, text: "Imagen"}],NOMBRE:"Mostrar",CLASS:"form--input", NECESARIO: 1, VALUE: 0},
             order: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE", NOMBRE: "orden"},
             marca_id: {TIPO:"TP_RELATIONSHIP", ENUM: null,LABEL: 1,RULE: "required", NECESARIO: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"marca", ENTIDAD: "Marca",LABEL:1, ATTR: ["id", "title AS text"], ORDER: "order", NORMAL: 1},
             title: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre"},
@@ -671,7 +672,7 @@ const ENTIDADES = {
         },
         FORM: [
             {
-                '/producto_id/<div class="col-12 col-md-4">/order/</div><div class="col-12 col-md-8">/marca_id/</div>':['order', 'marca_id', 'producto_id'],
+                '/producto_id/<div class="col-12 col-md-4">/order/</div><div class="col-12 col-md-4">/marca_id/</div><div class="col-12 col-md-4">/show/</div>':['order', 'show', 'marca_id', 'producto_id'],
             },
             {
                 '<div class="col-12">/title/</div>':['title'],

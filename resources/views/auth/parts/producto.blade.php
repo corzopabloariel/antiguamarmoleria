@@ -34,7 +34,8 @@
                 target_1.innerHTML = "";
             if (target_2)
                 target_2.innerHTML = "";
-            window.characteristicsArr.forEach(a => caracteristicaFunction(a));
+            if (window.characteristicsArr)
+                window.characteristicsArr.forEach(a => caracteristicaFunction(a));
             return null;
         }
         if (target_1)

@@ -15,6 +15,7 @@ class Producto extends Model
         'title_slug',
         'images',
         'characteristics',
+        'show',
         'color',
         'color_text',
         'elim'
@@ -28,6 +29,7 @@ class Producto extends Model
         'title' => 'string',
         'images' => 'array',
         'characteristics' => 'array',
+        'show' => 'integer',
         'color' => 'array',
         'color_text' => 'array',
         'elim' => 'boolean'

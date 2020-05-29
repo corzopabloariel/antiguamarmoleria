@@ -45,12 +45,7 @@
         <div class="row mt-n4">
             @foreach($data["productos"] AS $p)
             <div class="col-12 col-md-4 mt-5 d-flex align-items-stretch">
-                <a @isset($data['colores']) href="{{ URL::to($p->link()) }}" @endisset class="producto--color producto--hover shadow-sm w-100  @if(empty($p->images)) d-flex @endif">
-                    @if (!empty($p->images))
-                        @include( 'layouts.general.image' , [ 'i' => $p->firstImage()["image"] , 'c' => 'producto--image producto--image__element' , 'n' => "", "in_div" => 1] )
-                    @endif
-                    <p class="producto--title producto--title__color @if(empty($p->images)) align-self-center @endif">{{ $p->title }}</p>
-                </a>
+                @include('page.parts.elemento', ['e' => $p])
             </div>
             @endforeach
         </div>

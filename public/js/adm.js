@@ -247,6 +247,7 @@ removeFile = ( t ) => {
  ** ------------------------------------- */
 remove_ = ( t , class_ ) => {
     let target =  t.closest(`.${class_}`);
+    let img = target.querySelector(".imgURL");
     Swal.fire({
         title: "Atención!",
         text: "¿Eliminar elemento?",
@@ -264,8 +265,10 @@ remove_ = ( t , class_ ) => {
             if (window.formAction === "UPDATE") {
                 if (!window.imgDelete)
                     window.imgDelete = [];
-                if (target.find( ".imgURL" ).val() != "")
-                    window.imgDelete.push(target.find( ".imgURL" ).val());
+                if (img) {
+                    if (img.value !== "")
+                        window.imgDelete.push(img.value);
+                }
                 Toast.fire({
                     icon: 'warning',
                     title: 'Debe guardar el contenido para ver los cambios'
@@ -475,6 +478,9 @@ formSubmit = t => {
                 if (p.key)
                     aux["KEY"] = p.key;
                 Arr.push(aux);
+            } else {
+                if (p.column)
+                    Arr.push({EMPTY: p.column});
             }
         });
     } else

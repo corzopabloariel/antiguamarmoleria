@@ -180,7 +180,7 @@ class AdmController extends Controller
         return $value;
     }
     public function TP_RELATIONSHIP($attr, $value, $valueNew, $specification, $index = 0) {
-        return $valueNew;
+        return empty($valueNew) ? null : $valueNew;
     }
     public function TP_RELATIONSHIP_value($value) {
         return $value;
@@ -301,82 +301,87 @@ class AdmController extends Controller
         $OBJ = [];
         for ($x = 0 ; $x < count($datosRequest["ATRIBUTOS"]); $x++) {
             $aux = $datosRequest["ATRIBUTOS"][$x];
-            switch ($aux["TIPO"]) {
-                case "U":
-                    $attrs = array_keys($aux["DATA"]["especificacion"]);
-                    $specifications = $aux["DATA"]["especificacion"];
-                    $details = $aux["DATA"]["detalles"];
-                    $values = $datosRequest[$aux["DATA"]["name"]];
-                    $column = isset($aux["COLUMN"]) ? $aux["COLUMN"] : NULL;
-                    for($i = 0; $i < count($attrs); $i++) {
-                        $attr = $attrs[$i];
-                        $specification = $specifications[$attr];
-                        if ($specification == "TP_ARRAY")
-                            continue;
-                        $detail = isset($details[$attr]) ? $details[$attr] : null;
-                        if ($specification == "TP_SLUG")
-                            $valueNew = $values[str_replace("_slug", "", $attr)];
-                        else
-                            $valueNew = $values[$attr];
-                        if (empty($column)) {
-                            $value = isset($data[$attr]) ? $data[$attr] : null;
-                            $OBJ[$attr] = call_user_func_array("self::{$specification}", [$attr, $value, $valueNew, $detail]);
-                        } else {
-                            $value = isset($data[$column][$attr]) ? $data[$column][$attr] : null;
-                            if (!isset($OBJ[$column]))
-                                $OBJ[$column] = [];
-                            $OBJ[$column][$attr] = call_user_func_array("self::{$specification}", [$attr, $value, $valueNew, $detail]);
+            if (isset($aux["TIPO"])) {
+                switch ($aux["TIPO"]) {
+                    case "U":
+                        $attrs = array_keys($aux["DATA"]["especificacion"]);
+                        $specifications = $aux["DATA"]["especificacion"];
+                        $details = $aux["DATA"]["detalles"];
+                        $values = $datosRequest[$aux["DATA"]["name"]];
+                        $column = isset($aux["COLUMN"]) ? $aux["COLUMN"] : NULL;
+                        for($i = 0; $i < count($attrs); $i++) {
+                            $attr = $attrs[$i];
+                            $specification = $specifications[$attr];
+                            if ($specification == "TP_ARRAY")
+                                continue;
+                            $detail = isset($details[$attr]) ? $details[$attr] : null;
+                            if ($specification == "TP_SLUG")
+                                $valueNew = $values[str_replace("_slug", "", $attr)];
+                            else
+                                $valueNew = $values[$attr];
+                            if (empty($column)) {
+                                $value = isset($data[$attr]) ? $data[$attr] : null;
+                                $OBJ[$attr] = call_user_func_array("self::{$specification}", [$attr, $value, $valueNew, $detail]);
+                            } else {
+                                $value = isset($data[$column][$attr]) ? $data[$column][$attr] : null;
+                                if (!isset($OBJ[$column]))
+                                    $OBJ[$column] = [];
+                                $OBJ[$column][$attr] = call_user_func_array("self::{$specification}", [$attr, $value, $valueNew, $detail]);
+                            }
                         }
-                    }
-                break;
-                case "M":
-                    $attrs = array_keys($aux["DATA"]["especificacion"]);
-                    $values = $datosRequest[$aux["DATA"]["name"]];
-                    $column = isset($aux["COLUMN"]) ? $aux["COLUMN"] : NULL;
-                    $specifications = $aux["DATA"]["especificacion"];
-                    $details = $aux["DATA"]["detalles"];
-                    $OBJ[$column] = [];
-                    for ($i = 0; $i < count($attrs); $i++) {
-                        $value = isset($data[$column]) ? $data[$column] : null;
-                        $attr = $attrs[$i];
-                        $specification = $specifications[$attr];
-                        if ($specification == "TP_ARRAY")
-                            continue;
-                        $detail = isset($details[$attr]) ? $details[$attr] : null;
-                        $valueNew = $values[$attr][$column];
-                        if ($specification == "TP_SLUG")
-                            $attr = str_replace("_slug", "", $attr);
-                        for ($j = 0; $j < count($valueNew); $j++) {
-                            $valueAux = isset($value[$j][$attr]) ? $value[$j][$attr] : null;
-                            $OBJ[$column][$j][$attr] = call_user_func_array("self::{$specification}", [$attr, $valueAux, $valueNew[$j], $detail, $j]);
+                    break;
+                    case "M":
+                        $attrs = array_keys($aux["DATA"]["especificacion"]);
+                        $values = $datosRequest[$aux["DATA"]["name"]];
+                        $column = isset($aux["COLUMN"]) ? $aux["COLUMN"] : NULL;
+                        $specifications = $aux["DATA"]["especificacion"];
+                        $details = $aux["DATA"]["detalles"];
+                        $OBJ[$column] = [];
+                        for ($i = 0; $i < count($attrs); $i++) {
+                            $value = isset($data[$column]) ? $data[$column] : null;
+                            $attr = $attrs[$i];
+                            $specification = $specifications[$attr];
+                            if ($specification == "TP_ARRAY")
+                                continue;
+                            $detail = isset($details[$attr]) ? $details[$attr] : null;
+                            $valueNew = $values[$attr][$column];
+                            if ($specification == "TP_SLUG")
+                                $attr = str_replace("_slug", "", $attr);
+                            for ($j = 0; $j < count($valueNew); $j++) {
+                                $valueAux = isset($value[$j][$attr]) ? $value[$j][$attr] : null;
+                                $OBJ[$column][$j][$attr] = call_user_func_array("self::{$specification}", [$attr, $valueAux, $valueNew[$j], $detail, $j]);
+                            }
                         }
-                    }
-                    if (!empty($aux["DATA"]["sorteable"])) {
-                        for($i = 0; $i < count($OBJ[$column]) - 1 ; $i ++) {
-                            for($j = $i + 1; $j < count($OBJ[$column]) ; $j ++) {
-                                if ($OBJ[$column][ $i ][$aux["DATA"]["sorteable"]] > $OBJ[$column][$j][$aux["DATA"]["sorteable"]]) {
-                                    $temp = $OBJ[$column][$i];
-                                    $OBJ[$column][$i] = $OBJ[$column][$j];
-                                    $OBJ[$column][$j] = $temp;
+                        if (!empty($aux["DATA"]["sorteable"])) {
+                            for($i = 0; $i < count($OBJ[$column]) - 1 ; $i ++) {
+                                for($j = $i + 1; $j < count($OBJ[$column]) ; $j ++) {
+                                    if ($OBJ[$column][ $i ][$aux["DATA"]["sorteable"]] > $OBJ[$column][$j][$aux["DATA"]["sorteable"]]) {
+                                        $temp = $OBJ[$column][$i];
+                                        $OBJ[$column][$i] = $OBJ[$column][$j];
+                                        $OBJ[$column][$j] = $temp;
+                                    }
                                 }
                             }
                         }
-                    }
+                        break;
+                    case "A":
+                        $values = $datosRequest[$aux["DATA"]["name"]];
+                        $column = isset($aux["COLUMN"]) ? $aux["COLUMN"] : NULL;
+                        $OBJ[$column] = [];
+                        $elements = $values;
+                        if (!empty($column))
+                            $values = $values[$column];
+                        foreach($values AS $arr) {
+                            if (is_array($arr))
+                                $OBJ[$column] = array_merge($OBJ[$column], $arr);
+                            else
+                                $OBJ[$column][] = $arr;
+                        }
                     break;
-                case "A":
-                    $values = $datosRequest[$aux["DATA"]["name"]];
-                    $column = isset($aux["COLUMN"]) ? $aux["COLUMN"] : NULL;
-                    $OBJ[$column] = [];
-                    $elements = $values;
-                    if (!empty($column))
-                        $values = $values[$column];
-                    foreach($values AS $arr) {
-                        if (is_array($arr))
-                            $OBJ[$column] = array_merge($OBJ[$column], $arr);
-                        else
-                            $OBJ[$column][] = $arr;
-                    }
-                break;
+                }
+            } else {
+                if (isset($aux["EMPTY"]));
+                    $OBJ[$aux["EMPTY"]] = null;
             }
         }
         return $OBJ;
@@ -388,6 +393,8 @@ class AdmController extends Controller
         $flag = false;
         $aa = [];
         for($i = 0; $i < count($attr); $i++) {
+            if (!isset($attr[$i]["DATA"]))
+                continue;
             $elements = [];
             $values = [];
             $table = $attr[$i]["DATA"]["name"];
