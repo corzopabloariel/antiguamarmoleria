@@ -41,37 +41,62 @@
                 </div>
             </div>
         </div>
-        @if($data["productos"]->isNotEmpty())
-        <div class="row mt-n4">
-            @foreach($data["productos"] AS $p)
-            <div class="col-12 col-md-4 mt-5 d-flex align-items-stretch">
-                @include('page.parts.elemento', ['e' => $p])
-            </div>
-            @endforeach
-        </div>
-        <div class="row mt-5">
-            <div class="col-12 justify-content-center d-flex">
-                {{ $data["productos"]->links() }}
-            </div>
-        </div>
-        @else
-        <div class="row mt-5">
-            <div class="col-12 col-md-6 d-flex align-items-center">
-                <div class="w-100">
-                    @include('layouts.general.slider', ['slider' => $data["producto"]->images, 'sliderID' => "producto--slider" , 'div' => 1 , 'arrow' => 0, 'class' => 'producto--image producto--image__element'])
+        @if(!empty($data["producto"]->description))
+            <div class="row mt-5">
+                <div class="col-12 col-md-6 d-flex align-items-center">
+                    <div class="w-100">
+                        @include('layouts.general.slider', ['slider' => $data["producto"]->images, 'sliderID' => "producto--slider" , 'div' => 1 , 'arrow' => 0, 'class' => 'producto--image producto--image__element producto--image__specific'])
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    {!! $data["producto"]->description !!}
                 </div>
             </div>
-            <div class="col-12 col-md-6">
-                @if(!empty($data["producto"]->characteristics))
-                    <h2 class="producto--title">{{ $data["producto"]->title }}</h2>
-                    @foreach($data["producto"]->characteristics AS $characteristic)
-                    <p class="producto--characteristic" style="--bg: {{$data['marca']->color['color']}}; --txt: {{$data['marca']->color_text['color_text']}};"><strong>{!! $characteristic["icon"] !!}{{ $characteristic["title"] }}</strong> {{ $characteristic["data"] }}</p>
-                    @endforeach
-                @elseif(!empty($data["producto"]->description))
-                {!! $data["producto"]->description !!}
-                @endif
+            @if($data["productos"]->isNotEmpty())
+            <div class="row">
+                @foreach($data["productos"] AS $p)
+                <div class="col-12 col-md-4 mt-5 d-flex align-items-stretch">
+                    @include('page.parts.elemento', ['e' => $p])
+                </div>
+                @endforeach
             </div>
-        </div>
+            <div class="row mt-5">
+                <div class="col-12 justify-content-center d-flex">
+                    {{ $data["productos"]->links() }}
+                </div>
+            </div>
+            @endif
+        @else
+            @if($data["productos"]->isNotEmpty())
+            <div class="row">
+                @foreach($data["productos"] AS $p)
+                <div class="col-12 col-md-4 mt-5 d-flex align-items-stretch">
+                    @include('page.parts.elemento', ['e' => $p])
+                </div>
+                @endforeach
+            </div>
+            <div class="row mt-5">
+                <div class="col-12 justify-content-center d-flex">
+                    {{ $data["productos"]->links() }}
+                </div>
+            </div>
+            @else
+            <div class="row mt-5">
+                <div class="col-12 col-md-6 d-flex align-items-center">
+                    <div class="w-100">
+                        @include('layouts.general.slider', ['slider' => $data["producto"]->images, 'sliderID' => "producto--slider" , 'div' => 1 , 'arrow' => 0, 'class' => 'producto--image producto--image__element'])
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    @if(!empty($data["producto"]->characteristics))
+                        <h2 class="producto--title">{{ $data["producto"]->title }}</h2>
+                        @foreach($data["producto"]->characteristics AS $characteristic)
+                        <p class="producto--characteristic" style="--bg: {{$data['marca']->color['color']}}; --txt: {{$data['marca']->color_text['color_text']}};"><strong>{!! $characteristic["icon"] !!}{{ $characteristic["title"] }}</strong> {{ $characteristic["data"] }}</p>
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+            @endif
         @endif
     </div>
 </div>

@@ -51,6 +51,7 @@ class ProductoController extends Controller
             }
         } else
             $elementos = $elementos->whereNull("productos.producto_id");
+        $elementos = $elementos->where("productos.elim", 0);
         $elementos = $elementos->select("productos.*");
         $elementos = $elementos->orderBy('marcas.order')->orderBy('productos.order')->paginate(15);
 

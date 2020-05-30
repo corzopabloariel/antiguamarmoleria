@@ -389,8 +389,21 @@ formSave = (t, formData, message = { wait : "Espere. Guardando contenido" , err:
                         window.td_pyrus.push(tr);
                         window.tbody_pyrus.appendChild(tr);
                     } else {
+                        if (!window.total_elements_pyrus)
+                            window.total_elements_pyrus = window.data.elementos.per_page;
+                        window.total_elements_pyrus ++;
                         if (window.tbody_pyrus.childElementCount !== window.data.elementos.per_page)
                             window.tbody_pyrus.appendChild(tr);
+                        if (window.total_elements_pyrus % window.data.elementos.per_page === 0) {
+                            Toast.fire({
+                                icon: 'warning',
+                                title: 'Espere. Recargando vista'
+                            });
+                            setTimeout(() => {
+                                location.reload();
+                            });
+                            return null;
+                        }
                     }
                 } else {
                     if (tr_target) {

@@ -480,7 +480,7 @@ const ENTIDADES = {
             advantage: {TIPO:"TP_ARRAY",COLUMN:"advantage",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Ventajas"},
             is_destacado: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Destacado?", HELP: "Marca a mostrar en la página principal y header", NOMBRE: "Destacado", OPTION: {true: "Si", "1": "Si", false: "No", "0": "No"}},
             //in_background: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE_FORM",CHECK:"¿1era imagen normal?", HELP: "Si no esta marcado, deja la imagen en Background", NOMBRE: "Background", OPTION: {true: "Si", "1": "Si", false: "No", "0": "No"}},
-            only_colors: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Solo mostrar los colores?", HELP: "Si el campo esta activo, muestra los colores directamente en la sección", NOMBRE: "Mostrar colores", OPTION: {true: "Si", "1": "Si", false: "No", "0": "No"}}
+            only_colors: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Solo mostrar los elementos?", HELP: "Si el campo esta activo, muestra los elementos hijos directamente en la sección", NOMBRE: "Mostrar elementos", OPTION: {true: "Si", "1": "Si", false: "No", "0": "No"}}
         },
         FORM: [
             {
@@ -666,7 +666,7 @@ const ENTIDADES = {
             producto_id: {TIPO:"TP_RELATIONSHIP",VISIBILIDAD:"TP_VISIBLE_INVISIBLE"},
             show: {TIPO:"TP_ENUM", LABEL: 1,VISIBILIDAD:"TP_VISIBLE_FORM",ENUM:[{id: 1, text: "Todo"}, {id: 2, text: "Título"}, {id: 3, text: "Imagen"}],NOMBRE:"Mostrar",CLASS:"form--input", NECESARIO: 1, DEFAULT: 1},
             order: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE", NOMBRE: "orden"},
-            description: {TIPO:"TP_TEXT", LABEL: 1,EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"resumen", HELP: "Si llena este campo, la ficha va a tener un estilo particular"},
+            description: {TIPO:"TP_TEXT", LABEL: 1,EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"Descripción", HELP: "Si llena este campo, la ficha va a tener un estilo particular"},
             marca_id: {TIPO:"TP_RELATIONSHIP", ENUM: null,LABEL: 1,RULE: "required", NECESARIO: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"marca", ENTIDAD: "Marca",LABEL:1, ATTR: ["id", "title AS text"], ORDER: "order", NORMAL: 1},
             title: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre"},
             title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
@@ -704,9 +704,9 @@ const ENTIDADES = {
                     { name: 'others', groups: [ 'others' ] },
                     { name: 'about', groups: [ 'about' ] }
                 ],
-                removeButtons: 'Save,Preview,NewPage,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Redo,Find,Undo,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,RemoveFormat,CopyFormatting,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Language,BidiRtl,BidiLtr,Unlink,Anchor,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Format,Font,FontSize,ShowBlocks,Maximize,About',
+                removeButtons: 'Save,NewPage,Preview,Print,Cut,Templates,Copy,Paste,PasteText,PasteFromWord,Find,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,RemoveFormat,CopyFormatting,CreateDiv,BidiLtr,BidiRtl,Language,Anchor,Flash,Smiley,SpecialChar,PageBreak,Iframe,Styles,Font,Maximize,ShowBlocks,About,Replace',
                 colorButton_colors : colorPick,
-                height: '120px'
+                height: '150px'
             },
         }
     },

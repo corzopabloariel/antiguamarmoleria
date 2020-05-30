@@ -658,7 +658,13 @@ div.producto--image {
 }
 div.producto--image__element {
     height: 220px;
-    background-size: 100%;
+    background-size: auto 100%;
+    border: 3px solid #ffffff;
+    -webkit-box-shadow: 0 0 0 1px #000;
+    box-shadow: 0 0 0 1px #000;
+}
+div.producto--image__specific {
+    height: 300px;
 }
 .producto--resume {
     font-size: 16px;
