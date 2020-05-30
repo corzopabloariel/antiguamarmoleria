@@ -25,7 +25,7 @@
             producto.value = window.data.producto_id;
         if (window.data.marca_id) {
             marca.value = window.data.marca_id;
-            marcaTarget.classList.add("d-none");
+            marcaTarget.parentElement.classList.add("d-none");
         }
         const target_1 = document.querySelector(`#wrapper-caracteristica`);
         if (!data) {

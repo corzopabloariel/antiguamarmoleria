@@ -2,7 +2,10 @@
 $flag = false;
 $class = "producto--color producto--hover shadow-sm w-100";
 $class_text = "producto--title producto--title__color";
-$image = View( 'layouts.general.image' , [ 'i' => $p->firstImage()["image"] , 'c' => 'producto--image' , 'n' => "", "in_div" => 1] )->render();
+$arr = ['i' => $e->firstImage()["image"], 'c' => 'producto--image' , 'n' => ""];
+if (empty($e->in_background))
+    $arr["in_div"] = 0;
+$image = View('layouts.general.image', $arr)->render();
 if($e->productos()->count() == 0 && empty($e->images))
     $class .= " producto--color__sin";
 if(empty($e->images)) {

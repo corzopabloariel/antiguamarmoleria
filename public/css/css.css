@@ -610,8 +610,9 @@ td:hover .edit--check {
     padding: 1em 0
 }
 .header--marca__link.active--marca,
-.header--marca__link:hover {
-    background-color: #b0d81a;
+.header--marca__link:hover,
+.menu--lateral:hover {
+    background-color: #b0d81a !important;
     color: #ffffff !important;
     -webkit-transition: all 600ms ease;
     -moz-transition: all 600ms ease;
@@ -631,6 +632,12 @@ td:hover .edit--check {
     -ms-filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(183deg) brightness(105%) contrast(101%);
     -o-filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(183deg) brightness(105%) contrast(101%);
     filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(183deg) brightness(105%) contrast(101%);
+}
+/**/
+.menu--lateral {
+    display: block;
+    border-left:4px solid var(--bg);
+    background-color: #f3f3f3;
 }
 /**/
 .productos {

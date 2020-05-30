@@ -212,11 +212,13 @@ erase = ( t , id ) => {
  *      LIMPIAR FORMULARIO
  ** ------------------------------------- */
 remove = t => {
+    const modal = document.querySelector("#formModal");
+    const elementsNo = document.querySelector(".no--send");
     const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
     $('[data-toggle="tooltip"]').tooltip('hide');
-    if($( "#formModal .no--send" ).length) {
+    if (elementsNo) {
         entidad.clean();
-        $( "#formModal" ).modal( "hide" );
+        $(modal).modal("hide");
     } else {
         Swal.fire({
             title: '¿Cerrar sin guardar registro?',
@@ -226,21 +228,15 @@ remove = t => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Confirmar'
-        }).then( ( result ) => {
-            if ( result.value ) {
+        }).then(result => {
+            if (result.value) {
                 entidad.clean();
-                if( $("#formModal").length )
-                    $("#formModal").modal( "hide" );
-                add($("#btnADD"));
+                if (modal)
+                    $(modal).modal("hide");
+                add(null);
             }
         })
     }
-};
-removeFile = ( t ) => {
-    let button = $( t );
-    let content = button.closest( ".input-group" );
-
-    content.find( "input" ).val( "" );
 };
 /** -------------------------------------
  *      MODO TEST: QUITAR ELEMENTO
@@ -390,10 +386,11 @@ formSave = (t, formData, message = { wait : "Espere. Guardando contenido" , err:
                         window.tbody_pyrus.appendChild(tr);
                     } else {
                         if (!window.total_elements_pyrus)
-                            window.total_elements_pyrus = window.data.elementos.per_page;
+                            window.total_elements_pyrus = window.data.elementos.total;
                         window.total_elements_pyrus ++;
                         if (window.tbody_pyrus.childElementCount !== window.data.elementos.per_page)
                             window.tbody_pyrus.appendChild(tr);
+                        console.log(window.total_elements_pyrus % window.data.elementos.per_page)
                         if (window.total_elements_pyrus % window.data.elementos.per_page === 0) {
                             Toast.fire({
                                 icon: 'warning',
@@ -420,7 +417,6 @@ formSave = (t, formData, message = { wait : "Espere. Guardando contenido" , err:
                 entidad.clean();
                 if( $("#formModal").length )
                     $("#formModal").modal( "hide" );
-                add($("#btnADD"));
             } else if (res.data.msg) {
                 Toast.fire({
                     icon: 'error',
@@ -880,11 +876,7 @@ function editableSave(evt) {
     })
     .then(() => {});
 }
-
-init = (callbackOK, normal = true, widthElements = true, type = "table", withAction = true, btn = ["e" , "d"], btnsAdd = null) => {
-    let targetForm = document.querySelector(".pyrus--form");
-    let targetElements = document.querySelector("#wrapper-tabla");
-    const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
+function editor(targetForm) {
     if (Array.isArray(window.pyrus)) {
         window.pyrus.forEach(p => {
             targetForm.innerHTML += p.entidad.formulario();
@@ -899,11 +891,18 @@ init = (callbackOK, normal = true, widthElements = true, type = "table", withAct
             }
         });
     } else {
-        targetForm.innerHTML = entidad.formulario();
+        targetForm.innerHTML = window.pyrus.formulario();
         const ck = document.querySelector(".ckeditor");
         if (ck)
-            entidad.editor();
+            window.pyrus.editor();
     }
+}
+
+init = (callbackOK, normal = true, widthElements = true, type = "table", withAction = true, btn = ["e" , "d"], btnsAdd = null) => {
+    window.targetForm = document.querySelector(".pyrus--form");
+    let targetElements = document.querySelector("#wrapper-tabla");
+    const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
+    editor(window.targetForm);
     if (normal) {
         if (withAction)
             targetElements.innerHTML = entidad.table([{NAME: "ACCIONES", COLUMN: "acciones", CLASS: "text-center", WIDTH: "100px"}]);
@@ -934,5 +933,5 @@ init = (callbackOK, normal = true, widthElements = true, type = "table", withAct
             e.addEventListener("click", editElement);
         })
     }
-    callbackOK.call(this, [targetForm, targetElements]);
+    callbackOK.call(this, [window.targetForm, targetElements]);
 };
