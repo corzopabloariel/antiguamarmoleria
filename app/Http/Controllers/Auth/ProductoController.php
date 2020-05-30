@@ -53,8 +53,7 @@ class ProductoController extends Controller
             $elementos = $elementos->whereNull("productos.producto_id");
         $elementos = $elementos->select("productos.*");
         $elementos = $elementos->orderBy('marcas.order')->orderBy('productos.order')->paginate(15);
-        foreach ($elementos AS $e)
-            $e["elementos"] = $e->productos()->count();
+
         $data[ "title" ] = "Productos";
         $data[ "elementos" ] = $elementos;
         $data[ "buttons" ] = [

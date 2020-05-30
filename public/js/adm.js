@@ -229,9 +229,9 @@ remove = t => {
         }).then( ( result ) => {
             if ( result.value ) {
                 entidad.clean();
-                if( $( "#formModal" ).length )
-                    $( "#formModal" ).modal( "hide" );
-                add( $( "#btnADD" ) );
+                if( $("#formModal").length )
+                    $("#formModal").modal( "hide" );
+                add($("#btnADD"));
             }
         })
     }
@@ -346,6 +346,7 @@ check = input => {
  *      GUARDAR ELEMENTO
  ** ------------------------------------- */
 formSave = (t, formData, message = { wait : "Espere. Guardando contenido" , err: "Ocurrió un error en el guardado. Reintente" , catch: "Ocurrió un error en el guardado." , success : "Contenido guardado" }, callback = null ) => {
+    const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
     let url = t.action;
     let method = t.method;
     if (!verificarForm())
@@ -368,32 +369,61 @@ formSave = (t, formData, message = { wait : "Espere. Guardando contenido" , err:
         responseType: 'json',
         config: { headers: {'Content-Type': 'multipart/form-data' }}
     })
-    .then((res) => {
-        if( callback === null ) {
-            if(res.data.error === 0) {
+    .then(res => {
+        if (callback === null) {
+            $("body > .wrapper").removeClass("isDisabled");
+            if (res.data.error === 0) {
+                const elem = res.data.data;
+                let tr_target = document.querySelector(`tr[data-id='${elem.id}']`);
+                let tr_index = 0;
+                let tr = null;
+                if (tr_target)
+                    tr_index = tr_target.rowIndex - 1;
                 Toast.fire({
                     icon: 'success',
                     title: message.success
-                })
-                location.reload();
+                });
+                tr = entidad.row(elem, url_simple, window.tbody_pyrus, elem.id, window.button_pyrus[0], window.button_pyrus[1]);
+                if (window.formAction !== "UPDATE") {
+                    if (Array.isArray(window.data.elementos)) {
+                        window.td_pyrus.push(tr);
+                        window.tbody_pyrus.appendChild(tr);
+                    } else {
+                        if (window.tbody_pyrus.childElementCount !== window.data.elementos.per_page)
+                            window.tbody_pyrus.appendChild(tr);
+                    }
+                } else {
+                    if (tr_target) {
+                        tr_target.replaceWith(tr);
+                        window.td_pyrus[tr_index] = tr;
+                    }
+                }
+                const edit__check = tr.querySelectorAll(".edit--check");
+                if (edit__check.length > 0) {
+                    Array.prototype.forEach.call(edit__check, e => {
+                        e.addEventListener("click", editElement);
+                    })
+                }
+                entidad.clean();
+                if( $("#formModal").length )
+                    $("#formModal").modal( "hide" );
+                add($("#btnADD"));
             } else if (res.data.msg) {
-                $( "body > .wrapper" ).removeClass( "isDisabled" );
                 Toast.fire({
                     icon: 'error',
                     title: res.data.msg
-                })
-            } else  {
-                $( "body > .wrapper" ).removeClass( "isDisabled" );
+                });
+            } else {
                 Toast.fire({
                     icon: 'error',
                     title: message.err
-                })
+                });
             }
-        } else {
-            callback.call( this , res.data );
-        }
+        } else
+            callback.call(this, res.data);
     })
-    .catch((err) => {
+    .catch(err => {
+        console.error(err);
         $( "body > .wrapper" ).removeClass( "isDisabled" );
         console.error( `ERROR en ${url}` );
         alertify.error( message.catch );
@@ -568,9 +598,11 @@ add = (t, id = 0, data = null, disabled = 0, clone = false) => {
     else
         entidad.show(url_simple, data);
     $( "#formModal" ).modal( "show" );
-    addfinish( data );
+
+    try {
+        addfinish(data);
+    } catch (error) {}
 };
-addfinish = ( data = null ) => {};
 /** -------------------------------------
  *      ELIMINAR ARCHIVO
  ** ------------------------------------- */
@@ -867,6 +899,7 @@ init = (callbackOK, normal = true, widthElements = true, type = "table", withAct
             targetElements.innerHTML = entidad.table();
         }
         entidad.editor();
+        window.button_pyrus = [btn, btnsAdd];
         if (widthElements) {
             if (type == "table")
                 entidad.elements("#tabla" , url_simple, window.data.elementos, btn, btnsAdd);

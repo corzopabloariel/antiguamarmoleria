@@ -42,11 +42,15 @@ if ($e->show == 3)
 
 if (isset($data['colores']) && $data['colores']) {
     $flag = true;
-    if ($e->productos()->count() == 0)
+    if ($e->productos()->count() == 0 && (empty($e->characteristics) || empty($e->images)))
         $flag = false;
+    if (!empty($e->description))
+        $flag = true;
 } else {
-    if ((empty($e->characteristic) || empty($e->images)) && $e->productos()->count() == 0)
-        $flag = false;
+    if ((!empty($e->characteristics) || !empty($e->images)) && $e->productos()->count() != 0)
+        $flag = true;
+    if (!empty($e->description))
+        $flag = true;
 }
 @endphp
 <a @if($flag) href="{{ URL::to($e->link()) }}" @endif class="{{ $class }}">

@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
     Route::get('update', ['uses' => 'Auth\AdmController@update', 'as' => 'update.index']);
 
     Route::post('relation', ['uses' => 'Auth\AdmController@relation', 'as' => 'adm.relation']);
+    Route::post('count', ['uses' => 'Auth\AdmController@count', 'as' => 'adm.count']);
 
     Route::get('empresa/imagen', ['uses' => 'Auth\AdmController@imagen', 'as' => 'imagen']);
     Route::get('imagen/{id}/edit', ['uses' => 'Auth\AdmController@imagenShow', 'as' => 'imagen.show']);

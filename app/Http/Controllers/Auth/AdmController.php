@@ -97,6 +97,22 @@ class AdmController extends Controller
         return json_encode(['success' => true, "error" => 0, "msg" => "Archivo eliminado correctamente"]);
     }
 
+    public function count(Request $request) {
+        try {
+            $entidad = $request->table;
+            eval("\$model = new \\App\\{$entidad};");
+            $attr = $request->attr;
+            $data = $model->where($attr, $request->id);
+            $fillable = $model->getFillable();
+            if (in_array("elim", $fillable))
+                $data = $data->where("elim", 0);
+            $data = $data->count();
+        } catch (\Throwable $th) {
+            return json_encode(["error" => 1, "msg" => $th->errorInfo[2]]);
+        }
+        return json_encode(['success' => true, "error" => 0, "data" => $data]);
+    }
+
     public function relation(Request $request) {
         try {
             $entidad = $request->table;

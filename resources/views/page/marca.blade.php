@@ -8,7 +8,7 @@
                 <ol class="breadcrumb bread--pyrus">
                     <li class="breadcrumb-item"><a href="{{URL::to($data['marca']->link())}}">{{$data['marca']->title}}</a></li>
                     @if(isset($data["colores"]))
-                    <li class="breadcrumb-item"><a href="{{URL::to($data['marca']->link() . '/colores')}}">Colores</a></li>
+                    <li class="breadcrumb-item"><a href="{{URL::to($data['marca']->link() . '/' , $data['marca']->content_slug)}}">{{$data["marca"]->content}}</a></li>
                     @endif
                 </ol>
             </div>
@@ -37,19 +37,19 @@
                         <div class="producto--resume">{!! $data["marca"]->resume !!}</div>
                     </div>
                     @if(!$data["marca"]->only_colors && !isset($data["colores"]))
-                    <a class="button--colores" href="{{ URL::to($data['marca']->link() . '/colores') }}">colores</a>
+                    <a class="button--colores" href="{{ URL::to($data['marca']->link() . '/' . $data['marca']->content_slug) }}">{{$data['marca']->content}}</a>
                     @endif
                 </div>
             </div>
         </div>
         @if(!isset($data["colores"]))
+            @if(!empty($data["marca"]->characteristics))
             <div class="row mt-4">
                 <div class="col-12">
-                    @if(!empty($data["marca"]->characteristics))
                     <div class="producto--info producto--characteristics">{!! $data["marca"]->characteristics !!}</div>
-                    @endif
                 </div>
             </div>
+            @endif
             @if(!empty($data["marca"]->features))
             <div class="row mt-0">
                 <div class="col-12">

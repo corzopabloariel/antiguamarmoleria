@@ -16,11 +16,18 @@
     window.pyrus = [];
     window.pyrus.push({entidad: new Pyrus("marcas"), tipo: "U"});
     window.pyrus.push({entidad: new Pyrus("marcas_txt"), tipo: "U"});
-    window.pyrus.push({entidad: new Pyrus("marca_advantage"), tipo: "M", column: "advantage", function: "telefono"});
+    window.pyrus.push({entidad: new Pyrus("marca_advantage"), tipo: "M", column: "advantage", function: "ventaja"});
     window.pyrus.push({entidad: new Pyrus("marca_images"), tipo: "M", column: "sliders", function: "slider"});
-    addfinish = data => {
+    function addfinish(data) {
         if (!data) {
             const target = document.querySelector(`#wrapper-ventaja`);
+            const target_slider = document.querySelector(`#wrapper-slider`);
+            if (window.advantage)
+                delete window.advantage;
+            if (window.sliders)
+                delete window.sliders;
+            if (target_slider)
+                target_slider.innerHTML = "";
             if (target) {
                 let ck = target.querySelectorAll(".ckeditor")
                 if (ck.length > 0) {
@@ -37,7 +44,7 @@
             data.advantage.forEach(a => ventajaFunction(a));
         if (data.sliders)
             data.sliders.forEach(a => sliderFunction(a));
-    };
+    }
     /** ------------------------------------- */
     sliderFunction = (value = null) => {
         if (value) {

@@ -80,7 +80,7 @@ class GeneralController extends Controller
         $data = self::datos("productos");
         $data["view"] = "page.marca";
         $data["marca"] = Marca::where("title_slug", $title)->where("elim", 0)->first();
-        $data["productos"] = $data["marca"]->productos()->where("elim", 0)->orderBy("order")->paginate(20);
+        $data["productos"] = $data["marca"]->productos()->whereNull("producto_id")->where("elim", 0)->orderBy("order")->paginate(20);
         $data["title"] = $data["marca"]->title;
         return view( 'layouts.main' ,compact( 'data' ) );
     }
@@ -90,9 +90,9 @@ class GeneralController extends Controller
         $data = self::datos("productos");
         $data["view"] = "page.marca";
         $data["marca"] = Marca::where("title_slug", $title)->where("elim", 0)->first();
-        if (count($aux) == 1 && strcmp($aux[0], "colores") == 0) {
+        if (count($aux) == 1 && strcmp($aux[0], $data["marca"]->content_slug) == 0) {
             $data["productos"] = $data["marca"]->productos()->whereNull("producto_id")->where("elim", 0)->orderBy("order")->paginate(20);
-            $data["title"] = $data["marca"]->title . " - colores";
+            $data["title"] = $data["marca"]->title . " - " . $data["marca"]->content;
         } else {
             $data["view"] = "page.producto";
             $data["producto"] = $data["marca"]->productos()->where("elim", 0)->where("title_slug", array_pop($aux))->first();

@@ -9,7 +9,7 @@
                     @foreach($data["before"] AS $e)
                     <li class="breadcrumb-item"><a href="{{URL::to($e->link())}}">{{$e->title}}</a></li>
                     @if (strcmp($e->getTable(), "marcas") == 0)
-                    <li class="breadcrumb-item"><a href="{{URL::to($e->link() . '/colores')}}">Colores</a></li>
+                    <li class="breadcrumb-item"><a href="{{URL::to($e->link() . '/' . $e->content_slug)}}">{{$e->content}}</a></li>
                     @endif
                     @endforeach
                 </ol>
@@ -67,6 +67,8 @@
                     @foreach($data["producto"]->characteristics AS $characteristic)
                     <p class="producto--characteristic" style="--bg: {{$data['marca']->color['color']}}; --txt: {{$data['marca']->color_text['color_text']}};"><strong>{!! $characteristic["icon"] !!}{{ $characteristic["title"] }}</strong> {{ $characteristic["data"] }}</p>
                     @endforeach
+                @elseif(!empty($data["producto"]->description))
+                {!! $data["producto"]->description !!}
                 @endif
             </div>
         </div>

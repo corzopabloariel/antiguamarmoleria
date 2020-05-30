@@ -470,6 +470,8 @@ const ENTIDADES = {
             order: {TIPO:"TP_STRING", LABEL: 1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE_FORM", NOMBRE: "orden"},
             title: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre"},
             title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
+            content: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:20,VISIBILIDAD:"TP_VISIBLE_FORM", NOMBRE: "Contenedor", DEFAULT: "colores"},
+            content_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "content"},
             logo: {TIPO:"TP_IMAGE", SIZE: "2MB", EXT: "jpeg, png, jpg, gif", RULE: "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "marcas",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"190px", HEIGHT: "48px"},
             logo2: {TIPO:"TP_IMAGE", SIZE: "2MB", EXT: "jpeg, png, jpg, gif", RULE: "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "marcas",VISIBILIDAD:"TP_VISIBLE_FORM",ACCEPT:"image/*",NOMBRE:"imagen 2",WIDTH:"190px", HEIGHT: "48px", HELP: "Logo en negro sin fondo"},
             color: {TIPO:"TP_COLOR",VISIBILIDAD:"TP_VISIBLE_FORM", HELP: "Color de fondo predominante", LABEL: 1, NECESARIO: 1},
@@ -482,7 +484,10 @@ const ENTIDADES = {
         },
         FORM: [
             {
-                '<div class="col-12 col-md-6"><div class="row"><div class="col-12 mb-3">/order/</div><div class="col-12">/title/</div></div></div><div class="col-12 col-md-6">/is_destacado//only_colors/</div>': ["is_destacado", "only_colors", "order", "title"]
+                '<div class="col-12 col-md-6"><div class="row"><div class="col-12 mb-3">/order/</div><div class="col-12">/content/</div></div></div><div class="col-12 col-md-6">/is_destacado//only_colors/</div>': ["is_destacado", "only_colors", "order", "content"]
+            },
+            {
+                '<div class="col-12">/title/</div>' : ["title"]
             },
             {
                 '<div class="col-12 col-md-6">/logo/</div><div class="col-12 col-md-6">/logo2/</div>' : ["logo", "logo2"]
@@ -498,7 +503,7 @@ const ENTIDADES = {
         ATRIBUTOS: {
             resume: {TIPO:"TP_TEXT", LABEL: 1,EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"resumen", HELP: "Principales características o resumen de la marca"},
             characteristics: {TIPO:"TP_TEXT", LABEL: 1,EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"características"},
-            description: {TIPO:"TP_TEXT", LABEL: 1,EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"detalle"},
+            description: {TIPO:"TP_TEXT", LABEL: 1,EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"detalle (C/ color principal de fondo)"},
             features: {TIPO:"TP_TEXT", LABEL: 1,EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"otras características"}
         },
         FORM: [
@@ -661,13 +666,14 @@ const ENTIDADES = {
             producto_id: {TIPO:"TP_RELATIONSHIP",VISIBILIDAD:"TP_VISIBLE_INVISIBLE"},
             show: {TIPO:"TP_ENUM", LABEL: 1,VISIBILIDAD:"TP_VISIBLE_FORM",ENUM:[{id: 1, text: "Todo"}, {id: 2, text: "Título"}, {id: 3, text: "Imagen"}],NOMBRE:"Mostrar",CLASS:"form--input", NECESARIO: 1, DEFAULT: 1},
             order: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE", NOMBRE: "orden"},
+            description: {TIPO:"TP_TEXT", LABEL: 1,EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"resumen", HELP: "Si llena este campo, la ficha va a tener un estilo particular"},
             marca_id: {TIPO:"TP_RELATIONSHIP", ENUM: null,LABEL: 1,RULE: "required", NECESARIO: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"marca", ENTIDAD: "Marca",LABEL:1, ATTR: ["id", "title AS text"], ORDER: "order", NORMAL: 1},
             title: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre"},
             title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
             images: {TIPO:"TP_ARRAY",COLUMN:"images",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Imágenes",CLASS:"text-center"},
             in_background: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿1era imagen normal?", HELP: "Si no esta marcado, deja la imagen en Background", NOMBRE: "Background", OPTION: {true: "Si", "1": "Si", false: "No", "0": "No"}},
             characteristics: {TIPO:"TP_ARRAY",COLUMN:"characteristics",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Características",CLASS:"text-center"},
-            elementos: {TIPO:"TP_INT",VISIBILIDAD:"TP_VISIBLE_TABLE"},
+            elementos: {TIPO:"TP_INT",VISIBILIDAD:"TP_VISIBLE_TABLE", ENTIDAD: "Producto", ATTR: "producto_id"},
         },
         FORM: [
             {
@@ -675,8 +681,34 @@ const ENTIDADES = {
             },
             {
                 '<div class="col-12 col-md-9">/title/</div><div class="col-12 col-md">/in_background/</div>':['title', 'in_background'],
+            },
+            {
+                '<div class="col-12">/description/</div>': ['description']
             }
-        ]
+        ],
+
+        EDITOR: {
+            description : {
+                toolbarGroups: [
+                    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+                    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+                    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+                    { name: 'forms', groups: [ 'forms' ] },
+                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+                    { name: 'links', groups: [ 'links' ] },
+                    { name: 'insert', groups: [ 'insert' ] },
+                    { name: 'styles', groups: [ 'styles' ] },
+                    { name: 'colors', groups: [ 'colors' ] },
+                    { name: 'tools', groups: [ 'tools' ] },
+                    { name: 'others', groups: [ 'others' ] },
+                    { name: 'about', groups: [ 'about' ] }
+                ],
+                removeButtons: 'Save,Preview,NewPage,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Redo,Find,Undo,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,RemoveFormat,CopyFormatting,NumberedList,BulletedList,Outdent,Indent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Language,BidiRtl,BidiLtr,Unlink,Anchor,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Format,Font,FontSize,ShowBlocks,Maximize,About',
+                colorButton_colors : colorPick,
+                height: '120px'
+            },
+        }
     },
     producto_images: {
         ONE: 1,
