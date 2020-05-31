@@ -63,7 +63,7 @@
                     </div>
                     @endif
                     @if(!empty($data["marca"]->features))
-                    <div class="row mt-0">
+                    <div class="row mt-4">
                         <div class="col-12">
                             <div class="producto--info" style="--bg: {{$data['marca']->color['color']}}; --txt: {{$data['marca']->color_text['color_text']}};">
                                 <h3 class="producto--title">Otras características</h3>
@@ -73,7 +73,7 @@
                     </div>
                     @endif
                     @if(!empty($data["marca"]->advantage))
-                    <div class="row">
+                    <div class="row mt-4">
                         @foreach($data["marca"]->advantage AS $a)
                         <div class="col-12 col-md-4 mt-5 d-flex align-items-stretch">
                             <div class="advantage shadow-sm w-100 d-flex align-items-center">
@@ -94,7 +94,7 @@
                 @endif
                 @if($data["marca"]->only_colors || isset($data["colores"]))
                     @if($data["productos"]->isNotEmpty())
-                    <div class="row mt-n4">
+                    <div class="row row mt-n2">
                         @foreach($data["productos"] AS $p)
                         <div class="col-12 col-md-4 mt-5 d-flex align-items-stretch">
                             @include('page.parts.elemento', ['e' => $p])

@@ -559,6 +559,9 @@ td:hover .edit--check {
     width: 235px;
     height: 109px;
 }
+.header--link__important {
+    font-weight: 600;
+}
 .header--menu,
 .header--info__target {
     display: flex;
@@ -604,10 +607,12 @@ td:hover .edit--check {
     font-weight: 600;
 }
 .header--marca {
-    max-width: 80px;
+    width: 100%;
+    max-width: 70px;
 }
 .header--marca__link {
-    padding: 1em 0
+    padding: 1em .4em;
+    font-size: 14px;
 }
 .header--marca__link.active--marca,
 .header--marca__link:hover,
@@ -638,6 +643,46 @@ td:hover .edit--check {
     display: block;
     border-left:4px solid var(--bg);
     background-color: #f3f3f3;
+}
+/**/
+.encabezado {
+    background-color: #ffffff;
+}
+/**/
+.hover {
+    position: relative;
+    width: 100%;
+}
+.hover a {
+    display: block;
+}
+.hover button[data-images=""] {
+    display: none;
+}
+.hover--button {
+    position: absolute;
+    border-radius: .5em 0;
+    left: 1px;
+    top: 1px;
+    border: 0;
+    background-color: #b0d81a;
+    color: #ffffff;
+    padding: .3em .7em;
+    z-index: 2;
+    opacity: 0;
+    -webkit-transition: all 600ms ease;
+    -moz-transition: all 600ms ease;
+    -ms-transition: all 600ms ease;
+    -o-transition: all 600ms ease;
+    transition: all 600ms ease;
+}
+.hover:hover .hover--button {
+    opacity: 1;
+    -webkit-transition: all 600ms ease;
+    -moz-transition: all 600ms ease;
+    -ms-transition: all 600ms ease;
+    -o-transition: all 600ms ease;
+    transition: all 600ms ease;
 }
 /**/
 .productos {
@@ -685,6 +730,7 @@ div.producto--image__specific {
     padding: 2rem;
     background-color: var(--bg);
     color: var(--txt);
+    border: 1px solid rgba(0,0,0,.05);
 }
 .producto--characteristics {
     background-color: #f8f8f8;
@@ -740,7 +786,7 @@ div.producto--image__specific {
 .producto--hover:hover .producto--image {
 }
 .producto--color__sin {
-    background-color: #f0f0f0;
+    background-color: #fafafa;
 }
 /**/
 .advantage {

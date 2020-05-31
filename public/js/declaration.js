@@ -672,6 +672,7 @@ const ENTIDADES = {
             title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
             images: {TIPO:"TP_ARRAY",COLUMN:"images",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Imágenes",CLASS:"text-center"},
             in_background: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿1era imagen normal?", HELP: "Si esta marcado, pone la imagen en Background", NOMBRE: "Background", OPTION: {true: "No", "1": "No", false: "Si", "0": "Si"}},
+            is_link: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Es link?", HELP: "Si esta marcado, crea el link", NOMBRE: "Link", OPTION: {false: "No", "0": "No", true: "Si", "1": "Si"}},
             characteristics: {TIPO:"TP_ARRAY",COLUMN:"characteristics",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Características",CLASS:"text-center"},
             elementos: {TIPO:"TP_INT",VISIBILIDAD:"TP_VISIBLE_TABLE", ENTIDAD: "Producto", ATTR: "producto_id"},
         },
@@ -680,7 +681,7 @@ const ENTIDADES = {
                 '/producto_id/<div class="col-12 col-md-4">/order/</div><div class="col-12 col-md-4">/marca_id/</div><div class="col-12 col-md-4">/show/</div>':['order', 'show', 'marca_id', 'producto_id'],
             },
             {
-                '<div class="col-12 col-md-9">/title/</div><div class="col-12 col-md">/in_background/</div>':['title', 'in_background'],
+                '<div class="col-12 col-md-8">/title/</div><div class="col-12 col-md">/in_background//is_link/</div>':['title', 'in_background', 'is_link'],
             },
             {
                 '<div class="col-12">/description/</div>': ['description']

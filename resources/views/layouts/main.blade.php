@@ -54,6 +54,31 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade bd-example-modal-lg" id="imagesModal" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="imagesModal--title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="carousel slide carousel-fade" data-ride="carousel" id="carouselFade">
+                            <div class="carousel-inner" id="carouselImages"></div>
+                            <a class="carousel-control-prev" href="#carouselFade" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselFade" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         @include( 'layouts.general.message' )
         <div id="wrapper-body">
             @include('layouts.general.header', ['elementos' => $data['empresa'], 'link' => 1])

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Page;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\DB;
 
 use App;
 use App\Contenido;
@@ -95,9 +96,23 @@ class GeneralController extends Controller
         if (count($aux) == 1 && strcmp($aux[0], $data["marca"]->content_slug) == 0) {
             $data["productos"] = $data["marca"]->productos()->whereNull("producto_id")->where("elim", 0)->orderBy("order")->paginate(24);
             $data["title"] = $data["marca"]->title . " - " . $data["marca"]->content;
+            $data["no__zoom"] = 1;
         } else {
+            $aux = array_reverse($aux);
+            $search = array_shift($aux);
+            $data["producto"] = $data["marca"]->productos();
+            $data["producto"] = $data["producto"]->select("productos.*");
+            for($i = 0; $i < count($aux); $i ++) {
+                $title_slug = $aux[$i];
+                $data["producto"] = $data["producto"]->join("productos AS p_{$i}", function ($join) use ($title_slug, $i) {
+                    $attr = $i == 0 ? "productos" : "p_" . ($i - 1);
+                    $join->on("p_{$i}.id", "=", "{$attr}.producto_id")
+                        ->where("p_{$i}.title_slug", "LIKE", $title_slug);
+                });
+            }
+            $data["producto"] = $data["producto"]->where("productos.title_slug", $search)->where("productos.elim", 0)->first();
             $data["view"] = "page.producto";
-            $data["producto"] = $data["marca"]->productos()->where("elim", 0)->where("title_slug", array_pop($aux))->first();
+            //$data["producto"] = $data["marca"]->productos()->where("elim", 0)->first();
             $data["productos"] = $data["producto"]->productos()->where("elim", 0)->orderBy("order")->paginate(24);
             $data["before"] = $data["producto"]->padres();
             $data["title"] = "";

@@ -28,7 +28,7 @@
                     @foreach($elementos->sections AS $section)
                         @if($section["SHOW"])
                         @php
-                            $class = "header--link";
+                            $class = "header--link header--link__important";
                             for($i = 0; $i < count($section["REQUEST"]); $i++) {
                                 if (Request::is("{$section["REQUEST"][$i]}"))
                                     $class .= " active";

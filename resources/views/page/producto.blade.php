@@ -61,11 +61,12 @@
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
+                            <h2 class="producto--title">{{ $data["producto"]->title }}</h2>
                             {!! $data["producto"]->description !!}
                         </div>
                     </div>
                     @if($data["productos"]->isNotEmpty())
-                    <div class="row">
+                    <div class="row mt-n2">
                         @foreach($data["productos"] AS $p)
                         <div class="col-12 col-md-4 mt-5 d-flex align-items-stretch">
                             @include('page.parts.elemento', ['e' => $p])
@@ -80,7 +81,7 @@
                     @endif
                 @else
                     @if($data["productos"]->isNotEmpty())
-                    <div class="row">
+                    <div class="row mt-n2">
                         @foreach($data["productos"] AS $p)
                         <div class="col-12 col-md-4 mt-5 d-flex align-items-stretch">
                             @include('page.parts.elemento', ['e' => $p])
@@ -94,12 +95,14 @@
                     </div>
                     @else
                     <div class="row mt-5">
-                        <div class="col-12 col-md-6 d-flex align-items-center">
+                        @if (!empty($data["producto"]->images))
+                        <div class="col-12 col-md d-flex align-items-center">
                             <div class="w-100">
                                 @include('layouts.general.slider', ['slider' => $data["producto"]->images, 'sliderID' => "producto--slider" , 'div' => 1 , 'arrow' => 0, 'class' => 'producto--image producto--image__element'])
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        @endif
+                        <div class="col-12 col-md">
                             @if(!empty($data["producto"]->characteristics))
                                 <h2 class="producto--title">{{ $data["producto"]->title }}</h2>
                                 @foreach($data["producto"]->characteristics AS $characteristic)
