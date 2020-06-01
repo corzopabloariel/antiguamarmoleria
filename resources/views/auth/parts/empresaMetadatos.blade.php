@@ -30,7 +30,6 @@
     };
 
     init(data => {
-        console.log(data)
         data[1].innerHTML = window.pyrus.table([{ NAME:"ACCIONES" , COLUMN: "acciones" , CLASS: "text-center" , WIDTH: "150px" }]);
         window.pyrus.elements("#tabla" , url_simple, window.data.elementos, ["e"]);
         //---------------------
@@ -41,6 +40,6 @@
                 span.addEventListener("blur", editableSave);
             })
         }
-    }, false);
+    }, false, false, null, false, null, null, true);
 </script>
 @endpush

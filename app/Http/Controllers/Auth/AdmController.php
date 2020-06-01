@@ -539,7 +539,7 @@ class AdmController extends Controller
         return json_encode(['success' => true, "error" => 0]);
     }
 
-    public function clear ( $text ) {
+    public function clear ($text) {
         return str_replace( ["&aacute;","&eacute;","&iacute;","&oacute;","&uacute;","&ntilde;","&Aacute;","&Eacute;","&Iacute;","&Oacute;","&Uacute;","&Ntilde;"], [ "á","é","í","ó","ú","ñ","Á","É","Í","Ó","Ú","Ñ" ], $text);
     }
 }

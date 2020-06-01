@@ -9,6 +9,6 @@
     /** */
     init((data) => {
         window.pyrus.show(null, window.data.elementos.data);
-    }, false);
+    }, false, false, null, false, null, null, true);
 </script>
 @endpush

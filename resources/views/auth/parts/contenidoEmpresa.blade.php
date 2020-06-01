@@ -35,6 +35,6 @@
                 break;
             }
         })
-    }, false);
+    }, false, false, null, false, null, null, true);
 </script>
 @endpush

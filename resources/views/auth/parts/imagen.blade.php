@@ -9,6 +9,6 @@
     window.pyrus = new Pyrus("imagen" , null , src);
     /** */
     init(data => {
-    }, true, true , "cards");
+    }, true, true, "cards", true, ["e" , "d"], null, true);
 </script>
 @endpush

@@ -125,13 +125,14 @@ class EmpresaController extends Controller
                     $redes[ $id ] = [];
             }
             $OBJ = (new AdmController)->object( $request );
-            $redes[ $id ] = $OBJ;
+            $redes[$id] = $OBJ;
+            $OBJ["id"] = $id;
             $datos->fill([ "social_networks" => $redes ] );
             $datos->save();
         } catch (\Throwable $th) {
             return json_encode(["error" => 1]);
         }
-        return json_encode(['success' => true, "error" => 0]);
+        return json_encode(['success' => true, "error" => 0, "data" => $OBJ]);
     }
     public function redesDestroy( Request $request )
     {

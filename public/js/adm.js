@@ -1,10 +1,17 @@
 /**
- * @date 12.2019
- * @last_change 17.12.2019
- * @version 0.3.2.0
+ * @description Funciones básicas. 2020/06/01
+ * @author Pablo Corzo <hola@pablocorzo.dev>
+ * @version 2.0.0
  **/
-
+/**
+ * @description "Colores disponibles en los editores"
+ * @param string
+ */
 const colorPick = "4f9232,808080,111111,191919,fbfb34,a6a6a6,343a40,86008f";
+/**
+ * @description "Cantidad permitida en MB para archivos"
+ * @param number
+ */
 const max_size_file = 2;
 window.axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest',
@@ -55,11 +62,6 @@ const dates = {
         return ( ( a.getTime() === b.getTime() ) ? 0 : ( ( a.getTime() > b.getTime() ) ? 1 : - 1 ) );
     }
 };
-
-/** ------------------------------------------------
- ** -------------- FUNCIONES BÁSICAS <--------------
- ** ------------------------------------------------
- ** ------------------------------------------------ */
 alertify.defaults.transition = "slide";
 alertify.defaults.theme.ok = "btn btn-primary";
 alertify.defaults.theme.cancel = "btn btn-danger";
@@ -82,30 +84,54 @@ Toast = Swal.mixin({
         toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
 });
-menu = ( t ) => {
-    if( $( "#sidebar.compact" ).length ) {
-        localStorage.removeItem( "sidebar" );
-        $( "#sidebar.compact" ).removeClass( "compact" );
-        $( t ).find( "i" ).addClass( "fa-bars" ).removeClass( "fa-times" );
+/**
+ * @description Menu lateral en zona administrativa
+ * @param {Element} t
+ * @returns {void}
+ */
+function menu(t) {
+    const target = document.querySelector("#sidebar");
+    const icon = t.querySelector("i");
+    if (target.classList.contains("compact")) {
+        localStorage.removeItem("sidebar");
+        target.classList.remove("compact");
     } else {
-        localStorage.setItem( "sidebar" , "1" );
-        $( "#sidebar" ).addClass( "compact" );
-        $( t ).find( "i" ).addClass( "fa-times" ).removeClass( "fa-bars" );
+        localStorage.setItem("sidebar", 1);
+        target.classList.add("compact");
     }
-};
-changeCkeditor = ( x , evt ) => {
+    icon.classList.toggle("fa-bars");
+    icon.classList.toggle("fa-times");
+}
+/**
+ * @description Los cambios de CKEDITOR son transladados a su textarea correspondiente
+ * @param {*} x
+ * @param {Event} evt
+ * @returns {void}
+ */
+function changeCkeditor( x , evt ) {
     const target = document.querySelector(`#${evt.editor.name}`);
     target.value = CKEDITOR.instances[evt.editor.name].getData();
 };
-menuBody = ( t ) => {
+/**
+ * @description Menu responsive zona pública
+ * @param {Element} t
+ * @returns {void}
+ */
+function menuBody(t) {
+    const section = document.querySelector("section");
+    const header = document.querySelector("header");
+    const footer = document.querySelector("footer");
+    const hamburger1 = document.querySelector("#hamburger-");
+    const hamburger2 = document.querySelector("#hamburger");
+    const menu = document.querySelector("#wrapper-menu");
     if( window.typeMENU === undefined ) {
         window.typeMENU = 1;
-        document.querySelector("section").classList.add( "isDisabled" );
-        document.querySelector("header").classList.add( "isDisabled" );
-        document.querySelector("footer").classList.add( "isDisabled" );
-        document.getElementById("hamburger-").classList.remove( "d-none" );
-        document.getElementById("hamburger").classList.add( "open" );
-        document.getElementById("wrapper-menu").animate([
+        section.classList.add("isDisabled");
+        header.classList.add("isDisabled");
+        footer.classList.add("isDisabled");
+        hamburger1.classList.remove("d-none");
+        hamburger2.classList.add("open");
+        menu.animate([
             { transform: 'translateX(0px)' },
             { transform: 'translateX(-300px)' }
         ], {
@@ -114,12 +140,12 @@ menuBody = ( t ) => {
         });
     } else {
         delete window.typeMENU;
-        document.querySelector("section").classList.remove( "isDisabled" );
-        document.querySelector("header").classList.remove( "isDisabled" );
-        document.querySelector("footer").classList.remove( "isDisabled" );
-        document.getElementById("hamburger-").classList.add( "d-none" );
-        document.getElementById("hamburger").classList.remove( "open" );
-        document.getElementById("wrapper-menu").animate([
+        section.classList.remove("isDisabled");
+        header.classList.remove("isDisabled");
+        footer.classList.remove("isDisabled");
+        hamburger1.classList.add("d-none");
+        hamburger2.classList.remove("open");
+        menu.animate([
             { transform: 'translateX(-300px)' },
             { transform: 'translateX(0px)' }
         ], {
@@ -127,18 +153,21 @@ menuBody = ( t ) => {
             duration: 600,
         });
     }
-};
+}
+//---
 navMenu = ( t ) => {
     if( $( ".app-body.isDisabled").length )
         $( ".app-body.isDisabled").removeClass( "isDisabled" );
     else
         $( ".app-body").addClass( "isDisabled" );
 };
-
-/** -------------------------------------
- *      CAMBIAR COLORES
- ** ------------------------------------- */
-changeColor = (t, type) => {
+/**
+ * @description "CAMBIAR COLORES"
+ * @param {Element} t
+ * @param {string} type
+ * @returns {void}
+ */
+function changeColor(t, type) {
     const target = t.closest(".pyrus--color");
     const value = t.value;
     target.querySelector(`[type="${type}"]`).value = value;
@@ -148,8 +177,12 @@ changeColor = (t, type) => {
     let solver = new Solver(color);
     let result = solver.solve();
     target.nextElementSibling.value = result.filter;
-};
-hexToRgb = ( hex ) => {
+}
+/**
+ * @param {String} hex
+ * @returns {[]}
+ */
+function hexToRgb(hex) {
     const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
     hex = hex.replace(shorthandRegex, (m, r, g, b) => {
         return r + r + g + g + b + b;
@@ -165,53 +198,55 @@ hexToRgb = ( hex ) => {
         : null;
 }
 /** -------------------------------------
- *      MOSTRAR TÉRMINOS
- ** ------------------------------------- */
-terminosShow = ( t , btn ) => {
-    if( $( t ).is( ":checked" ) ) {
-        $( "#terminosModal" ).modal( "show" );
-        $( `#${btn}` ).prop( "disabled" , false );
-    } else
-        $( `#${btn}` ).prop( "disabled" , true );
-};
-/** -------------------------------------
  *      MOSTRAR COMBINACIONES DE TECLAS
  ** ------------------------------------- */
-showCombinacion = ( t ) => {
-    $( "#modalCombinacion" ).modal( "show" );
+/**
+ * @param {Element} t
+ * @returns {void}
+ */
+function showCombinacion(t) {
+    const target = document.querySelector("#modalCombinacion");
+    $(target).modal("show");
 };
-
-/** -------------------------------------
-
- *      COPIAR IMAGEN
-
- ** ------------------------------------- */
-
-copy = ( t , url ) => {
-    $temp = $( `<input>` );
-    $( `body` ).append( $temp );
-    $temp.val( url ).select();
-    document.execCommand( "copy" );
-    $temp.remove();
+/**
+ * @description Copiar URL de la imagen
+ * @param {Element} t
+ * @param {String} url
+ * @returns {void}
+ */
+function copy(t, url) {
+    const temp = document.createElement("input");
+    temp.setAttribute("value", url);
+    document.querySelector("body").appendChild(temp);
+    temp.select()
+    document.execCommand("copy");
+    temp.remove();
     Toast.fire({
         icon: 'success',
         title: 'URL de imagen copiada'
     });
-};
-
+}
 /** -------------------------------------
 
  *      ELIMINAR REGISTRO
 
  ** ------------------------------------- */
-erase = ( t , id ) => {
+/**
+ * @description Función pública para eliminar registros
+ * @param {Element} t
+ * @param {Number} id
+ * @returns {void}
+ */
+function erase(t, id) {
     const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
     entidad.delete( t , { title : "ATENCIÓN" , body : "¿Eliminar registro?" } , `${url_simple}/adm/${entidad.name}/delete` , id );
-};
-/** -------------------------------------
- *      LIMPIAR FORMULARIO
- ** ------------------------------------- */
-remove = t => {
+}
+/**
+ * @description "Cerrar formulario con alerta"
+ * @param {Element} t
+ * @returns {void}
+ */
+function remove(t) {
     const modal = document.querySelector("#formModal");
     const elementsNo = document.querySelector(".no--send");
     const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
@@ -238,10 +273,13 @@ remove = t => {
         })
     }
 };
-/** -------------------------------------
- *      MODO TEST: QUITAR ELEMENTO
- ** ------------------------------------- */
-remove_ = ( t , class_ ) => {
+/**
+ * @description Quita elemento múltiple
+ * @param {Element} t
+ * @param {String} class_
+ * @returns {void}
+ */
+function remove_(t, class_) {
     let target =  t.closest(`.${class_}`);
     let img = target.querySelector(".imgURL");
     Swal.fire({
@@ -273,34 +311,57 @@ remove_ = ( t , class_ ) => {
             target.remove();
         }
     });
-};
-/** -------------------------------------
- *      EDITAR REGISTRO
- ** ------------------------------------- */
-edit = (t, id, disabled = 0) => {
+}
+/**
+ * @description Editar un registro
+ * @param {Element} t
+ * @param {Number} id
+ * @param {Number} disabled
+ * @returns {void}
+ */
+function edit(t, id, disabled = 0) {
     const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
     t.disabled = true
     entidad.one(`${url_simple}/adm/${entidad.name}/${id}/edit`, res => {
         $('[data-toggle="tooltip"]').tooltip('hide');
         t.disabled = false;
-        add($("#btnADD"), parseInt(id), res.data, disabled);
+        add(null, parseInt(id), res.data, disabled);
     });
-};
-clone = (t, id, disabled = 0) => {
+}
+/**
+ * @description Clonar un registro. Trae la información que corresponda
+ * @param {Element} t
+ * @param {Number} id
+ * @param {Number} disabled
+ * @returns {void}
+ */
+function clone(t, id, disabled = 0) {
     const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
     t.disabled = true
     entidad.one(`${url_simple}/adm/${entidad.name}/${id}/edit`, res => {
         $('[data-toggle="tooltip"]').tooltip('hide');
         t.disabled = false;
-        add($("#btnADD"), parseInt(id), res.data, disabled, true);
+        add(null, parseInt(id), res.data, disabled, true);
     });
-};
-see = (t, id) => {
+}
+/**
+ * @description Ver registro
+ * @param {Element} t
+ * @param {Number} id
+ * @returns {void}
+ */
+function see(t, id) {
     edit(t, id, 1);
-};
+}
 /** -------------------------------------
  *      PREVIEW DE IMAGEN
  ** ------------------------------------- */
+/**
+ * @description Preview de la imagen cargada y su nombre
+ * @param {Element} t
+ * @param {string} id
+ * @returns {void}
+ */
 function readURL(t, id = null) {
     const img = id ? document.querySelector(`#${id}`) : null;
     if (t.files && t.files[0]) {
@@ -333,25 +394,31 @@ function readURL(t, id = null) {
     }
     t.parentElement.classList.remove("image--upload__no-validate");
 }
-/** -------------------------------------
- *      CHECKBOX
- ** ------------------------------------- */
-check = input => {
+/**
+ * @description Para checkbox
+ * @param {Element} input
+ * @returns {void}
+ */
+function check(input) {
     if (input.checked)
         input.nextSibling.value = 1;
     else
         input.nextSibling.value = 0;
-};
-/** -------------------------------------
- *      GUARDAR ELEMENTO
- ** ------------------------------------- */
-formSave = (t, formData, message = { wait : "Espere. Guardando contenido" , err: "Ocurrió un error en el guardado. Reintente" , catch: "Ocurrió un error en el guardado." , success : "Contenido guardado" }, callback = null ) => {
+}
+/**
+ * @description Guarda información
+ * @param {Element} t
+ * @param {FormData} formData
+ * @param {{}} message
+ * @param {Function} callback
+ * @returns {void}
+ */
+function formSave(t, formData, message = { wait : "Espere. Guardando contenido" , err: "Ocurrió un error en el guardado. Reintente" , catch: "Ocurrió un error en el guardado." , success : "Contenido guardado" }, callback = null) {
     const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
     let url = t.action;
     let method = t.method;
     if (!verificarForm())
         return null;
-    //method = (method == "GET" || method == "get") ? "post" : method;
     if (window.formAction === "UPDATE")
         method = "POST";
     $( "body > .wrapper" ).addClass( "isDisabled" );
@@ -371,66 +438,70 @@ formSave = (t, formData, message = { wait : "Espere. Guardando contenido" , err:
     })
     .then(res => {
         if (callback === null) {
-            $("body > .wrapper").removeClass("isDisabled");
-            if (res.data.error === 0) {
-                const elem = res.data.data;
-                let tr_target = document.querySelector(`tr[data-id='${elem.id}']`);
-                let tr_index = 0;
-                let tr = null;
-                if (tr_target)
-                    tr_index = tr_target.rowIndex - 1;
-                Toast.fire({
-                    icon: 'success',
-                    title: message.success
-                });
-                tr = entidad.row(elem, url_simple, window.tbody_pyrus, elem.id, window.button_pyrus[0], window.button_pyrus[1]);
-                if (window.formAction !== "UPDATE") {
-                    if (Array.isArray(window.data.elementos)) {
-                        window.td_pyrus.push(tr);
-                        window.tbody_pyrus.appendChild(tr);
-                    } else {
-                        if (!window.total_elements_pyrus)
-                            window.total_elements_pyrus = window.data.elementos.total;
-                        window.total_elements_pyrus ++;
-                        if (window.tbody_pyrus.childElementCount !== window.data.elementos.per_page)
+            if (window.refresh)
+                location.reload();
+            else {
+                $("body > .wrapper").removeClass("isDisabled");
+                if (res.data.error === 0) {
+                    const elem = res.data.data;
+                    let tr_target = document.querySelector(`tr[data-id='${elem.id}']`);
+                    let tr_index = 0;
+                    let tr = null;
+                    if (tr_target)
+                        tr_index = tr_target.rowIndex - 1;
+                    Toast.fire({
+                        icon: 'success',
+                        title: message.success
+                    });
+                    tr = entidad.row(elem, url_simple, window.tbody_pyrus, elem.id, window.button_pyrus[0], window.button_pyrus[1]);
+                    if (window.formAction !== "UPDATE") {
+                        if (Array.isArray(window.data.elementos)) {
+                            window.td_pyrus.push(tr);
                             window.tbody_pyrus.appendChild(tr);
-                        console.log(window.total_elements_pyrus % window.data.elementos.per_page)
-                        if (window.total_elements_pyrus % window.data.elementos.per_page === 0) {
-                            Toast.fire({
-                                icon: 'warning',
-                                title: 'Espere. Recargando vista'
-                            });
-                            setTimeout(() => {
-                                location.reload();
-                            });
-                            return null;
+                        } else {
+                            if (!window.total_elements_pyrus)
+                                window.total_elements_pyrus = window.data.elementos.total;
+                            window.total_elements_pyrus ++;
+                            if (window.tbody_pyrus.childElementCount !== window.data.elementos.per_page)
+                                window.tbody_pyrus.appendChild(tr);
+                            console.log(window.total_elements_pyrus % window.data.elementos.per_page)
+                            if (window.total_elements_pyrus % window.data.elementos.per_page === 0) {
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Espere. Recargando vista'
+                                });
+                                setTimeout(() => {
+                                    location.reload();
+                                });
+                                return null;
+                            }
+                        }
+                    } else {
+                        if (tr_target) {
+                            tr_target.replaceWith(tr);
+                            window.td_pyrus[tr_index] = tr;
                         }
                     }
-                } else {
-                    if (tr_target) {
-                        tr_target.replaceWith(tr);
-                        window.td_pyrus[tr_index] = tr;
+                    const edit__check = tr.querySelectorAll(".edit--check");
+                    if (edit__check.length > 0) {
+                        Array.prototype.forEach.call(edit__check, e => {
+                            e.addEventListener("click", editElement);
+                        })
                     }
+                    entidad.clean();
+                    if( $("#formModal").length )
+                        $("#formModal").modal( "hide" );
+                } else if (res.data.msg) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: res.data.msg
+                    });
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: message.err
+                    });
                 }
-                const edit__check = tr.querySelectorAll(".edit--check");
-                if (edit__check.length > 0) {
-                    Array.prototype.forEach.call(edit__check, e => {
-                        e.addEventListener("click", editElement);
-                    })
-                }
-                entidad.clean();
-                if( $("#formModal").length )
-                    $("#formModal").modal( "hide" );
-            } else if (res.data.msg) {
-                Toast.fire({
-                    icon: 'error',
-                    title: res.data.msg
-                });
-            } else {
-                Toast.fire({
-                    icon: 'error',
-                    title: message.err
-                });
             }
         } else
             callback.call(this, res.data);
@@ -442,9 +513,12 @@ formSave = (t, formData, message = { wait : "Espere. Guardando contenido" , err:
         alertify.error( message.catch );
     })
     .then(() => {});
-};
-
-verificarForm = () => {
+}
+/**
+ * @description Valida el formulario
+ * @returns {Boolean}
+ */
+function verificarForm() {
     if (!Array.isArray(window.pyrus)) {
         if( window.pyrus.objeto.NECESARIO !== undefined ) {
             flag = 0;
@@ -499,10 +573,12 @@ verificarForm = () => {
     }
     return true
 };
-/** -------------------------------------
- *      OBJETO A GUARDAR
- ** ------------------------------------- */
-formSubmit = t => {
+/**
+ * @description Prepara objeto a guardar
+ * @param {Element} t
+ * @returns {void}
+ */
+function formSubmit(t) {
     let idForm = t.id;
     let formElement = document.getElementById( idForm );
     let formData = new FormData( formElement );
@@ -531,41 +607,18 @@ formSubmit = t => {
     formData.append("ATRIBUTOS",JSON.stringify(Arr));
     formSave(t, formData);
 }
-
-searchTable = ( t ) => {
-    let idForm = t.id;
-    let formElement = document.getElementById( idForm );
-    let formData = new FormData( formElement );
-    let url = t.action;
-    let method = t.method;
-
-    axios({
-        method: method,
-        url: url,
-        data: formData,
-        responseType: 'json',
-        config: { headers: {'Content-Type': 'multipart/form-data' }}
-    })
-    .then((res) => {
-        if( callback === null ) {
-            if(parseInt(res.data) == 1) {
-                alertify.success( message.success );
-            } else  {
-                $( "body > .wrapper" ).removeClass( "isDisabled" );
-                alertify.error( message.err );
-            }
-        } else {
-            callback.call( this , res.data );
-        }
-    })
-    .catch((err) => {
-    })
-    .then(() => {});
-};
 /** -------------------------------------
  *      ABRIR FORMULARIO
  ** ------------------------------------- */
-add = (t, id = 0, data = null, disabled = 0, clone = false) => {
+/**
+ * @param {Element} t
+ * @param {Number} id
+ * @param {JSON} data
+ * @param {Number} disabled
+ * @param {Boolean} clone
+ * @returns {void}
+ */
+function add(t, id = 0, data = null, disabled = 0, clone = false) {
     const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
     let label = document.querySelector("#formModalLabel");
     let form = document.querySelector("#form");
@@ -615,10 +668,14 @@ add = (t, id = 0, data = null, disabled = 0, clone = false) => {
     try {
         addfinish(data);
     } catch (error) {}
-};
+}
 /** -------------------------------------
  *      ELIMINAR ARCHIVO
  ** ------------------------------------- */
+/**
+ * @param {Element} t
+ * @returns {void}
+ */
 removeFile = (t) => {
     const attr = {
         file: t.dataset.url,
@@ -647,8 +704,17 @@ removeFile = (t) => {
     }, err => {
         console.error(err)
     });
-};
-deleteFile = (t, url, txt, data, callbackOK = null, callbackFail = null) => {
+}
+/**
+ * @param {Element} t
+ * @param {string} url
+ * @param {string} txt
+ * @param {{}} data
+ * @param {function} callbackOK
+ * @param {function} callbackFail
+ * @returns {void}
+ */
+function deleteFile(t, url, txt, data, callbackOK = null, callbackFail = null) {
     t.disabled = true;
     Swal.fire({
         title: "Atención!",
@@ -662,9 +728,9 @@ deleteFile = (t, url, txt, data, callbackOK = null, callbackFail = null) => {
         confirmButtonAriaLabel: 'Confirmar',
         cancelButtonText: '<i class="fas fa-times"></i> Cancelar',
         cancelButtonAriaLabel: 'Cancelar'
-    }).then( ( result ) => {
-        if ( result.value ) {
-            axios.delete( url, {
+    }).then(result => {
+        if (result.value) {
+            axios.delete(url, {
                 data: data
             })
             .then(res => {
@@ -672,7 +738,7 @@ deleteFile = (t, url, txt, data, callbackOK = null, callbackFail = null) => {
                     callbackOK.call(this, res.data);
                 else {
                     t.disabled = false;
-                    if(res.data.error === 0) {
+                    if (res.data.error === 0) {
                         Toast.fire({
                             icon: 'success',
                             title: res.data.msg
@@ -690,16 +756,16 @@ deleteFile = (t, url, txt, data, callbackOK = null, callbackFail = null) => {
                     callbackFail.call(this, res);
                     return null;
                 }
-                alertify.error( "Ocurrió un error" );
+                alertify.error("Ocurrió un error");
                 t.disabled = false;
                 console.error(err);
-                console.error( `ERROR en ${url}` );
+                console.error(`ERROR en ${url}`);
             })
             .then(() => {});
         } else
             t.disabled = false;
     });
-};
+}
 /** -------------------------------------
  *      COMBINACIÓN DE TECLAS
  ** ------------------------------------- */
@@ -734,6 +800,10 @@ shortcut.add( "Alt+Ctrl+Q" , function () {
 /** -------------------------------------
  *      INICIO
  ** ------------------------------------- */
+/**
+ * @param {Element} el
+ * @returns {void}
+ */
 function getPosition(el) {
     var xPos = 0;
     var yPos = 0;
@@ -754,14 +824,24 @@ function getPosition(el) {
         y: yPos
     };
 }
-
-
+/**
+ * @param {*} evt
+ * @returns {void}
+ */
 function elementFocus(evt) {
     this.previousElementSibling.classList.add("form--label__active");
 }
+/**
+ * @param {*} evt
+ * @returns {void}
+ */
 function elementBlur(evt) {
     this.previousElementSibling.classList.remove("form--label__active");
 }
+/**
+ * @param {Element} t
+ * @returns {void}
+ */
 function saveEdit(t) {
     t.disabled = true;
     let formData = new FormData(t.parentElement.previousElementSibling);
@@ -809,12 +889,20 @@ function saveEdit(t) {
     })
     .then(() => {});
 }
+/**
+ * @param {Element} t
+ * @returns {void}
+ */
 function removeEdit(t) {
     let e = t.closest(".pyrus--edit__check");
     e.remove();
     delete window.entidad_eventual;
     delete window.td_eventual;
 }
+/**
+ * @param {*} evt
+ * @returns {void}
+ */
 function editElement(evt) {
     let e = document.querySelector(".pyrus--edit__check");
     if (e)
@@ -844,9 +932,17 @@ function editElement(evt) {
     div.innerHTML += `<div class="d-flex justify-content-end border-top mt-2 pt-2"><button onclick="saveEdit(this);" data-table="${this.dataset.name}" data-key="${this.dataset.column}" data-id="${this.dataset.id}" class="btn btn-sm button--form btn-primary" type="button"><i class="fas fa-save"></i></button></div>`;
     document.querySelector("body").appendChild(div);
 }
+/**
+ * @param {*} evt
+ * @returns {void}
+ */
 function editable(evt) {
     this.contentEditable = true;
 }
+/**
+ * @param {*} evt
+ * @returns {void}
+ */
 function editableSave(evt) {
     this.contentEditable = false;
     let formData = new FormData();
@@ -880,6 +976,10 @@ function editableSave(evt) {
     })
     .then(() => {});
 }
+/**
+ * @param {Element} targetForm
+ * @returns {void}
+ */
 function editor(targetForm) {
     if (Array.isArray(window.pyrus)) {
         window.pyrus.forEach(p => {
@@ -901,9 +1001,20 @@ function editor(targetForm) {
             window.pyrus.editor();
     }
 }
-
-init = (callbackOK, normal = true, widthElements = true, type = "table", withAction = true, btn = ["e" , "d"], btnsAdd = null) => {
+/**
+ * @property {Function} callbackOK
+ * @property {Boolean} normal
+ * @property {Boolean} widthElements
+ * @property {string} type
+ * @property {Boolean} withAction
+ * @property {[]} btn
+ * @property {[]} btnsAdd
+ * @property {boolean} refresh
+ * @returns {void}
+ */
+function init(callbackOK, normal = true, widthElements = true, type = "table", withAction = true, btn = ["e" , "d"], btnsAdd = null, refresh = false) {
     window.targetForm = document.querySelector(".pyrus--form");
+    window.refresh = refresh;
     let targetElements = document.querySelector("#wrapper-tabla");
     const entidad = Array.isArray(window.pyrus) ? window.pyrus[0].entidad : window.pyrus;
     editor(window.targetForm);
@@ -938,4 +1049,4 @@ init = (callbackOK, normal = true, widthElements = true, type = "table", withAct
         })
     }
     callbackOK.call(this, [window.targetForm, targetElements]);
-};
+}

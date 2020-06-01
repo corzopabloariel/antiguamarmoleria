@@ -7,10 +7,6 @@ define( "MENU" ,
         "icono"     => "<i class='nav-icon fas fa-home'></i>",
         "submenu"   => [
             [
-                "nombre"    => "Contenido",
-                "icono"     => "<i class='nav-icon fas fa-file-contract'></i>",
-                "url"       => @route('contenido.edit', ['seccion' => 'home'])
-            ],[
                 "nombre"    => "Slider",
                 "icono"     => '<i class="far fa-images"></i>',
                 "url"       => @route('slider.index', ['seccion' => 'home'])
