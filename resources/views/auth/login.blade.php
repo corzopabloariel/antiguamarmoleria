@@ -12,7 +12,14 @@
         <li class="breadcrumb-item" aria-current="page">Último cambio: {{ env('APP_DATE') }}</li>
         <li class="breadcrumb-item" aria-current="page">V. {{ env('APP_VERSION') }}</li>
         <li class="breadcrumb-item" aria-current="page"><a style="color:inherit" href="{{ URL::to('/') }}">Página<i class="ml-2 fas fa-external-link-alt"></i></a></li>
-        <li class="breadcrumb-item" aria-current="page"><a target="_blank" href="{{ env('APP_UAUTHOR') }}" style="color:inherit">By {{ env('APP_AUTHOR') }}</a></li>
+        @php
+        $names = explode("-", env('APP_AUTHOR'));
+        $mails = explode("-", env('APP_UAUTHOR'));
+        $links = "";
+        for($i = 0; $i < count($names); $i++)
+            $links .= "<a target='_blank' href='{$mails[$i]}' class='ml-2' style='color:inherit'>{$names[$i]}</a>";
+        @endphp
+        <li class="breadcrumb-item" aria-current="page">By {!! $links !!}</li>
         <li class="breadcrumb-item" aria-current="page"><a target="_blank" href="mailto:{{ env('APP_UAMAIL') }}" style="color:inherit">{{ env('APP_UAMAIL') }}</a></li>
     </ol>
     <div class="container">
