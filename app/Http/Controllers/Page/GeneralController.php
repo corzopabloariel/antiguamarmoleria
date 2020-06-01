@@ -53,6 +53,10 @@ class GeneralController extends Controller
         return $data;
     }
 
+    public function concat($a) {
+        dd($a);
+    }
+
     public function index($link = null) {
         if(empty($link) || $link == "index")
             $link = "home";
@@ -71,7 +75,14 @@ class GeneralController extends Controller
             case "productos":
                 $data["elementos"] = [];
             break;
-            case "contacto":
+            case "presupuesto":
+                $arr = [];
+                $productos = Producto::where("elim", 0)->get();
+                foreach($productos AS $producto) {
+                    $arr[] = implode(", ", $producto->padres(1));
+                }
+                sort($arr);
+                $data["productos"] = $arr;
             break;
         }
 

@@ -47,7 +47,6 @@
                 <div class="contacto--form">
                     <p class="mb-5">Para mayor información, no dude en contactarse mediante el siguiente formulario, o a través de nuestras vías de comunicación.</p>
                     <form action="" id="formContacto" onsubmit="event.preventDefault(); enviar( this )" method="post">
-                        <input type="hidden" name="elementos[asunto]" value="Asunto">
                         <input type="hidden" name="elementos[nombre]" value="Nombre y Apellido">
                         <input type="hidden" name="elementos[email]" value="Email">
                         <input type="hidden" name="elementos[telefono]" value="Teléfono">
@@ -74,7 +73,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12 d-flex justify-content-center">
-                                <button class="btn btn-primary button--form button--form__public px-5">Enviar</button>
+                                <button class="btn btn-primary button--form button--form__public px-5 text-uppercase">Enviar</button>
                             </div>
                         </div>
                     </form>

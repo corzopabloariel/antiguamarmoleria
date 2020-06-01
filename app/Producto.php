@@ -75,19 +75,22 @@ class Producto extends Model
             if (empty( $only_id))
                 $padres[] = $data;
             else
-                $padres[] = $data->id;
+                $padres[] = $data->title;
         } else {
             if (empty($only_id))
                 $padres[] = $data;
             else
-                $padres[] = $data->id;
+                $padres[] = $data->title;
             self::padresRecursivo($data->padre, $padres, $only_id);
         }
     }
     public function padres($only_id = null) {
         $padres = [];
         self::padresRecursivo($this, $padres, $only_id);
-        $padres[] = $this->marca;
+        if (empty($only_id))
+            $padres[] = $this->marca;
+        else
+            $padres[] = $this->marca->title;
         return array_reverse($padres);
     }
 }

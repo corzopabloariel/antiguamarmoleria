@@ -139,7 +139,7 @@ Route::get('producto/{title}', ['uses' => 'Page\GeneralController@marca' , 'as' 
 Route::get('producto/{title}/{query}', 'Page\GeneralController@producto')->where('query','.+');
 Route::get('search', ['uses' => 'Page\GeneralController@search' , 'as' => 'search']);
 
-Route::post('pedido-de-presupuesto ', ['uses' => 'Page\FormController@presupuesto' , 'as' => 'presupuesto']);
+Route::post('presupuesto ', ['uses' => 'Page\FormController@presupuesto' , 'as' => 'presupuesto']);
 Route::post('contacto', ['uses' => 'Page\FormController@contacto' , 'as' => 'contacto']);
 Route::get('productos/categoria/{title}/{id}', ['uses' => 'Page\GeneralController@categoria' , 'as' => 'categoria']);
 Route::get('productos/cobertura/{title}/{id}', ['uses' => 'Page\GeneralController@producto' , 'as' => 'producto']);

@@ -301,31 +301,35 @@ see = (t, id) => {
 /** -------------------------------------
  *      PREVIEW DE IMAGEN
  ** ------------------------------------- */
-function readURL(t, id) {
-    const img = document.querySelector(`#${id}`);
+function readURL(t, id = null) {
+    const img = id ? document.querySelector(`#${id}`) : null;
     if (t.files && t.files[0]) {
         let reader = new FileReader();
         reader.onload = ( e ) => {
             const size = Math.round(t.files[0].size / 1024 /1024);
-            if (max_size_file < size) {
-                img.src = "";
-                img.classList.remove("image--upload__validate");
-                t.parentElement.classList.remove("image--upload__not-empty");
-                t.parentElement.classList.add("image--upload__no-validate");
-                t.nextSibling.dataset.name = `El archivo supera el máximo permitido ${max_size_file}MB`;
-                return null;
+            if (id) {
+                if (max_size_file < size) {
+                    img.src = "";
+                    img.classList.remove("image--upload__validate");
+                    t.parentElement.classList.remove("image--upload__not-empty");
+                    t.parentElement.classList.add("image--upload__no-validate");
+                    t.nextSibling.dataset.name = `El archivo supera el máximo permitido ${max_size_file}MB`;
+                    return null;
+                }
+                img.src = e.target.result;
+                img.classList.add("image--upload__validate");
             }
-            img.src = e.target.result;
-            img.classList.add("image--upload__validate");
             t.parentElement.classList.add("image--upload__not-empty");
-            t.nextSibling.dataset.name = `${t.files[0].name} ~ ${size}MB`;
+            t.nextElementSibling.dataset.name = `${t.files[0].name} ~ ${size}MB`;
         };
         reader.readAsDataURL(t.files[0]);
     } else {
-        img.src = "";
-        img.classList.remove("image--upload__validate");
+        if (id) {
+            img.src = "";
+            img.classList.remove("image--upload__validate");
+        }
         t.parentElement.classList.remove("image--upload__not-empty");
-        t.nextSibling.dataset.name = "No se selccionó ningún archivo";
+        t.nextElementSibling.dataset.name = "No se selccionó ningún archivo";
     }
     t.parentElement.classList.remove("image--upload__no-validate");
 }

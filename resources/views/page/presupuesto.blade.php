@@ -1,15 +1,59 @@
-<div class="encabezado py-5">
+<div class="encabezado py-5 border-bottom">
     <div class="container">
-        <h2 class="title--important">Pedido de presupuesto</h2>
+        <h2 class="title--important text-uppercase">Pedido de presupuesto</h2>
     </div>
 </div>
-<div class="presupuesto py-5">
+<div class="presupuesto bg-white py-5">
     <div class="container">
-        <form action="" id="formContacto" onsubmit="event.preventDefault(); enviar( this )" method="post">
-            <div class="py-5">
-
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8">
+                <div class="contacto--form producto--info">
+                    <form action="" id="formContacto" onsubmit="event.preventDefault(); enviar( this )" method="post">
+                        <input type="hidden" name="elementos[producto]" value="Producto">
+                        <input type="hidden" name="elementos[nombre]" value="Nombre y Apellido">
+                        <input type="hidden" name="elementos[email]" value="Email">
+                        <input type="hidden" name="elementos[telefono]" value="Teléfono">
+                        <input type="hidden" name="elementos[mensaje]" value="Mensaje">
+                        @csrf
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="nombre">Nombre y Apellido (*)</label>
+                                <input aria-label="Nombre y Apellido" placeholder="Nombre y Apellido (*)" required maxwidth="100" type="text" id="nombre" name="nombre" class="form-control form--input" value="{{ old('nombre') }}">
+                                <label for="producto" class="mt-4">Producto específico:</label>
+                                <input list="productos" name="producto" id="producto" class="form-control form--input" placeholder="Producto específico">
+                                <datalist id="productos">
+                                    @foreach($data["productos"] AS $p)
+                                        <option value="{{$p}}">
+                                    @endforeach
+                                </datalist>
+                            </div>
+                            <div class="col-12 mt-4">
+                                <label for="email">Email (*)</label>
+                                <input aria-label="Email" placeholder="Email (*)" required maxwidth="150" type="email" id="email" name="email" class="form-control form--input" value="{{ old('nombre') }}">
+                                <label class="mt-4" for="telefono">Teléfono</label>
+                                <input aria-label="Teléfono" placeholder="Teléfono" type="phone" id="telefono" name="telefono" class="form-control form--input" value="{{ old('telefono') }}">
+                            </div>
+                            <div class="col-12 mt-4">
+                                <label for="mensaje">Mensaje (*)</label>
+                                <textarea rows="5" aria-label="Mensaje" placeholder="Mensaje (*)" required id="mensaje" name="mensaje" class="form-control form--input"></textarea>
+                            </div>
+                            <div class="col-12 mt-5">
+                                <label for="file">Archivo adjunto</label>
+                                <label class="image--upload bg-white">
+                                    <input type="file" accept="image/*" id="file" name="archivo" onchange="readURL(this)">
+                                    <span data-name="No se seleccionó ningún archivo">📂</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-center">
+                                <button class="btn btn-primary button--form button--form__public px-5 text-uppercase">Enviar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 @push("scripts")
