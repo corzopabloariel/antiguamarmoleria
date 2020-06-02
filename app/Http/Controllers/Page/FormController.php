@@ -18,6 +18,21 @@ class FormController extends Controller
     public $traducciones;
     public function __construct() {
         $this->data = Empresa::first();
+        if (!file_exists("mails"))
+            mkdir("mails", 0777, true);
+        $filename = public_path() . "/count.txt";
+        if (file_exists($filename)) {
+            $myfile = fopen("count.txt", "r") or die("Unable to open file!");
+            $txt = trim(fgets($myfile)) + 1;
+            fclose($myfile);
+            $myfile = fopen("count.txt", "w") or die("Unable to open file!");
+            fwrite($myfile, $txt);
+        } else {
+            $myfile = fopen("count.txt", "x+") or die("Unable to open file!");
+            $txt = "1\n";
+            fwrite($myfile, $txt);
+        }
+        fclose($myfile);
     }
     public function contacto( Request $request ) {
         $rules = [
@@ -54,8 +69,16 @@ class FormController extends Controller
             Mail::to( $email )->send( new ContactoMail( $dataRequest ) );
             if( count( Mail::failures() ) > 0 )
                 return [ "estado" => 0 , "mssg" => "Error"];
-            else
+            else {
+                unset($dataRequest["token"]);
+                unset($dataRequest["elementos"]);
+                $file = "contacto-" . date("c") . ".txt";
+                $filename = public_path() . "/mails/{$file}";
+                $myfile = fopen($filename, "x+") or die("Unable to open file!");
+                $txt = json_encode($dataRequest);
+                fwrite($myfile, $txt);
                 return [ "estado" => 1 , "mssg" => "Formulario enviado"];
+            }
         } else {
             return [ "estado" => 0 , "mssg" => "Error"];
         }
@@ -98,8 +121,16 @@ class FormController extends Controller
             Mail::to($email)->send( new PresupuestoMail( $dataRequest , $file ) );
             if( count( Mail::failures() ) > 0 )
                 return [ "estado" => 0 , "mssg" => "Error"];
-            else
+            else {
+                unset($dataRequest["token"]);
+                unset($dataRequest["elementos"]);
+                $file = "presupuesto-" . date("c") . ".txt";
+                $filename = public_path() . "/mails/{$file}";
+                $myfile = fopen($filename, "x+") or die("Unable to open file!");
+                $txt = json_encode($dataRequest);
+                fwrite($myfile, $txt);
                 return [ "estado" => 1 , "mssg" => "Presupuesto enviado"];
+            }
         } else {
             return [ "estado" => 0 , "mssg" => "Error"];
         }

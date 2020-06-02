@@ -19,7 +19,20 @@ class AdmController extends Controller
         $this->model = new Imagen;
     }
     public function index() {
+        $arr = [];
+        $arr[] = ["e" => json_decode(self::count(new Request(['table' => 'Marca'])), true), "n" => "Marcas", "bg" => "#C33F16", "t" => "#FFFFFF"];
+        $arr[] = ["e" => json_decode(self::count(new Request(['table' => 'Producto'])), true), "n" => "Productos", "bg" => "#E7EDCC", "t" => "#030303"];
+        $arr[] = ["e" => json_decode(self::count(new Request(['table' => 'User'])), true), "n" => "Usuarios", "bg" => "#1A9CB6", "t" => "#FFFFFF"];
+        $filename = public_path() . "/count.txt";
+        $number = 0;
+        if (file_exists($filename)) {
+            $myfile = fopen("count.txt", "r") or die("Unable to open file!");
+            $number = trim(fgets($myfile));
+            fclose($myfile);
+        }
+        $arr[] = ["e" => $number, "n" => "Formularios enviados", "bg" => "#29231F", "t" => "#ffffff"];
         $data = [
+            "elements" => $arr,
             "title" => "Administración",
             "view" => "auth.parts.index",
             "SIN" => 1
@@ -101,8 +114,11 @@ class AdmController extends Controller
         try {
             $entidad = $request->table;
             eval("\$model = new \\App\\{$entidad};");
-            $attr = $request->attr;
-            $data = $model->where($attr, $request->id);
+            $data = $model;
+            if (isset($request->id)) {
+                $attr = $request->attr;
+                $data = $data->where($attr, $request->id);
+            }
             $fillable = $model->getFillable();
             if (in_array("elim", $fillable))
                 $data = $data->where("elim", 0);

@@ -45,5 +45,7 @@
         let formData = new FormData( formElement );
         formSave( t , formData );
     };
+    /** */
+    init(data => {}, false, false, null, false, null, null, true);
 </script>
 @endpush

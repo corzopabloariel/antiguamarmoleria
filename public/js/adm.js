@@ -519,6 +519,8 @@ function formSave(t, formData, message = { wait : "Espere. Guardando contenido" 
  * @returns {Boolean}
  */
 function verificarForm() {
+    if (!window.pyrus)
+        return true;
     if (!Array.isArray(window.pyrus)) {
         if( window.pyrus.objeto.NECESARIO !== undefined ) {
             flag = 0;
