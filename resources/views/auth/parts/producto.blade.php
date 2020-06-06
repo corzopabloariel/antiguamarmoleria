@@ -17,10 +17,12 @@
     window.pyrus.push({entidad: new Pyrus("productos"), tipo: "U"});
     window.pyrus.push({entidad: new Pyrus("producto_caracteristicas"), tipo: "M", column: "characteristics", function: "caracteristica"});
     window.pyrus.push({entidad: new Pyrus("producto_images"), tipo: "M", column: "images", function: "imagen"});
+    window.pyrus[0].entidad.objeto.ATRIBUTOS.relacion.ENUM = window.data.productos;
     addfinish = data => {
         const marcaTarget = document.querySelector(`#${window.pyrus[0].entidad.name}_marca_id_target`);
         const marca = document.querySelector(`#${window.pyrus[0].entidad.name}_marca_id`);
         const producto = document.querySelector(`#${window.pyrus[0].entidad.name}_producto_id`);
+        const relacion = document.querySelector(`#${window.pyrus[0].entidad.name}_relacion`);
         if (window.data.producto_id)
             producto.value = window.data.producto_id;
         if (window.data.marca_id) {
@@ -29,6 +31,7 @@
         }
         const target_1 = document.querySelector(`#wrapper-caracteristica`);
         if (!data) {
+            relacion.querySelector(":disabled").disabled = false;
             const target_2 = document.querySelector(`#wrapper-imagen`);
             if (target_1)
                 target_1.innerHTML = "";
@@ -38,6 +41,8 @@
                 window.characteristicsArr.forEach(a => caracteristicaFunction(a));
             return null;
         }
+        relacion.querySelector(`[value="${data.id}"]`).disabled = true;
+        $(relacion).selectpicker("refresh");
         if (target_1)
             target_1.innerHTML = "";
         if (data.images)

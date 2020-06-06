@@ -20,7 +20,7 @@
                                     </div>
                                     <div class="col-12 col-md">
                                         <label>NAME</label>
-                                        <input oninvalid="this.setCustomValidity('No sea boludo, completa el campo con los valores correctos (a-zA-Z0-9)')" oninput="setCustomValidity('')" pattern="[a-zA-Z0-9áéíóú\s]+" required @isset($elementos[$i]['NAME']) value="{{ $elementos[$i]['NAME'] }}" @endisset type="text" name="NAME[{{$i}}]" class="form-control form-control-sm">
+                                        <input required @isset($elementos[$i]['NAME']) value="{{ $elementos[$i]['NAME'] }}" @endisset type="text" name="NAME[{{$i}}]" class="form-control form-control-sm">
                                         <small class="form-text text-muted">Nombre visible en el menu</small>
                                     </div>
                                     <div class="col-12 col-md">
@@ -76,7 +76,7 @@
                 html += `</div>`;
                 html += `<div class="col-12 col-md">`;
                     html += `<label>NAME</label>`;
-                    html += `<input oninvalid="this.setCustomValidity('No sea boludo, completa el campo con los valores correctos (a-zA-Z0-9)')" oninput="setCustomValidity('')" pattern="[a-zA-Z0-9áéíóú\s]+" required type="text" name="NAME[${indice}]" class="form-control form-control-sm">`;
+                    html += `<input required type="text" name="NAME[${indice}]" class="form-control form-control-sm">`;
                     html += `<small class="form-text text-muted">Nombre visible en el menu</small>`;
                 html += `</div>`;
                 html += `<div class="col-12 col-md">`;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\URL;
 use App\Empresa;
 use App\Contenido;
 class EmpresaController extends Controller

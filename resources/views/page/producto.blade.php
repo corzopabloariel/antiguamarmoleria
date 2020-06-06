@@ -113,6 +113,19 @@
                     </div>
                     @endif
                 @endif
+                @if (!empty($data["producto"]->relacion))
+                <h3 class="title mt-4 mb-3">Relacionados</h3>
+                <div class="row mt-n4">
+                    @foreach ($data["producto"]->relacion AS $r)
+                        @php
+                        $relacion = App\Producto::find($r);
+                        @endphp
+                        <div class="col-12 col-md-4 mt-4 d-flex align-items-stretch">
+                            @include('page.parts.elemento', ['e' => $relacion])
+                        </div>
+                    @endforeach
+                </div>
+                @endif
             </div>
         </div>
     </div>

@@ -1,7 +1,7 @@
 <footer class="footer">
     <div class="container">
         <div class="row">
-            <div class="col-12 col-md-4 col-lg-2 d-flex align-items-center">
+            <div class="col-12 col-md-4 col-lg-2 d-flex align-items-center flex-column">
                 <div class="w-100">
                     @include( 'layouts.general.image' , [ 'i' => $elementos->images['logoFooter'] , 'c' => 'd-block footer--logo' , 'n' => 'Logo ' . env('APP_NAME') ] )
                     @if(!empty($elementos->social_networks))
@@ -21,6 +21,9 @@
                     </div>
                     @endif
                 </div>
+                @if (!empty($elementos->text["tarjetas"]))
+                <div class="footer--tarjetas mt-3">{!! $elementos->text["tarjetas"] !!}</div>
+                @endif
             </div>
             <div class="col-12 col-md-4 col-lg-3 d-flex">
                 <div class="w-100">

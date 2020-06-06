@@ -668,6 +668,7 @@ const ENTIDADES = {
             order: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE", NOMBRE: "orden"},
             description: {TIPO:"TP_TEXT", LABEL: 1,EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"Descripción", HELP: "Si llena este campo, la ficha va a tener un estilo particular"},
             marca_id: {TIPO:"TP_RELATIONSHIP", ENUM: null,LABEL: 1,RULE: "required", NECESARIO: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"marca", ENTIDAD: "Marca",LABEL:1, ATTR: ["id", "title AS text"], ORDER: "order", NORMAL: 1},
+            relacion: {TIPO:"TP_ENUM", ENUM: null,LABEL: 1, VISIBILIDAD:"TP_VISIBLE_FORM",NOMBRE:"relación", ENTIDAD: "Producto",LABEL:1, MULTIPLE: 1, NORMAL: 0, HELP: "Este campo es múltiple"},
             title: {TIPO:"TP_STRING",RULE: "required|max:100",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre"},
             title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
             images: {TIPO:"TP_ARRAY",COLUMN:"images",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"Imágenes",CLASS:"text-center"},
@@ -682,6 +683,9 @@ const ENTIDADES = {
             },
             {
                 '<div class="col-12 col-md-8">/title/</div><div class="col-12 col-md">/in_background//is_link/</div>':['title', 'in_background', 'is_link'],
+            },
+            {
+                '<div class="col-12 col-md-8">/relacion/</div><div class="col-12 col-md-4"></div>': ['relacion']
             },
             {
                 '<div class="col-12">/description/</div>': ['description']
@@ -976,11 +980,12 @@ const ENTIDADES = {
         ONE: 1,
         NOMBRE: "Textos",
         ATRIBUTOS: {
-            contacto: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"Texto en contacto", LABEL: "1"}
+            contacto: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"Texto en contacto", LABEL: "1"},
+            tarjetas: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"Tarjetas", LABEL: "1"}
         },
         FORM: [
             {
-                '<div class="col-12 col-md">/contacto/</div>' : ['contacto']
+                '<div class="col-12 col-md-6">/contacto/</div><div class="col-12 col-md-6">/tarjetas/</div>' : ['contacto', 'tarjetas']
             }
         ],
         EDITOR: {
@@ -1001,6 +1006,25 @@ const ENTIDADES = {
                     { name: 'about', groups: [ 'about' ] }
                 ],
                 removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Redo,Undo,Find,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Anchor,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Format,Font,FontSize,ShowBlocks,Maximize,About',
+                colorButton_colors : colorPick
+            },
+            tarjetas: {
+                toolbarGroups: [
+                    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+                    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+                    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+                    { name: 'forms', groups: [ 'forms' ] },
+                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+                    { name: 'links', groups: [ 'links' ] },
+                    { name: 'insert', groups: [ 'insert' ] },
+                    { name: 'styles', groups: [ 'styles' ] },
+                    { name: 'colors', groups: [ 'colors' ] },
+                    { name: 'tools', groups: [ 'tools' ] },
+                    { name: 'others', groups: [ 'others' ] },
+                    { name: 'about', groups: [ 'about' ] }
+                ],
+                removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Redo,Undo,Find,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,RemoveFormat,CopyFormatting,NumberedList,BulletedList,Outdent,Indent,Blockquote,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,Language,Link,Unlink,Anchor,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Format,Font,FontSize,Maximize,ShowBlocks,About',
                 colorButton_colors : colorPick
             }
         }

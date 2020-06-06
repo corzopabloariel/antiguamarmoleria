@@ -22,7 +22,11 @@ class ProductoController extends Controller
     public function index(Request $request, $id = null)
     {
         $data = [];
-        $data[ "view" ] = "auth.parts.producto";
+        $productos = $this->model::where("elim", 0)->get();
+        foreach($productos AS $producto)
+            $arr[] = ["id" => $producto->id, "text" => implode(", ", $producto->padres(1))];
+        $data["productos"] = $arr;
+        $data["view"] = "auth.parts.producto";
         $elementos = $this->model;
         $elementos = $elementos->join('marcas', 'productos.marca_id', '=', 'marcas.id');
         if (isset($request->search)) {

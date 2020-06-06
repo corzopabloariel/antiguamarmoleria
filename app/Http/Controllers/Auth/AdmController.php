@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Imagen;
@@ -350,7 +351,7 @@ class AdmController extends Controller
                             if ($specification == "TP_SLUG")
                                 $valueNew = $values[str_replace("_slug", "", $attr)];
                             else
-                                $valueNew = $values[$attr];
+                                $valueNew = isset($values[$attr]) ? $values[$attr] : null;
                             if (empty($column)) {
                                 $value = isset($data[$attr]) ? $data[$attr] : null;
                                 $OBJ[$attr] = call_user_func_array("self::{$specification}", [$attr, $value, $valueNew, $detail]);
@@ -490,7 +491,7 @@ class AdmController extends Controller
         if ($flag)
             return json_encode(["error" => 1, "msg" => "Error en los datos de ingreso."]);
         else {
-            try {
+            //try {
                 $OBJ = self::object($request, $data);
                 if ($rule) {
                     $flag = true;
@@ -515,9 +516,9 @@ class AdmController extends Controller
                     $data->fill($OBJ);
                     $data->save();
                 }
-            } catch (\Throwable $th) {
+            /*} catch (\Throwable $th) {
                 return json_encode(["error" => 1, "msg" => $th->errorInfo[2]]);
-            }
+            }*/
             return json_encode(["success" => true, "error" => 0, "data" => $data]);
         }
     }
@@ -556,6 +557,6 @@ class AdmController extends Controller
     }
 
     public function clear ($text) {
-        return str_replace( ["&aacute;","&eacute;","&iacute;","&oacute;","&uacute;","&ntilde;","&Aacute;","&Eacute;","&Iacute;","&Oacute;","&Uacute;","&Ntilde;"], [ "á","é","í","ó","ú","ñ","Á","É","Í","Ó","Ú","Ñ" ], $text);
+        return str_replace(["&aacute;", "&eacute;", "&iacute;", "&oacute;", "&uacute;", "&ntilde;", "&Aacute;", "&Eacute;", "&Iacute;", "&Oacute;", "&Uacute;", "&Ntilde;", URL::to("/")], ["á", "é", "í", "ó", "ú", "ñ", "Á", "É", "Í", "Ó", "Ú", "Ñ", ""], $text);
     }
 }

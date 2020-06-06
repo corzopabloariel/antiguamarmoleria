@@ -133,7 +133,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
 
 Route::get( '{link?}' ,
     [ 'uses' => 'Page\GeneralController@index' , 'as' => 'index' ]
-)->where( 'link' , "index|faq|empresa|productos|presupuesto|contacto" );
+)->where( 'link' , "index|faq|empresa|productos|presupuesto|consentino-online-visualizer|contacto" );
 Route::get('producto/{title}', ['uses' => 'Page\GeneralController@marca' , 'as' => 'marca']);
 //Route::get('producto/{title}/colores', ['uses' => 'Page\GeneralController@colores' , 'as' => 'colores']);
 Route::get('producto/{title}/{query}', 'Page\GeneralController@producto')->where('query','.+');
