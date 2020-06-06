@@ -3,8 +3,8 @@
         <h2 class="home--title mb-5"><span>Nuestros productos</span></h2>
         <div class="row mt-n4 justify-content-center">
             @foreach($data["elementos"] AS $marca)
-            <div class="col-12 col-md-6 col-lg-4 mt-4 d-flex align-items-center">
-                <a href="{{ URL::to($marca->link()) }}" class="d-block w-100">
+            <div class="col-12 col-md-6 col-lg-4 mt-4 d-flex align-items-stretch">
+                <a href="{{ URL::to($marca->link()) }}" class="home__marca shadow-sm">
                 @if (empty($marca->logo))
                     <p class="home--marca__title">{{ $marca->title }}</p>
                 @else

@@ -1,9 +1,11 @@
 <footer class="footer">
     <div class="container">
         <div class="row">
-            <div class="col-12 col-md-4 col-lg-2 d-flex align-items-center flex-column">
+            <div class="col-12 col-md-4 col-lg-2 d-flex align-items-center">
                 <div class="w-100">
-                    @include( 'layouts.general.image' , [ 'i' => $elementos->images['logoFooter'] , 'c' => 'd-block footer--logo' , 'n' => 'Logo ' . env('APP_NAME') ] )
+                    <div class="d-flex justify-content-center">
+                        @include( 'layouts.general.image' , [ 'i' => $elementos->images['logoFooter'] , 'c' => 'd-block footer--logo' , 'n' => 'Logo ' . env('APP_NAME') ] )
+                    </div>
                     @if(!empty($elementos->social_networks))
                     @php
                     $ARR_redes = [
@@ -14,16 +16,16 @@
                         "linkedin" => '<i class="header--social__icon fab fa-linkedin-in"></i>'
                     ];
                     @endphp
-                    <div class="header--social header--social__footer">
+                    <div class="header--social header--social__footer d-flex justify-content-center">
                         @foreach($elementos->social_networks AS $k => $v)
                             <a title="{{$v['titulo']}}" class="header--social__element" href="{{$v['url']}}" target="_blank">{!! $ARR_redes[$v["redes"]] !!}</a>
                         @endforeach
                     </div>
                     @endif
+                    @if (!empty($elementos->text["tarjetas"]))
+                    <div class="footer--tarjetas mt-5">{!! $elementos->text["tarjetas"] !!}</div>
+                    @endif
                 </div>
-                @if (!empty($elementos->text["tarjetas"]))
-                <div class="footer--tarjetas mt-3">{!! $elementos->text["tarjetas"] !!}</div>
-                @endif
             </div>
             <div class="col-12 col-md-4 col-lg-3 d-flex">
                 <div class="w-100">

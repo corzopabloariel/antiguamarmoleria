@@ -86,25 +86,21 @@
     </div>
     @isset($data["marcas"])
     <div class="header--marcas d-none d-lg-block">
-        <div class="container">
-            <div class="row">
-                @foreach($data["marcas"] AS $marca)
-                <div class="col d-flex align-items-stretch">
-                    @php
-                        $class = "d-flex w-100 justify-content-center align-items-center header--marca__link";
-                        if (Request::is("{$marca->link()}*"))
-                            $class .= " active--marca";
-                    @endphp
-                    <a href="{{ URL::to($marca->link()) }}" class="{{$class}}">
-                        @if (empty($marca->logo2))
-                            <p class="text-center">{{ $marca->title }}</p>
-                        @else
-                            @include( 'layouts.general.image' , [ 'i' => $marca->logo2 , 'c' => 'img--gris header--marca' , 'n' => $marca->title ] )
-                        @endif
-                    </a>
-                </div>
-                @endforeach
-            </div>
+        <div class="header__scroll">
+            @foreach($data["marcas"] AS $marca)
+                @php
+                    $class = "d-flex w-100 justify-content-center align-items-center header--marca__link";
+                    if (Request::is("{$marca->link()}*"))
+                        $class .= " active--marca";
+                @endphp
+                <a href="{{ URL::to($marca->link()) }}" class="{{$class}}">
+                    @if (empty($marca->logo2))
+                        <p class="text-center">{{ $marca->title }}</p>
+                    @else
+                        @include( 'layouts.general.image' , [ 'i' => $marca->logo2 , 'c' => 'img--gris header--marca' , 'n' => $marca->title ] )
+                    @endif
+                </a>
+            @endforeach
         </div>
     </div>
     @endisset

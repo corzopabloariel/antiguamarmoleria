@@ -25,6 +25,7 @@ class AdmController extends Controller
         $arr[] = ["e" => json_decode(self::count(new Request(['table' => 'Producto'])), true), "n" => "Productos", "bg" => "#E7EDCC", "t" => "#030303"];
         $arr[] = ["e" => json_decode(self::count(new Request(['table' => 'User'])), true), "n" => "Usuarios", "bg" => "#1A9CB6", "t" => "#FFFFFF"];
         $arr[] = ["e" => json_decode(self::count(new Request(['table' => 'Blog'])), true), "n" => "Novedades", "bg" => "#B66536", "t" => "#CAD0BF"];
+        $arr[] = ["e" => json_decode(self::count(new Request(['table' => 'Pop'])), true), "n" => "Pop up", "bg" => "#535B4D", "t" => "#E2E0A2"];
         $filename = public_path() . "/count.txt";
         $number = 0;
         if (file_exists($filename)) {

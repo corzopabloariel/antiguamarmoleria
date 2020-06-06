@@ -40,6 +40,24 @@
         <!-- </Styles> -->
     </head>
     <body>
+        @php
+            $url = str_replace(URL::to("/"), "", url()->current());
+            $url = empty($url) ? "/" : $url;
+            $pop = \App\Pop::where("url", $url)->first();
+        @endphp
+        @if ($pop)
+            @if (!empty($pop->images))
+            <div class="modal fade bd-example-modal-lg" id="modal__pop" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body p-0">
+                        @include('layouts.general.image' , [ 'i' => $pop->images , 'n' => "" , 'c' => 'w-100', 'd' => 0])
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+        @endif
         <div class="modal fade bd-example-modal-lg" id="terminosModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
                 <div class="modal-content">
@@ -93,6 +111,9 @@
         <script>
             window.url = "{{ url()->current() }}";
             window.url_base = "{{ URL::to( '/' ) }}";
+            const popup = document.querySelector("#modal__pop");
+            if (popup)
+                $(popup).modal("show");
             $( () => {
                 $('#search__modal').on('shown.bs.modal', function (e) {
                     if(window.typeMENU !== undefined)

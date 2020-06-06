@@ -621,11 +621,17 @@ td:hover .edit--check {
     font-size: 14px;
     font-weight: 600;
 }
+.header__scroll {
+    display: flex;
+    overflow-x: auto;
+}
 .header--marca {
     width: 100%;
-    max-width: 70px;
+    max-width: 120px;
 }
 .header--marca__link {
+    width: 120px;
+    min-width: 120px;
     padding: 1em .4em;
     font-size: 14px;
 }
@@ -861,7 +867,7 @@ div.producto--image__specific {
 }
 /**/
 .home {
-    background-color: #ffffff;
+    background-color: #f7f7f7;
 }
 .home a,
 .home a:hover {
@@ -886,8 +892,19 @@ div.producto--image__specific {
     bottom: -5px;
     left: calc(50% - 35px);
 }
+.home__marca {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: .5em;
+    width: 100%;
+    min-height: 180px;
+    padding: .5em;
+    background-color: #ffffff;
+}
 .home--marca {
     max-width: 100%;
+    width: 170px;
     display: block;
     margin: auto;
 }
