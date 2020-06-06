@@ -622,8 +622,6 @@ td:hover .edit--check {
     font-weight: 600;
 }
 .header__scroll {
-    display: flex;
-    overflow-x: auto;
 }
 .header--marca {
     width: 100%;
@@ -632,6 +630,8 @@ td:hover .edit--check {
 .header--marca__link {
     width: 120px;
     min-width: 120px;
+    max-height: 107px;
+    height: 107px;
     padding: 1em .4em;
     font-size: 14px;
 }
