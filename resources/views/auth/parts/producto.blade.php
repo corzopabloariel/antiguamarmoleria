@@ -18,7 +18,7 @@
     window.pyrus.push({entidad: new Pyrus("producto_caracteristicas"), tipo: "M", column: "characteristics", function: "caracteristica"});
     window.pyrus.push({entidad: new Pyrus("producto_images"), tipo: "M", column: "images", function: "imagen"});
     window.pyrus[0].entidad.objeto.ATRIBUTOS.relacion.ENUM = window.data.productos;
-    addfinish = data => {
+    function addfinish(data) {
         const marcaTarget = document.querySelector(`#${window.pyrus[0].entidad.name}_marca_id_target`);
         const marca = document.querySelector(`#${window.pyrus[0].entidad.name}_marca_id`);
         const producto = document.querySelector(`#${window.pyrus[0].entidad.name}_producto_id`);
@@ -31,8 +31,8 @@
         }
         const target_1 = document.querySelector(`#wrapper-caracteristica`);
         if (!data) {
-            relacion.querySelector(":disabled").disabled = false;
             const target_2 = document.querySelector(`#wrapper-imagen`);
+            relacion.querySelector(":disabled").disabled = false;
             if (target_1)
                 target_1.innerHTML = "";
             if (target_2)
@@ -49,7 +49,7 @@
             data.images.forEach(a => imagenFunction(a));
         if (data.characteristics)
             data.characteristics.forEach(a => caracteristicaFunction(a));
-    };
+    }
     elementoFunction = (t, id) => {
         window.location = `${url_simple}/adm/producto/${id}/elementos`;
     };

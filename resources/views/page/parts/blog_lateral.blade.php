@@ -1,14 +1,14 @@
 <div class="wrapper-videos">
-    <h3 class="blogs--title blogs--title__lateral">Categorías</h3>
-    <ul class="list-group blogs--categorias">
-        @foreach( $data["elementos"][ "blog_categorias" ] AS $c )
-        <li class="list-group-item border-0 d-flex justify-content-between"><a href="{{ URL::to( 'novedades/' . str_slug($c->title) . '/' . $c->id ) }}">{{ $c->title }}</a><span class="badge badge-pill badge-warning categoria--count">{{ $c->blogs()->count() }}</span></li>
+    <h3 class="blog__title blog__title--lateral">Categorías</h3>
+    <ul class="list-group blog__categorias">
+        @foreach( $data["elementos"][ "categorias" ] AS $c )
+        <li class="list-group-item border-0 d-flex justify-content-between"><a href="{{ URL::to($c->link()) }}">{{ $c->title }}</a><span class="categoria__count">{{ $c->blogs()->count() }}</span></li>
         @endforeach
     </ul>
 </div>
-@if($data[ "empresa" ]->social_networks)
+{{--@if($data[ "empresa" ]->social_networks)
 <div class="wrapper-redes mt-5">
-    <h3 class="blogs--title blogs--title__lateral">Redes Sociales</h3>
+    <h3 class="blog__title blog__title--lateral">Redes Sociales</h3>
     @php
     $social_networks = [
         'instagram' => '<i class="fab fa-instagram"></i>',
@@ -25,4 +25,4 @@
         @endforeach
     </div>
 </div>
-@endif
+@endif--}}

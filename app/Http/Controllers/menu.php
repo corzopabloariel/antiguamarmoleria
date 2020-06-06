@@ -78,6 +78,23 @@ define( "MENU" ,
         "separar"   => 1
     ],
     [
+        "id"        => "novedad",
+        "nombre"    => "Novedades",
+        "icono"     => '<i class="far fa-newspaper"></i>',
+        "submenu"   => [
+            [
+                "nombre"    => "Portada",
+                "icono"     => '<i class="far fa-image"></i>',
+                "url"       => @route('portada.index', ['seccion' => 'blogs'])
+            ],
+            [
+                "nombre"    => "noticias",
+                "icono"     => '<i class="fas fa-font"></i>',
+                "url"       => @route('novedades.index')
+            ]
+        ]
+    ],
+    [
         "id"        => "popup",
         "nombre"    => "Pop' up",
         "icono"     => '<i class="fas fa-chalkboard"></i>',

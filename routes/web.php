@@ -99,12 +99,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
     /**
      * BLOG
      */
-    Route::resource('blogs', 'Auth\BlogController')->except(['update']);
-    Route::post('blogs/update/{id}', ['uses' => 'Auth\BlogController@update', 'as' => 'blogs.update']);
+    Route::resource('novedades', 'Auth\BlogController')->except(['update']);
+    Route::post('novedades/update/{id}', ['uses' => 'Auth\BlogController@update', 'as' => 'novedades.update']);
 
-    Route::resource('blogcategorias', 'Auth\BlogCategoriaController')->except(['update','index']);
-    Route::get('blog/categorias', ['uses' => 'Auth\BlogCategoriaController@index', 'as' => '.blogcategorias.index']);
-    Route::post('blogcategorias/update/{id}', ['uses' => 'Auth\BlogCategoriaController@update', 'as' => 'blogcategorias.update']);
+    Route::resource('blog_categorias', 'Auth\BlogCategoriaController')->except(['update','index']);
+    Route::get('novedad/categorias', ['uses' => 'Auth\BlogCategoriaController@index', 'as' => 'blog_categorias.index']);
+    Route::post('blog_categorias/update/{id}', ['uses' => 'Auth\BlogCategoriaController@update', 'as' => 'blog_categorias.update']);
 
     /**********************************
             DATOS DE LA EMPRESA
@@ -133,7 +133,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
 
 Route::get( '{link?}' ,
     [ 'uses' => 'Page\GeneralController@index' , 'as' => 'index' ]
-)->where( 'link' , "index|faq|empresa|productos|presupuesto|consentino-online-visualizer|contacto" );
+)->where( 'link' , "index|faq|empresa|productos|presupuesto|consentino-online-visualizer|novedades|contacto" );
 Route::get('producto/{title}', ['uses' => 'Page\GeneralController@marca' , 'as' => 'marca']);
 //Route::get('producto/{title}/colores', ['uses' => 'Page\GeneralController@colores' , 'as' => 'colores']);
 Route::get('producto/{title}/{query}', 'Page\GeneralController@producto')->where('query','.+');

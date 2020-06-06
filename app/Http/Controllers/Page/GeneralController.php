@@ -13,6 +13,8 @@ use App\Slider;
 use App\Empresa;
 use App\Faq;
 use App\Producto;
+use App\Blog;
+use App\Blog_categorias;
 use App\Marca;
 class GeneralController extends Controller
 {
@@ -53,10 +55,6 @@ class GeneralController extends Controller
         return $data;
     }
 
-    public function concat($a) {
-        dd($a);
-    }
-
     public function index($link = null) {
         if(empty($link) || $link == "index")
             $link = "home";
@@ -70,10 +68,11 @@ class GeneralController extends Controller
                 $data["elementos"] = Faq::where("elim", 0)->orderBy("order")->get(["title", "title_slug", "sliders", "resume", "answer"]);
             break;
             case "blogs":
-                $data["elementos"] = Novedad::orderBy("orden")->simplePaginate(15);
+                $data["elementos"] = [];
+                $data["elementos"]["categorias"] = Blog_categorias::where("elim", 0)->orderBy("order")->get(["id", "title", "title_slug"]);
+                $data["elementos"]["novedades"] = Blog::where("elim", 0)->orderBy("date")->simplePaginate(16);
             break;
             case "productos":
-                $data["elementos"] = [];
             break;
             case "presupuesto":
                 $arr = [];

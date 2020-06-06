@@ -11,9 +11,9 @@
     /** -------------------------------------
         Agrega o ejecuta algún evento después de la carga inicial
      ** ------------------------------------- */
-    addfinish = () => {
+    function addfinish(data) {
         document.querySelector(`#${window.pyrus.name}_section`).value = window.data.section;
-    };
+    }
     /** -------------------------------------
      *      INICIO
      ** ------------------------------------- */

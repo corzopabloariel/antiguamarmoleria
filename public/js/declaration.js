@@ -389,77 +389,83 @@ const ENTIDADES = {
     /**********************************
             BLOG
      ********************************** */
-    novedad: {
-        TABLE: "novedades",
+    blog_categorias: {
+        TABLE: "blog_categorias",
         ATRIBUTOS: {
-            orden: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE",CLASS:"text-center border-top-0 border-left-0 border-right-0 rounded-0",WIDTH:"150px"},
-            image: {TIPO:"TP_IMAGE",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Imagen - 750x650",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"350px", SIMPLE: 1},
-            titulo: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:150,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título",CLASS:"border-top-0 border-left-0 border-right-0 rounded-0"},
-            data: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"texto"},
-            resume: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"resumen"}
+            order: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"orden"},
+            title: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:150,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título"},
+            title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
         },
         FORM: [
             {
-                '<div class="col-12 col-md-5 col-lg-3">/orden/</div>':['orden']
-            },
-            {
-                '<div class="col-12 col-md-5">/image/</div>':['image']
-            },
-            {
-                '<div class="col-12">/titulo/</div>':['titulo']
-            },
-            {
-                '<div class="col-12">/resume/</div>':['resume'],
-            },
-            {
-                '<div class="col-12">/data/</div>':['data'],
-            },
-        ],
-        FUNCIONES: {
-            image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
+                '<div class="col-12 col-md-4">/order/</div><div class="col-12 col-md">/title/</div>': ['title','order']
+            }
+        ]
+    },
+    novedades: {
+        TABLE: "novedades",
+        ATRIBUTOS: {
+            date: {TIPO:"TP_FECHA", LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"fecha"},
+            title: {TIPO:"TP_STRING",LABEL:1,MAXLENGTH:150,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título"},
+            title_slug: {TIPO:"TP_SLUG",VISIBILIDAD:"TP_INVISIBLE", COLUMN: "title"},
+            resume: {TIPO:"TP_TEXT", LABEL: 1,FIELDSET:1,VISIBILIDAD:"TP_VISIBLE_FORM",NOMBRE:"resumen"},
+            text: {TIPO:"TP_TEXT", LABEL: 1,FIELDSET:1,VISIBILIDAD:"TP_VISIBLE_FORM",NOMBRE:"descripción larga"},
+            images: {TIPO:"TP_ARRAY",COLUMN:"images",VISIBILIDAD:"TP_VISIBLE_TABLE",NOMBRE:"imágenes",CLASS:"text-center"},
+            category_id: {TIPO:"TP_RELATIONSHIP", ENUM: null,LABEL: 1,RULE: "required", NECESARIO: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"Categoría", ENTIDAD: "Blog_categorias",LABEL:1, ATTR: ["id", "title AS text"], ORDER: "order", NORMAL: 1}
         },
+        FORM: [
+            {
+                '<div class="col-12 col-md">/title/</div>': ['title']
+            },
+            {
+                '<div class="col-12 col-md">/category_id/</div><div class="col-12 col-md">/date/</div>':['category_id','date']
+            },
+            {
+                '<div class="col-12">/resume/</div>': ['resume']
+            },
+            {
+                '<div class="col-12">/text/</div>': ['text']
+            }
+        ],
         EDITOR: {
             resume: {
                 toolbarGroups: [
-                    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-                    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-                    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-                    { name: 'forms', groups: [ 'forms' ] },
-                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-                    { name: 'links', groups: [ 'links' ] },
-                    { name: 'insert', groups: [ 'insert' ] },
-                    { name: 'styles', groups: [ 'styles' ] },
-                    { name: 'colors', groups: [ 'colors' ] },
-                    { name: 'tools', groups: [ 'tools' ] },
-                    { name: 'others', groups: [ 'others' ] },
-                    { name: 'about', groups: [ 'about' ] }
+                    { name: "basicstyles", groups: ["basicstyles"] },
+                    { name: 'colors', groups: [ 'TextColor', 'BGColor' ] },
+                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
                 ],
-                removeButtons: 'NewPage,Save,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Redo,Undo,Find,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,CopyFormatting,RemoveFormat,Blockquote,CreateDiv,BidiLtr,BidiRtl,Language,Unlink,Anchor,Flash,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Styles,Font,Maximize,ShowBlocks,About,Subscript,Superscript,BulletedList,NumberedList,Outdent,Indent,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,Image,Link,Format,Table',
+                removeButtons: 'CreateDiv,Language',
                 colorButton_colors : colorPick,
                 height: '150px'
             },
-            data: {
+            text: {
                 toolbarGroups: [
-                    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-                    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-                    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-                    { name: 'forms', groups: [ 'forms' ] },
-                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-                    { name: 'links', groups: [ 'links' ] },
-                    { name: 'insert', groups: [ 'insert' ] },
-                    { name: 'styles', groups: [ 'styles' ] },
-                    { name: 'colors', groups: [ 'colors' ] },
-                    { name: 'tools', groups: [ 'tools' ] },
-                    { name: 'others', groups: [ 'others' ] },
-                    { name: 'about', groups: [ 'about' ] }
+                    { name: "basicstyles", groups: ["basicstyles"] },
+                    { name: 'colors', groups: [ 'TextColor', 'BGColor' ] },
+                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
                 ],
-                removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Replace,Find,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,RemoveFormat,CreateDiv,BidiLtr,BidiRtl,Language,Anchor,Flash,Smiley,SpecialChar,PageBreak,Iframe,Styles,Font,Maximize,ShowBlocks,About',
+                removeButtons: 'CreateDiv,Language',
                 colorButton_colors : colorPick,
                 height: '450px'
             }
         }
+    },
+    blog_images: {
+        ONE: 1,
+        MULTIPLE: "imagen",
+        NOMBRE: "Imágenes",
+        ATRIBUTOS: {
+            order: {TIPO:"TP_ENTERO",MAXLENGTH:2,NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"orden", SORTEABLE: 1, MIN: 1, STEP: 1},
+            image: {TIPO:"TP_IMAGE", EXT: "jpeg, png, jpg, gif",RULE: "nullable|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "productos", SIZE: "2MB",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"600px", HEIGHT:"400px"},
+        },
+        FORM: [
+            {
+                '<div class="col-12 col-md">/order/</div>':['order']
+            },
+            {
+                '<div class="col-12">/image/</div>':['image'],
+            },
+        ]
     },
     /**********************************
             PRODUCTOS

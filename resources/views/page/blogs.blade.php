@@ -1,19 +1,26 @@
-<div class="encabezado py-5">
-    <div class="container">
-        <h2 class="title--important">Novedades</h2>
+<div class="blogs">
+    <div class="banner d-flex align-items-stretch" style="--url: url({{asset(@$data['portada']->image['i'])}})">
+        <div class="container d-flex">
+            <h3 class="banner--title align-self-end"><span>Novedades</span></h3>
+        </div>
     </div>
-</div>
-<div class="blogs py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-md">
-                <div class="card-columns">
-                    @foreach( $data["elementos"] AS $b )
-                        @include( 'page.parts.blog' , [ 'elemento' => $b , 'type' => 0 ] )
-                    @endforeach
+    <div class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md">
+                    <div class="row mt-n3">
+                        @foreach( $data["elementos"]["novedades"] AS $b )
+                            <div class="col-12 col-md-6 mt-3">
+                            @include( 'page.parts.blog' , [ 'elemento' => $b , 'type' => 0 ] )
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-12 d-flex justify-content-center">{{ $data["elementos"]["novedades"]->links() }}</div>
+                    </div>
                 </div>
-                <div class="row mt-5">
-                    <div class="col-12 d-flex justify-content-center">{{ $data["elementos"]->links() }}</div>
+                <div class="col-12 col-md-4">
+                    @include( 'page.parts.blog_lateral' )
                 </div>
             </div>
         </div>

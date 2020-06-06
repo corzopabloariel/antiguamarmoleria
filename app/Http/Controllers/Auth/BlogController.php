@@ -33,6 +33,7 @@ class BlogController extends Controller
         $data[ "buttons" ] = [
             [ "i" => "fas fa-pencil-alt" , "b" => "btn-warning" , "t" => "Editar" ],
             [ "i" => "fas fa-trash-alt" , "b" => "btn-danger" , "t" => "Eliminar" ],
+            [ "i" => "far fa-clone" , "b" => "btn-info" , "t" => "Copiar" ]
         ];
         if (isset($request->search))
             $data["search"] = $request->search;

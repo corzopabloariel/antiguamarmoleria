@@ -18,11 +18,11 @@ class BlogCategoriaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index( )
+    public function index()
     {
         $data = [];
         $data[ "view" ] = "auth.parts.blogcategorias";
-        $data[ "url" ] = Route( 'blogs.index' );
+        $data[ "url" ] = Route( 'novedades.index' );
         $data[ "breadcrumb" ] = "<li class='breadcrumb-item'><a href='{$data[ "url" ]}'>Novedades</a></li><li class='breadcrumb-item active'>Categorías de Blogs</li>";
         $elementos = $this->model::where('elim', 0)->orderBy('order')->paginate( 15 );
         $data[ "title" ] = "Categorías de Blogs";

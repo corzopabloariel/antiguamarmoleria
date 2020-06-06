@@ -18,40 +18,27 @@ window.axios.defaults.headers.common = {
     'X-CSRF-TOKEN' : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 };
 const dates = {
-    string: ( d = new Date() , formato = [ "dd" , "/" , "mm" , "/" , "aaaa" ] ) => {
-        if (!d || d === "" || d === "-")
+    string: date => {
+        if (date === "" || !date)
             return "-";
-        //regexData = /([0-9]{4})-([0-9]{2})-([0-9]{2})/;
-        //match = regexData.exec('2020-04-06');
-        window[ "dd" ] = d.getDate() < 10 ? `0${d.getDate()}` : d.getDate();
-        window[ "mm" ] = d.getMonth() + 1;//los meses [0 - 11]
-        window.mm = window.mm < 10 ? `0${window.mm}` : window.mm;
-        window[ "aaaa" ] = d.getFullYear();
-        window[ "h" ] = d.getHours() < 10 ? `0${d.getHours()}` : d.getHours();
-        window[ "m" ] = d.getMinutes() < 10 ? `0${d.getMinutes()}` : d.getMinutes();
-        window[ "s" ] = d.getSeconds() < 10 ? `0${d.getSeconds()}` : d.getSeconds();
-
+        const d = dates.convert(date);
         let day = "";
-        formato.forEach( ( x ) => {
-            if( [ "dd" , "mm" , "aaaa" , "h" , "m" , "s" ].includes( x ) )
-                day += window[ x ];
-            else
-                day += x;
-        } );
-        return day;
+        regexData = /([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})/;
+        const match = regexData.exec(date);
+        day = `${match[3]}/${match[2]}/${match[1]}`;
+        if (match[4] !== "00")
+            day += `${match[4]}:${match[5]}`;
+        return [d, day, `${match[1]}-${match[2]}-${match[3]}`];
     },
     convert: d => {
-        if(d)
-            return (
-                d.constructor === Date ? d :
-                d.constructor === Array ? new Date( d[ 0 ] , d [ 1 ] , d[ 2 ] ) :
-                d.constructor === Number ? new Date( d ) :
-                d.constructor === String ? new Date( d ) :
-                d.constructor === "object" ? new Date( d.year , d.month , d.date ) :
-                NaN
-            );
-        else
-            return "-";
+        return (
+            d.constructor === Date ? d :
+            d.constructor === Array ? new Date( d[ 0 ] , d [ 1 ] , d[ 2 ] ) :
+            d.constructor === Number ? new Date( d ) :
+            d.constructor === String ? new Date( d ) :
+            d.constructor === "object" ? new Date( d.year , d.month , d.date ) :
+            NaN
+        );
     },
     /**
      * @return -1 if a < b

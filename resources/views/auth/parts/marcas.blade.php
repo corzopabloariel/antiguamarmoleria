@@ -19,27 +19,6 @@
     window.pyrus.push({entidad: new Pyrus("marca_advantage"), tipo: "M", column: "advantage", function: "ventaja"});
     window.pyrus.push({entidad: new Pyrus("marca_images"), tipo: "M", column: "sliders", function: "slider"});
     function addfinish(data) {
-        /*if (!data) {
-            const target = document.querySelector(`#wrapper-ventaja`);
-            const target_slider = document.querySelector(`#wrapper-slider`);
-            if (window.advantage)
-                delete window.advantage;
-            if (window.sliders)
-                delete window.sliders;
-            if (target_slider)
-                target_slider.innerHTML = "";
-            if (target) {
-                let ck = target.querySelectorAll(".ckeditor")
-                if (ck.length > 0) {
-                    Array.prototype.forEach.call(ck, c => {
-                        if (CKEDITOR.instances[c.id])
-                            CKEDITOR.instances[c.id].destroy();
-                    });
-                }
-                target.innerHTML = "";
-            }
-            return null;
-        }*/
         if (data) {
             if (data.advantage)
                 data.advantage.forEach(a => ventajaFunction(a));
