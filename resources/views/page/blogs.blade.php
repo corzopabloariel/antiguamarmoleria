@@ -8,6 +8,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 col-md">
+                    @isset($data["categoria"])
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item breadcrumb--home"><a href="{{ URL::to( '/' ) }}"><i class="fas fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{URL::to('novedades')}}">Novedades</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{$data["categoria"]->title}}</li>
+                    </ol>
+                    @endisset
                     <div class="row mt-n3">
                         @foreach( $data["elementos"]["novedades"] AS $b )
                             <div class="col-12 col-md-6 mt-3">

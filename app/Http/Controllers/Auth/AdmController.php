@@ -24,6 +24,7 @@ class AdmController extends Controller
         $arr[] = ["e" => json_decode(self::count(new Request(['table' => 'Marca'])), true), "n" => "Marcas", "bg" => "#C33F16", "t" => "#FFFFFF"];
         $arr[] = ["e" => json_decode(self::count(new Request(['table' => 'Producto'])), true), "n" => "Productos", "bg" => "#E7EDCC", "t" => "#030303"];
         $arr[] = ["e" => json_decode(self::count(new Request(['table' => 'User'])), true), "n" => "Usuarios", "bg" => "#1A9CB6", "t" => "#FFFFFF"];
+        $arr[] = ["e" => json_decode(self::count(new Request(['table' => 'Blog'])), true), "n" => "Novedades", "bg" => "#B66536", "t" => "#CAD0BF"];
         $filename = public_path() . "/count.txt";
         $number = 0;
         if (file_exists($filename)) {
@@ -491,7 +492,7 @@ class AdmController extends Controller
         if ($flag)
             return json_encode(["error" => 1, "msg" => "Error en los datos de ingreso."]);
         else {
-            //try {
+            try {
                 $OBJ = self::object($request, $data);
                 if ($rule) {
                     $flag = true;
@@ -516,9 +517,9 @@ class AdmController extends Controller
                     $data->fill($OBJ);
                     $data->save();
                 }
-            /*} catch (\Throwable $th) {
+            } catch (\Throwable $th) {
                 return json_encode(["error" => 1, "msg" => $th->errorInfo[2]]);
-            }*/
+            }
             return json_encode(["success" => true, "error" => 0, "data" => $data]);
         }
     }

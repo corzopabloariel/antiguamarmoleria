@@ -136,11 +136,27 @@ class GeneralController extends Controller
         return view( 'layouts.main' ,compact( 'data' ) );
     }
 
-    public function blog($title, $id) {
+    public function novedades($title) {
         $data = self::datos("novedades");
-        $data["blog"] = Novedad::find( $id );
+        $aux = Blog_categorias::where("title_slug", $title)->first();
+        $data["elementos"] = [];
+        $data["elementos"]["categorias"] = Blog_categorias::where("elim", 0)->orderBy("order")->get(["id", "title", "title_slug"]);
+        $data["elementos"]["novedades"] = $aux->blogs()->where("elim", 0)->orderBy("date")->simplePaginate(16);
+        $data["categoria"] = $aux;
+        $data["view"] = "page.blogs";
+        $data["title"] = "Novedad - {$aux->title}";
+        return view('layouts.main' ,compact('data'));
+    }
+
+    public function novedad($categoria, $title) {
+        $data = self::datos("novedades");
+        $aux = Blog_categorias::where("title_slug", $categoria)->first();
+        $data["elementos"] = [];
+        $data["elementos"]["categorias"] = Blog_categorias::where("elim", 0)->orderBy("order")->get(["id", "title", "title_slug"]);
+        $data["elementos"]["novedad"] = $aux->blogs()->where("elim", 0)->where("title_slug", $title)->first();
+        $data["categoria"] = $aux;
         $data["view"] = "page.blog";
-        $data["title"] = "Novedad - {$data["blog"]->titulo}";
-        return view( 'layouts.main' ,compact( 'data' ) );
+        $data["title"] = "Novedad - {$aux->title}";
+        return view('layouts.main' ,compact('data'));
     }
 }

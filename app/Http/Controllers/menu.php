@@ -98,7 +98,7 @@ define( "MENU" ,
         "id"        => "popup",
         "nombre"    => "Pop' up",
         "icono"     => '<i class="fas fa-chalkboard"></i>',
-        "url"       => null
+        "url"       => @route('pops.index')
     ]
 ]
 );

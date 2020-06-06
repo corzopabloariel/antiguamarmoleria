@@ -387,6 +387,23 @@ const ENTIDADES = {
         }
     },
     /**********************************
+            POP UP
+     ********************************** */
+    pops: {
+        ATRIBUTOS: {
+            url: {TIPO:"TP_LIST",LABEL:1,VISIBILIDAD:"TP_VISIBLE",DATA: null, PLACEHOLDER: "URL disponibles"},
+            images: {TIPO:"TP_IMAGE", EXT: "jpeg, png, jpg, gif",RULE: "nullable|mimes:jpeg,png,jpg,gif|max:2048",FOLDER: "popups", SIZE: "2MB",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"400px", HEIGHTop:"800px"},
+        },
+        FORM: [
+            {
+                '<div class="col-12 col-md">/url/</div>':['url']
+            },
+            {
+                '<div class="col-12">/images/</div>':['images'],
+            },
+        ]
+    },
+    /**********************************
             BLOG
      ********************************** */
     blog_categorias: {

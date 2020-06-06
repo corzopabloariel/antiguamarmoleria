@@ -11,39 +11,7 @@
 |
 */
 Auth::routes(['register' => false, 'verify' => false, 'reset' => false]);
-/**
- * Provincias
- */
-Route::get('provincia/{id}/localidades', ['uses' => 'Auth\LocalidadController@localidades', 'as' => 'localidades.localidades']);
-Route::get('marca/{id}/mmodelos', ['uses' => 'Auth\MarcaController@modelos', 'as' => 'marca.modelos']);
 
-Route::get('marca/{marca_id}', [ 'uses' => 'Page\AutomovilController@marca', 'as' => 'marca' ]);
-Route::get('marca/{marca_id}/anio/{anio}', [ 'uses' => 'Page\AutomovilController@anio', 'as' => 'anio' ]);
-Route::get('marca/{marca_id}/anio/{anio}/modelo/{modelo_id}', [ 'uses' => 'Page\AutomovilController@modelo', 'as' => 'modelo' ]);
-Route::get('marca/{marca_id}/anio/{anio}/modelo/{modelo_id}/{puertas}', [ 'uses' => 'Page\AutomovilController@puertas', 'as' => 'puertas' ]);
-
-Route::match(['get', 'post'] , 'olvide', [ 'uses' => 'PrivateArea\ForgotPasswordController@olvide', 'as' => 'olvide' ]);
-Route::match(['get', 'post'] , 'token/{token}', [ 'uses' => 'PrivateArea\ForgotPasswordController@token', 'as' => 'token' ]);
-
-Route::get('salir', 'PrivateArea\LoginController@salir')->name('salir');
-Route::group(['prefix' => 'cliente', 'as' => 'client.'], function() {
-    Route::get('changeClave/{id}', 'PrivateArea\UsuarioController@changeClave')->name('changeClave');
-    Route::post('changepass','PrivateArea\UsuarioController@changepass')->name("changepass");
-    Route::post('acceso', 'PrivateArea\LoginController@login')->name("acceso");
-
-    Route::get('cotizacion', 'PrivateArea\UserController@cotizacion')->name("cotizacion");
-    Route::post('cotizacion ', ['uses' => 'Page\FormController@presupuesto' , 'as' => 'cotizacion']);
-    Route::match(['get', 'post'], 'mis-datos', [ 'uses' => 'PrivateArea\UserController@mis_datos', 'as' => 'mis_datos' ]);
-    Route::get('mis-polizas', 'PrivateArea\UserController@descargas')->name("polizas");
-});
-
-Route::post('values', ['uses' => 'Page\GeneralController@values' , 'as' => 'values']);
-//ACTUALIZACION DE BD
-Route::group(['prefix' => 'update'], function() {
-    Route::get( 'automoviles', ['uses' => 'Auth\UpdateController@automoviles' , 'as' => '.automoviles']);
-    Route::get( 'clientes', ['uses' => 'Auth\UpdateController@clientes' , 'as' => '.clientes']);
-    Route::get( 'polizas', ['uses' => 'Auth\UpdateController@polizas' , 'as' => '.polizas']);
-});
 Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
     Route::get('/', 'Auth\AdmController@index')->name('adm');
     Route::get('logout', ['uses' => 'Auth\LoginController@logout' , 'as' => 'adm.logout']);
@@ -79,6 +47,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
         Route::get('{seccion}/edit', ['uses' => 'Auth\ContenidoController@edit', 'as' => '.edit']);
         Route::post('{seccion}/update', ['uses' => 'Auth\ContenidoController@update', 'as' => 'update']);
     });
+    /**
+     * POP
+     */
+    Route::resource('pops', 'Auth\PopController')->except(['update']);
+    Route::post('pops/update/{id}', ['uses' => 'Auth\PopController@update', 'as' => 'pops.update']);
     /**
      * FAQ
      */
@@ -135,11 +108,10 @@ Route::get( '{link?}' ,
     [ 'uses' => 'Page\GeneralController@index' , 'as' => 'index' ]
 )->where( 'link' , "index|faq|empresa|productos|presupuesto|consentino-online-visualizer|novedades|contacto" );
 Route::get('producto/{title}', ['uses' => 'Page\GeneralController@marca' , 'as' => 'marca']);
-//Route::get('producto/{title}/colores', ['uses' => 'Page\GeneralController@colores' , 'as' => 'colores']);
 Route::get('producto/{title}/{query}', 'Page\GeneralController@producto')->where('query','.+');
+Route::get('novedades/{title}', ['uses' => 'Page\GeneralController@novedades' , 'as' => 'novedades']);
+Route::get('novedad/{categoria}/{title}', ['uses' => 'Page\GeneralController@novedad' , 'as' => 'novedad']);
 Route::get('search', ['uses' => 'Page\GeneralController@search' , 'as' => 'search']);
 
 Route::post('presupuesto ', ['uses' => 'Page\FormController@presupuesto' , 'as' => 'presupuesto']);
 Route::post('contacto', ['uses' => 'Page\FormController@contacto' , 'as' => 'contacto']);
-Route::get('productos/categoria/{title}/{id}', ['uses' => 'Page\GeneralController@categoria' , 'as' => 'categoria']);
-Route::get('productos/cobertura/{title}/{id}', ['uses' => 'Page\GeneralController@producto' , 'as' => 'producto']);
