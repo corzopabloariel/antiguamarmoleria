@@ -635,6 +635,28 @@ td:hover .edit--check {
     padding: 1em .4em;
     font-size: 14px;
 }
+.header__input {
+    padding: .3em .9em;
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
+    border: 1px solid #cccccc;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+.search__input {
+    width: 100%;
+    border-radius: 0;
+}
+.header__input:focus {
+    border-color: #b0d81a;
+}
+.header__button {
+    background-color: #b0d81a;
+    color: #000000;
+    padding: .3em .6em;
+    border: none;
+}
 .header--marca__link.active--marca,
 .header--marca__link:hover,
 .menu--lateral:hover {

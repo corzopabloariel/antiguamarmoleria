@@ -136,6 +136,24 @@ class GeneralController extends Controller
         return view( 'layouts.main' ,compact( 'data' ) );
     }
 
+    public function search(Request $request) {
+        $data = self::datos("productos");
+        $elementos = new Producto;
+        $elementos = $elementos->join('marcas', 'productos.marca_id', '=', 'marcas.id');
+        if (isset($request->s)) {
+            $data["search"] = $request->s;
+            $elementos = $elementos->whereRaw( "UPPER(CONCAT_WS( ' ' ,productos.title ,productos.title_slug, productos.characteristics, marcas.title, marcas.title_slug)) LIKE UPPER('%{$request->s}%')" );
+        }
+        $elementos = $elementos->where("productos.elim", 0);
+        $data["total"] = $elementos->count();
+        $elementos = $elementos->select("productos.*");
+        $elementos = $elementos->orderBy('marcas.order')->orderBy('productos.order')->paginate(24);
+        $data["productos"] = $elementos;
+        $data["view"] = "page.search";
+        $data["title"] = "Buscador - {$request->s}";
+        return view('layouts.main' ,compact('data'));
+    }
+
     public function novedades($title) {
         $data = self::datos("novedades");
         $aux = Blog_categorias::where("title_slug", $title)->first();

@@ -1,7 +1,15 @@
 <header class="header shadow">
     <div class="header--address py-3 shadow-sm">
-        <div class="container">
-        <i class="far fa-map mr-3"></i>@include('layouts.general.domicilio', ["dato" => $elementos->addresses, "link" => 1])
+        <div class="container d-flex align-items-center justify-content-between">
+            <div>
+                <i class="far fa-map mr-3"></i>@include('layouts.general.domicilio', ["dato" => $elementos->addresses, "link" => 1])
+            </div>
+            <div class="header__search">
+                <form @if($link) action="{{URL::to('search')}}" @else disabled @endif class="d-flex" method="get">
+                    <input type="search" name="s" required pattern="(.|\s)*\S(.|\s)*" placeholder="Estoy buscando" class="header__input">
+                    <button type="submit" class="header__button"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
         </div>
     </div>
     <div class="container d-flex justify-content-between align-items-center py-2">

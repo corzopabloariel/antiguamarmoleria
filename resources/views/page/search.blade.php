@@ -3,9 +3,9 @@
         <h2 class="title--important mb-3">Buscador</h2>
         <form class="d-block my-5" action="" method="get">
             <div class="row justify-content-center">
-                <div class="col-12 col-md-8 d-flex">
-                    <input pattern="(.|\s)*\S(.|\s)*" value="{{ $data['search'] }}" name="s" placeholder="Estoy buscando..." type="search" class="form-control form--input form-control-lg mr-3">
-                    <button class="btn btn-primary btn--element px-5 rounded-pill">Buscar</button>
+                <div class="col-12 col-md-8 col-lg-6 d-flex">
+                    <input type="search" value="{{ $data['search'] }}" name="s" required pattern="(.|\s)*\S(.|\s)*" placeholder="Estoy buscando" class="header__input search__input">
+                    <button type="submit" class="header__button"><i class="fas fa-search"></i></button>
                 </div>
                 <div class="col-12 mt-3">
                     <p class="text-center">Total de registros encontrados: {{ $data["total"] }}</p>
@@ -14,21 +14,8 @@
         </form>
         <div class="row mt-n4 justify-content-center">
             @forelse($data["productos"] AS $p)
-            @php
-            $name = $p->title;
-            if(empty($name))
-                $name = $p->nombre["es"];
-            $url = $p->url();
-            @endphp
-            <div class="col-12 col-md-4 mt-4">
-                <div class="card border-0 producto--elemento hover position-relative">
-                    <a class="plus" href="{{ URL::to($url) }}">
-                        @include( 'layouts.general.image' , [ 'i' => $p->image() , 'c' => 'card-img-top producto--image', 'in_div' => 1 , 'n' => $name ] )
-                        <div class="card-body img position-relative">
-                            <p class="card-title producto--elemento__titulo">{{ $name }}</p>
-                        </div>
-                    </a>
-                </div>
+            <div class="col-12 col-md-4 mt-4 d-flex align-items-stretch">
+                @include('page.parts.elemento', ['e' => $p])
             </div>
             @empty
             <div class="col-12 py-4">

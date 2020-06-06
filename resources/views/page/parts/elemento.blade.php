@@ -49,7 +49,7 @@ if ($e->show == 3)
 if ($e->is_link)
     $flag = true;
 @endphp
-<div class="hover">
+<div class="hover d-flex align-items-stretch">
     @php
     $images = "";
     if (!isset($data["no__zoom"]))
